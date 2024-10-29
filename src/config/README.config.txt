@@ -1,0 +1,1 @@
+Trong đây chứa các file config cho database, view engine, knex 

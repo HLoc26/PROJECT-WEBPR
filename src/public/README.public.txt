@@ -1,0 +1,1 @@
+Trong đây chứa các file được gửi lên phía client (static files), và client có thể thấy được
