@@ -11,6 +11,6 @@ app.use("/", webRoutes);
 // When route starts with "/api", use apiRoutes to handle
 app.use("/api", apiRoutes);
 
-app.listen(PORT, function (req, res) {
+app.listen(process.env.PORT, function (req, res) {
 	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
 });
