@@ -12,4 +12,7 @@ router.get("/login", function(req,res){
     res.render("vwLogin/Login");
 });
 
+router.get("/forget", function(req,res){
+    res.render("vwLogin/Forget");
+})
 export default Router;
