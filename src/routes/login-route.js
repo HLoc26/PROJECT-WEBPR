@@ -22,4 +22,8 @@ router.post("/login", function(req,res){
 router.get("/forget", function(req,res){
     res.render("vwLogin/Forget");
 })
+
+router.get("/OTP", function(req,res){
+    res.render("vwLogin/OTP");
+})
 export default Router;
