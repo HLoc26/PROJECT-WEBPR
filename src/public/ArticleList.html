@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Bài Viết</title>
+    <link rel="stylesheet" href="./css/articlelist.css">
+</head>
+<body>
+    <header class="header">
+        <img src="logo.png" alt="Logo" class="logo">
+        <div class="user-controls">
+            <img src="bell.png" alt="Notifications" class="notification-bell">
+            <img src="avatar.png" alt="User Avatar" class="user-avatar">
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1 class="page-title">DANH SÁCH BÀI VIẾT</h1>
+        <button class="new-post-btn">Tạo bài viết mới</button>
+
+        <table class="articles-table">
+            <thead>
+                <tr>
+                    <th>Ảnh đại diện</th>
+                    <th>Tiêu đề</th>
+                    <th>Chuyên mục</th>
+                    <th>Nhãn dán</th>
+                    <th>Ngày đăng</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="thumbnail1.jpg" alt="Thumbnail" class="thumbnail"></td>
+                    <td>Bài viết về công nghệ mới</td>
+                    <td>Công nghệ</td>
+                    <td>
+                        <span class="tag">Tech</span>
+                        <span class="tag">News</span>
+                    </td>
+                    <td>24/11/2024</td>
+                    <td><span class="status status-rejected">Bị từ chối</span></td>
+                </tr>
+                <tr>
+                    <td><img src="thumbnail2.jpg" alt="Thumbnail" class="thumbnail"></td>
+                    <td>Xu hướng phát triển web 2024</td>
+                    <td>Lập trình</td>
+                    <td>
+                        <span class="tag">Web</span>
+                        <span class="tag">Dev</span>
+                    </td>
+                    <td>14/11/2023</td>
+                    <td><span class="status status-pending">Chưa được duyệt</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>
