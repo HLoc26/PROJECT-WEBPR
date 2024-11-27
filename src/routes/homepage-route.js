@@ -13,4 +13,4 @@ router.get("/List", function(req,res){
 router.get("/Category", function(res,req){
     res.render("vwHomepage/Category");
 })
-export default Router;
+export default router;
