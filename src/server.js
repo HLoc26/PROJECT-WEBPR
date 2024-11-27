@@ -17,11 +17,13 @@ app.listen(process.env.PORT, function (req, res) {
 	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
 });
 
-// import loginRoute from "./routes/login-route";
-// import writerRoute from "./routes/writer-route";
-// import homepageRoute from "./routes/homepage-route";
-// app.use("/Homepage", homepageRoute);
-// app.use("/List", homepageRoute);
+import loginRoute from "./routes/login-route.js";
+import writerRoute from "./routes/writer-route.js";
+import homepageRoute from "./routes/homepage-route.js";
+app.use("/Login", loginRoute);
+app.use("/Writer", writerRoute);
+app.use("/Homepage", homepageRoute);
+app.use("/List", homepageRoute);
 
-// import editorRoute from "./routes/editor-route";
-// app.use("/Editor", editorRoute);
+import editorRoute from "./routes/editor-route.js";
+app.use("/Editor", editorRoute);
