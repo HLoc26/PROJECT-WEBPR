@@ -6,4 +6,4 @@ router.get("/Editor", function (req, res) {
 	res.render("vwEditor/Editorpage");
 });
 
-export default Router;
+export default router;
