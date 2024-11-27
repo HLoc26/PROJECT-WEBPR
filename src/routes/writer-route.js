@@ -11,4 +11,4 @@ router.get('/NewArticle', function(req,res)
    res.redirect("vwWriter/NewArticle"); 
 });
 
-export default Router;
+export default router;
