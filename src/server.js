@@ -13,15 +13,14 @@ app.use("/", webRoutes);
 // When route starts with "/api", use apiRoutes to handle
 app.use("/api", apiRoutes);
 
-app.listen(process.env.PORT, function (req, res) {
-	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
-});
-
 // import loginRoute from "./routes/login-route";
 // import writerRoute from "./routes/writer-route";
-// import homepageRoute from "./routes/homepage-route";
-// app.use("/Homepage", homepageRoute);
+import homepageRoute from "./routes/homepage-route.js";
+app.use("/Homepage", homepageRoute);
 // app.use("/List", homepageRoute);
 
 // import editorRoute from "./routes/editor-route";
 // app.use("/Editor", editorRoute);
+app.listen(process.env.PORT, function (req, res) {
+	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
+});
