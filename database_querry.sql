@@ -10,6 +10,7 @@ CREATE TABLE Users (
     email VARCHAR(100) NOT NULL,
     full_name VARCHAR(100),
     dob DATE,
+    user_role ENUM('writer', 'editor', 'admin', 'reader') DEFAULT 'reader',
     is_active BOOLEAN DEFAULT TRUE,
     subscription_expired_date DATE,
     premium BOOLEAN DEFAULT FALSE
@@ -37,8 +38,10 @@ CREATE TABLE Articles (
     is_premium BOOLEAN DEFAULT FALSE,
     writer_id INT,
     category_id INT,
+    editor_id INT,
+    FOREIGN KEY (writer_id) REFERENCES Users(user_id),
     FOREIGN KEY (category_id) REFERENCES Categories(category_id),
-    FOREIGN KEY (writer_id) REFERENCES Users(user_id)
+    FOREIGN KEY (editor_id) REFERENCES Users(user_id),
 );
 
 -- Bảng Tags
@@ -89,12 +92,3 @@ CREATE TABLE ArticleTags (
     FOREIGN KEY (article_id) REFERENCES Articles(article_id),
     FOREIGN KEY (tag_id) REFERENCES Tags(tag_id)
 );
-
--- Phân quyền người dùng (Writer, Editor, Admin)
-ALTER TABLE Users
-ADD COLUMN role ENUM('writer', 'editor', 'admin') DEFAULT '';
-
--- Liên kết giữa bảng (Quản lý và phê duyệt)
-ALTER TABLE Articles
-ADD COLUMN editor_id INT,
-ADD FOREIGN KEY (editor_id) REFERENCES Users(user_id);
