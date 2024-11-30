@@ -32,7 +32,7 @@ CREATE TABLE Articles (
     abstract TEXT,
     thumbnail VARCHAR(255),
     views INT DEFAULT 0,
-    status ENUM('draft', 'published', 'archived') DEFAULT 'draft',
+    status ENUM('draft', 'published', 'archived', 'waiting', 'need changes') DEFAULT 'draft',
     published_date DATE,
     is_premium BOOLEAN DEFAULT FALSE,
     writer_name VARCHAR(100),
