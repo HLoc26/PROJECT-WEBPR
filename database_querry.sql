@@ -76,7 +76,9 @@ CREATE TABLE ApprovalHistories (
     editor_id INT,
     approval_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     note_content TEXT,
-    FOREIGN KEY (editor_id) REFERENCES Users(user_id)
+    article_id INT,
+    FOREIGN KEY (editor_id) REFERENCES Users(user_id),
+    FOREIGN KEY (article_id) REFERENCES Articles(article_id)
 );
 
 -- Liên kết Articles với Tags (N-N)
