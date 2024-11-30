@@ -19,7 +19,9 @@ CREATE TABLE Users (
 CREATE TABLE Categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(50) NOT NULL,
-    description TEXT
+    description TEXT,
+    belong_to INT,
+    FOREIGN KEY (mother_id) REFERENCES Categories (category_id)
 );
 
 -- Bảng Articles
