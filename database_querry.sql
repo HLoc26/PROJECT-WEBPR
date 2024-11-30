@@ -35,9 +35,10 @@ CREATE TABLE Articles (
     status ENUM('draft', 'published', 'archived', 'waiting', 'need changes') DEFAULT 'draft',
     published_date DATE,
     is_premium BOOLEAN DEFAULT FALSE,
-    writer_name VARCHAR(100),
+    writer_id INT,
     category_id INT,
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id),
+    FOREIGN KEY (writer_id) REFERENCES Users(user_id)
 );
 
 -- Bảng Tags
