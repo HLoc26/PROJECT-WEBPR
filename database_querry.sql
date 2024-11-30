@@ -51,8 +51,12 @@ CREATE TABLE Tags (
 CREATE TABLE Comments (
     comment_id INT AUTO_INCREMENT PRIMARY KEY,
     content TEXT,
+    article_id INT,
+    user_id INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP
+    updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (article_id) REFERENCES Articles(article_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
 );
 
 -- Bảng Notifications
