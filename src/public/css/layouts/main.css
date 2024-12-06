@@ -1,0 +1,12 @@
+.navbar-nav .nav-link {
+  font-size: 1.2rem;
+}
+
+.nav-link {
+  padding: 0.5rem 0.8rem;
+}
+
+.nav.justify-content-start {
+  overflow-x: auto;
+  white-space: nowrap;
+}
