@@ -12,6 +12,9 @@ import configViewEngine from "./config/viewEngine.js";
 // Initialize express app
 const app = express();
 
+// Huy: Middleware for static file (css, js, img,...)
+app.use(express.static(path.join(process.cwd(), "public")));
+
 configViewEngine(app);
 
 // When route starts with "/", use webRoutes to handle
@@ -25,7 +28,6 @@ app.use("/homepage", homepageRoute);
 app.use("/list", homepageRoute);
 app.use("/editor", editorRoute);
 
-
 app.listen(process.env.PORT, function (req, res) {
-	console.log(`Listening on ${process.env.HOST_NAME}:${process.env}`);
+	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
 });
