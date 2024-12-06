@@ -20,7 +20,7 @@ app.use("/login", loginRoute);
 app.use("/writer", writerRoute);
 app.use("/homepage", homepageRoute);
 app.use("/list", homepageRoute);
-app.use("/Editor", editorRoute);
+app.use("/editor", editorRoute);
 
 app.listen(process.env.PORT, function (req, res) {
 	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
