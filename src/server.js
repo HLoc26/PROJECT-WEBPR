@@ -27,5 +27,5 @@ app.use("/editor", editorRoute);
 
 
 app.listen(process.env.PORT, function (req, res) {
-	console.log(`Listening on ${process.env.HOST_NAME}:${process.env}`);
+	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
 });
