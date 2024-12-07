@@ -12,10 +12,9 @@ import configViewEngine from "./config/viewEngine.js";
 // Initialize express app
 const app = express();
 
-// Huy: Middleware for static file (css, js, img,...)
-app.use(express.static(path.join(process.cwd(), "public")));
-
 configViewEngine(app);
+
+app.use(express.static(path.join(process.cwd(), "public")));
 
 // When route starts with "/", use webRoutes to handle
 app.use("/", webRoutes);
