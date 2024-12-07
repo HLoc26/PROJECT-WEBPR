@@ -18,52 +18,57 @@
   </head>
 
   <body>
-    
     <nav
-        class="d-flex justify-content-between align-items-center navbar navbar-expand-lg navbar-light sticky-top text-black"
-      >
+      class="d-flex justify-content-between align-items-center navbar navbar-expand-lg navbar-light sticky-top text-black"
+    >
       <div class="nav-left">
-          <a class="navbar-brand" href="#">L O G O</a>
+        <a class="navbar-brand" href="#">L O G O</a>
       </div>
       <div class="nav-center form-inline d-lg-flex">
-            <select class="custom-select mr-2">
-              <option selected>Danh mục</option>
-              <option value="1">Danh mục 1</option>
-              <option value="2">Danh mục 2</option>
-              <option value="3">Danh mục 3</option>
-            </select>
-  <form class="form-inline">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form>
-
+        <select class="custom-select mr-2">
+          <option selected>Danh mục</option>
+          <option value="1">Danh mục 1</option>
+          <option value="2">Danh mục 2</option>
+          <option value="3">Danh mục 3</option>
+        </select>
+        <form class="form-inline">
+          <input
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
       </div>
       <div class="nav-right">
         <a class="navbar-brand" href="#"><i class="bi bi-person-circle"></i></a>
       </div>
-      </div>
-      
-      </nav>
+    </nav>
 
-      <div class="container-fluid bg-white border-top">
-        <div class="container">
-          <ul class="nav justify-content-start">
-            <li class="nav-item">
-              <a class="nav-link text-dark" href="#"
-                ><i class="bi bi-house"></i></a>
-            </li>
-            <% for (let i = 1; i <= 14; i++) { %>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href="#">CAT <%= i %></a>
-            </li>
-            <% } %>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href="#"><i class="bi bi-three-dots"></i></a>
-            </li>
-          </ul>
-        </div>
+    <div class="container-fluid bg-white border-top">
+      <div class="container">
+        <ul class="nav justify-content-start">
+          <li class="nav-item">
+            <a class="nav-link text-dark" href="#"
+              ><i class="bi bi-house"></i
+            ></a>
+          </li>
+          <% for (let i=1; i <=14; i++) { %>
+          <li class="nav-item">
+            <a class="nav-link text-dark" href="#">CAT <%= i %></a>
+          </li>
+          <% } %>
+          <li class="nav-item">
+            <a class="nav-link text-dark" href="#"
+              ><i class="bi bi-three-dots"></i
+            ></a>
+          </li>
+        </ul>
       </div>
-    </header>
+    </div>
 
     <main>
       <!-- Main content -->
