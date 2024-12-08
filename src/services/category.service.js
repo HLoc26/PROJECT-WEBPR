@@ -1,4 +1,4 @@
-import db from '../utils/db'
+import db from '../config/db'
 
 export default {
     // Fetch all categories

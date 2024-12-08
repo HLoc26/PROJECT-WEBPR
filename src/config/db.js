@@ -7,7 +7,7 @@ const knex = knexObj({
     user: 'root',          //MySQL username
     password: '',
     port: 3306,  
-    database: 'OnlineNewspaper' //database name
+    database: 'OnlineNewspaper' //databasename
   },
   pool: { min: 0, max: 10 },
 });
