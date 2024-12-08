@@ -1,0 +1,5 @@
+.article-table tbody tr td,
+.article-table tbody tr th,
+.article-table tbody tr {
+	vertical-align: middle;
+}
