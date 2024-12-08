@@ -4,4 +4,5 @@ import ArticleService from '../services/ArticleService'; //chua biet name cua se
 
 export default {
     //logic lay cua service rap vao controller
+    //du kien se co lay article, 
 };
