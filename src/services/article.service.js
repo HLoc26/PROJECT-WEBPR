@@ -1,4 +1,4 @@
-import db from {}
+import db from '../utils/db'
 
 export default {
     // Lấy tất cả các articles
