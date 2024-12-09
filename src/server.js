@@ -10,6 +10,7 @@ import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
+
 // Initialize express app
 const app = express();
 
