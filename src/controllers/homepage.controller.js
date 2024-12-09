@@ -38,7 +38,6 @@ export default {
         categoryArticles: categoryArticles,
         newestArticles: top10Newest,
         mostViewedArticles: top10MostViewed,
-        layout: 'main'
       });
     } catch (error) {
       console.error('Error in GetHomepage:', error);
