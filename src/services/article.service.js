@@ -15,8 +15,8 @@ export default {
           'articles.published_date', 
           'articles.is_premium',
           'categories.category_name',
-          'writers.name as writer_name',
-          'editors.name as editor_name'
+          'writers.full_name as writer_name',
+          'editors.full_name as editor_name'
         )
         .leftJoin('categories', 'articles.category_id', 'categories.category_id')
         .leftJoin('users as writers', 'articles.writer_id', 'writers.user_id')
@@ -70,8 +70,8 @@ export default {
         .select(
           'articles.*', 
           'categories.category_name',
-          'writers.name as writer_name',
-          'editors.name as editor_name'
+          'writers.full_name as writer_name',
+          'editors.full_name as editor_name'
         );
     },
   
