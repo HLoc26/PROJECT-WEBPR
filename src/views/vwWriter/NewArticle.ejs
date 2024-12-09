@@ -1,1 +1,46 @@
-<h1>Hello this is the Add new article for the writer</h1>
+<!-- Setup TINY_API_KEY in .env file -->
+<script src="https://cdn.tiny.cloud/1/<%= api_key %>/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+	tinymce.init({
+		selector: "textarea#txtContent",
+	});
+</script>
+
+<form action="" method="post" class="p-3">
+	<div class="form-group">
+		<label for="status">Status</label>
+		<input type="text" id="status" class="form-control" disabled value="Draft" name="status" />
+	</div>
+
+	<div class="form-group">
+		<label for="txtTitle">Title</label>
+		<input type="text" id="txtTitle" class="form-control" name="title" placeholder="Enter the title" />
+	</div>
+
+	<div class="form-group">
+		<label for="txtSummary">Summary</label>
+		<textarea id="txtSummary" class="form-control" name="summary" rows="3" placeholder="Write a brief summary"></textarea>
+	</div>
+
+	<div class="form-group">
+		<label for="txtContent">Content</label>
+		<textarea id="txtContent" class="form-control" name="content" rows="5" placeholder="Write the content"></textarea>
+	</div>
+
+	<!-- This should be loaded dynamically -->
+	<div class="form-group">
+		<label for="category">Category</label>
+		<select name="category" id="category" class="form-control">
+			<optgroup label="Category 1">
+				<option value="category 1-1">Category 1-1</option>
+				<option value="category 1-2">Category 1-2</option>
+			</optgroup>
+			<optgroup label="Category 2">
+				<option value="category 2-1">Category 2-1</option>
+			</optgroup>
+		</select>
+	</div>
+
+	<a href="/writer" role="button" class="btn btn-outline-danger mt-3">Cancel</a>
+	<button type="submit" class="btn btn-outline-success mt-3">Submit</button>
+</form>
