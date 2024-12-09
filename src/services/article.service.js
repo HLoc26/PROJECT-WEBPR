@@ -1,5 +1,6 @@
 import db from '../config/db.js'
 
+
 export default {
     // Lấy tất cả các articles
     findAllArticles() {
