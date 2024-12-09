@@ -9,7 +9,7 @@ const configViewEngine = (app) => {
 	app.set("view engine", "ejs");
 
 	app.use(expressLayouts); // Kích hoạt express-ejs-layouts
-	app.set("layout", "layouts/reader.main.js"); // Đặt layout mặc định
+	app.set("layout", "layouts/reader.main.ejs"); // Đặt layout mặc định
 
 	// Config static files
 	app.use(express.static(join("./src", "public")));
