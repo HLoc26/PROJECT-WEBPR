@@ -15,8 +15,6 @@ const app = express();
 
 configViewEngine(app);
 
-app.use(express.static(path.join(process.cwd(), "public")));
-
 // When route starts with "/", use webRoutes to handle
 app.use("/", webRoutes);
 // When route starts with "/api", use apiRoutes to handle
