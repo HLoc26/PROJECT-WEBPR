@@ -1,7 +1,7 @@
 import { join } from "path";
 import express from "express";
 
-import expressLayouts from "express-ejs-layuts";
+import expressLayouts from "express-ejs-layouts";
 
 // Set view to render html from ./views/sample.ejs
 const configViewEngine = (app) => {
