@@ -1,7 +1,6 @@
 import express from "express";
 import "dotenv/config";
 
-import webRoutes from "./routes/web.js";
 import apiRoutes from "./routes/api.routes.js";
 import articleRoutes from "./routes/article.routes.js"; // Lộc: Sáng import thiếu
 import loginRoute from "./routes/login.routes.js";
