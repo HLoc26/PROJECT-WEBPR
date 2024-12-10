@@ -15,8 +15,6 @@ const app = express();
 
 configViewEngine(app);
 
-// When route starts with "/", use webRoutes to handle
-app.use("/", webRoutes);
 // When route starts with "/api", use apiRoutes to handle
 app.use("/api", apiRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
