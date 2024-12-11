@@ -17,7 +17,7 @@ const app = express();
 configViewEngine(app);
 
 // When route starts with "/api", use apiRoutes to handle
-app.use("/error", errorRoute );
+app.use("/error", errorRoute);
 app.use("/api", apiRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/login", loginRoute);
