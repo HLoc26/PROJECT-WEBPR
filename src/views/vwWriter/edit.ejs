@@ -27,19 +27,20 @@
 		<textarea id="txtContent" class="form-control" name="content" rows="5" placeholder="Write the content"></textarea>
 	</div>
 
-	<!-- This should be loaded dynamically -->
 	<div class="form-group">
-		<label for="category">Category</label>
-		<select name="category" id="category" class="form-control">
-			<optgroup label="Category 1">
-				<option value="category 1-1">Category 1-1</option>
-				<option value="category 1-2">Category 1-2</option>
-			</optgroup>
-			<optgroup label="Category 2">
-				<option value="category 2-1">Category 2-1</option>
-			</optgroup>
-		</select>
+		<label for="thumbnail">Select a thumbnail</label>
+		<input type="file" class="form-control" name="thumbnail" id="thumbnail" accept="image/*" />
 	</div>
+
+	<label for="category">Select category</label>
+	<!-- This should be loaded dynamically -->
+	<select name="category" id="category" class="form-control">
+		<option value="category-1" class="font-weight-bold">Category 1</option>
+		<option value="category-1-1">&nbsp;&nbsp;Category 1-1</option>
+		<option value="category-1-2">&nbsp;&nbsp;Category 1-2</option>
+		<option value="category-2" class="font-weight-bold">Category 2</option>
+		<option value="category-2-1">&nbsp;&nbsp;Category 2-1</option>
+	</select>
 
 	<a href="/writer" role="button" class="btn btn-outline-danger mt-3">Cancel</a>
 	<button type="submit" class="btn btn-outline-success mt-3">Submit</button>
