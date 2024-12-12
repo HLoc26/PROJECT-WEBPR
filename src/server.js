@@ -1,7 +1,6 @@
 import express from "express";
 import "dotenv/config";
 
-import webRoutes from "./routes/web.js";
 import apiRoutes from "./routes/api.routes.js";
 import articleRoutes from "./routes/article.routes.js"; // Lộc: Sáng import thiếu
 import loginRoute from "./routes/login.routes.js";
@@ -16,8 +15,6 @@ const app = express();
 
 configViewEngine(app);
 
-// When route starts with "/", use webRoutes to handle
-app.use("/", webRoutes);
 // When route starts with "/api", use apiRoutes to handle
 app.use("/api", apiRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
