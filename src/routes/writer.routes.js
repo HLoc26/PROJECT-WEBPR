@@ -2,11 +2,21 @@ import "dotenv/config";
 import articleService from "../services/article.service.js";
 import express from "express";
 import path from "path";
+import { write } from "fs";
 const router = express.Router();
 
-router.get("/", function (req, res) {
+router.get("/", async function (req, res) {
+	// Loc: This ID is just for test, will have to change after
+	// login and register function is complete
+	const writer_id = 1;
+
+	const articles = await articleService.findByWriterId(writer_id);
+
+	// console.log(articles);
+
 	res.render("vwWriter/Writer", {
 		layout: "layouts/admin.main.ejs",
+		articles: articles,
 	});
 });
 
