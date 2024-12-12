@@ -7,6 +7,7 @@ import loginRoute from "./routes/login.routes.js";
 import writerRoute from "./routes/writer.routes.js";
 import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
+import errorRoute from "./routes/error.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
 
@@ -22,6 +23,7 @@ app.use(
 );
 
 // When route starts with "/api", use apiRoutes to handle
+app.use("/error", errorRoute);
 app.use("/api", apiRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/login", loginRoute);
