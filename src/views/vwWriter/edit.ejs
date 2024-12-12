@@ -3,6 +3,9 @@
 <script>
 	tinymce.init({
 		selector: "textarea#txtContent",
+		plugins: "paste image link autolink lists table media",
+		menubar: false,
+		toolbar: ["undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media"],
 	});
 </script>
 
