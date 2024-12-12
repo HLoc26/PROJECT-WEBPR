@@ -16,4 +16,9 @@ router.get("/NewArticle", function (req, res) {
 	});
 });
 
+router.post("/new", function (req, res) {
+	console.log(req.body);
+	// const { status, title, summary, content, category } = req.body;
+});
+
 export default router;
