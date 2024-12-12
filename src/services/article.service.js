@@ -95,8 +95,23 @@ export default {
       return db('articles').where('article_id', id).update({ status });
     },
   
-    // // Tăng 1 view khi thực hiện truy vấn? no need maybe
+    // // Tăng 1 view khi thực hiện truy vấn, cần xem lại vì user có thể hack view, nên xử lý trong backend.
     // incrementArticleViews(id) {
     //   return db('articles').where('article_id', id).increment('views', 1);
     // }
+
+    findCommentsById(articleId) {
+      return db('comments')
+          .where('comments.article_id', articleId)
+          .leftJoin('users', 'comments.user_id', 'users.user_id')
+          .select(
+              'comments.comment_id',
+              'comments.content',
+              'comments.created_at',
+              'comments.updated_at',
+              'users.full_name as commenter_name'
+          )
+          .orderBy('comments.created_at', 'asc');
+  }
+
 };
