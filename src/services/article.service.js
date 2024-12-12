@@ -74,7 +74,16 @@ export default {
           'editors.full_name as editor_name'
         );
     },
-  
+    
+  findByWriterId(writer_id) {
+      return db("articles")
+			.where("writers.user_id", writer_id)
+			.leftJoin("categories", "articles.category_id", "categories.category_id")
+			.leftJoin("users as writers", "articles.writer_id", "writers.user_id")
+			.leftJoin("users as editors", "articles.editor_id", "editors.user_id")
+			.select("articles.*", "categories.category_name", "writers.full_name as writer_name", "editors.full_name as editor_name");
+    },
+
     // Thêm article (entity: { title, content, abstract, thumbnail, category_id, writer_id, editor_id, status, is_premium, published_date })
     addArticle(entity) {
       return db('articles').insert(entity);
