@@ -1,17 +1,30 @@
 .navbar-nav .nav-link {
-  font-size: 1.2rem;
+	font-size: 1.2rem;
 }
 
 .nav-link {
-  padding: 0.5rem 0.8rem;
+	padding: 0.5rem 0.8rem;
 }
 
 .nav.justify-content-start {
-  overflow-x: auto;
-  white-space: nowrap;
+	overflow-x: auto;
+	white-space: nowrap;
 }
 
 body {
-  padding-left: 103px !important;
-  padding-right: 103px !important;
+	padding-left: 103px !important;
+	padding-right: 103px !important;
+}
+
+main {
+	display: flex;
+	margin-top: 10px;
+}
+
+footer {
+	border: 1px solid black;
+	border-radius: 8px;
+	height: 100px;
+	margin-top: 10px;
+	text-align: center;
 }

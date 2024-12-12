@@ -16,6 +16,12 @@ const app = express();
 
 configViewEngine(app);
 
+app.use(
+	express.urlencoded({
+		extended: true,
+	})
+);
+
 // When route starts with "/api", use apiRoutes to handle
 app.use("/error", errorRoute);
 app.use("/api", apiRoutes);
