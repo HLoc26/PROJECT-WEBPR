@@ -11,26 +11,26 @@ img[alt="thumbnail"] {
 }
 
 .status-draft {
-	background-color: #f0f0f0;
-	color: #333;
+	color: #fff;
+	background-color: #343a40;
 }
 
 .status-published {
-	background-color: #d4edda;
-	color: #155724;
+	color: #fff;
+	background-color: #28a745;
 }
 
 .status-archived {
-	background-color: #d6d8db;
-	color: #383d41;
+	color: #fff;
+	background-color: #17a2b8;
 }
 
 .status-waiting {
-	background-color: #ffeeba;
-	color: #856404;
+	color: #212529;
+	background-color: #ffc107;
 }
 
 .status-need-changes {
-	background-color: #f8d7da;
-	color: #721c24;
+	color: #fff;
+	background-color: #dc3545;
 }
