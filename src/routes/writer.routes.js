@@ -32,7 +32,7 @@ router.get("/edit", async function (req, res) {
 			api_key: process.env.TINY_API_KEY,
 		});
 	} catch (error) {
-		console.error("Error fetching article:", err);
+		console.error("Error fetching article:", error);
 		res.status(500).redirect("/error/404");
 	}
 });
