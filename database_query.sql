@@ -93,6 +93,8 @@ CREATE TABLE ArticleTags (
     FOREIGN KEY (tag_id) REFERENCES Tags(tag_id)
 );
 
+ALTER TABLE Users ADD managed_category_id INT;
+ALTER TABLE Users ADD FOREIGN KEY (managed_category_id) REFERENCES Categories(category_id);
 
 -- Phake data
 USE OnlineNewspaper;
