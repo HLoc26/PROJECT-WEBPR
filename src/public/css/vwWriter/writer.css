@@ -3,3 +3,34 @@
 .article-table tbody tr {
 	vertical-align: middle;
 }
+
+img[alt="thumbnail"] {
+	object-fit: cover;
+	width: 100px;
+	height: 75px;
+}
+
+.status-draft {
+	color: #fff;
+	background-color: #343a40;
+}
+
+.status-published {
+	color: #fff;
+	background-color: #28a745;
+}
+
+.status-archived {
+	color: #fff;
+	background-color: #17a2b8;
+}
+
+.status-waiting {
+	color: #212529;
+	background-color: #ffc107;
+}
+
+.status-need-changes {
+	color: #fff;
+	background-color: #dc3545;
+}
