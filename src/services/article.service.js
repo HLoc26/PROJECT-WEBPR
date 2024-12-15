@@ -121,6 +121,36 @@ export default {
               'users.full_name as commenter_name'
           )
           .orderBy('comments.created_at', 'asc');
-  }
+  },
+
+  getPendingArticles(editorId) {
+    return db('articles')
+      .leftJoin('categories', 'articles.category_id', 'categories.category_id')
+      .leftJoin('users', 'articles.editor_id', 'users.user_id')
+      .where('articles.status', 'waiting')
+      .andWhere('users.user_id', editorId)
+      .andWhere(function () {
+        this.where('articles.category_id', function () {
+          this.select('managed_category_id')
+            .from('users')
+            .where('user_id', editorId);
+        }).orWhere('categories.belong_to', function () {
+          this.select('managed_category_id')
+            .from('users')
+            .where('user_id', editorId);
+        });
+      })
+      .select(
+        'articles.article_id',
+        'articles.title',
+        'articles.abstract',
+        'articles.thumbnail',
+        'articles.views',
+        'articles.status',
+        'articles.published_date',
+        'articles.is_premium'
+      )
+      .orderBy('articles.published_date', 'desc');
+  },
 
 };
