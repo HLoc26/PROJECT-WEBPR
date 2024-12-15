@@ -1,8 +1,7 @@
 import "dotenv/config";
 import articleService from "../services/article.service.js";
 import express from "express";
-import path from "path";
-import { write } from "fs";
+import upload from "../config/upload.js";
 const router = express.Router();
 
 router.get("/", async function (req, res) {
@@ -47,8 +46,9 @@ router.get("/edit", async function (req, res) {
 	}
 });
 
-router.post("/new", function (req, res) {
+router.post("/new", upload.single("thumbnail"), function (req, res) {
 	console.log(req.body);
+	console.log(req.file);
 	// const { status, title, summary, content, category } = req.body;
 });
 
