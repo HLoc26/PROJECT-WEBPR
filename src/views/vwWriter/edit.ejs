@@ -1,4 +1,4 @@
-<!-- Setup TINY_API_KEY in .env file -->
+<!-- TinyMCE Script -->
 <script src="https://cdn.tiny.cloud/1/<%= api_key %>/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
 	function img_upload_handler(blobInfo, progress) {
@@ -50,43 +50,96 @@
 		images_upload_handler: img_upload_handler,
 	});
 </script>
+<!-- Hidden input to store content (for fallback or other JS access) -->
+<input type="hidden" id="hiddenContent" value="<%= article?.content || '' %>">
 
-<form action="/writer/new" method="post" class="p-3" enctype="multipart/form-data">
-	<div class="form-group">
-		<label for="status">Status</label>
-		<input type="text" id="status" class="form-control" disabled value="Draft" name="status" />
-	</div>
+<form action="<%= article ? `/writer/edit?id=${article.article_id}` : '/writer/new' %>" method="post" class="p-3" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="status">Status</label>
+    <input type="text" 
+           id="status" 
+           class="form-control" 
+           disabled 
+           value="<%= article?.status || 'Draft' %>" 
+           name="status" />
+  </div>
 
-	<div class="form-group">
-		<label for="txtTitle">Title</label>
-		<input type="text" id="txtTitle" class="form-control" name="title" placeholder="Enter the title" />
-	</div>
+  <div class="form-group">
+    <label for="txtTitle">Title</label>
+    <input type="text" 
+           id="txtTitle" 
+           class="form-control" 
+           name="title" 
+           placeholder="Enter the title"
+           value="<%= article?.title || '' %>" />
+  </div>
 
-	<div class="form-group">
-		<label for="txtSummary">Summary</label>
-		<textarea id="txtSummary" class="form-control" name="summary" rows="3" placeholder="Write a brief summary"></textarea>
-	</div>
+  <div class="form-group">
+    <label for="txtSummary">Summary</label>
+    <textarea id="txtSummary" 
+              class="form-control" 
+              name="summary" 
+              rows="3" 
+              placeholder="Write a brief summary"><%= article?.abstract || '' %></textarea>
+  </div>
 
-	<div class="form-group">
-		<label for="txtContent">Content</label>
-		<textarea id="txtContent" class="form-control" name="content" rows="5" placeholder="Write the content"></textarea>
-	</div>
+  <div class="form-group">
+    <label for="txtContent">Content</label>
+    <textarea id="txtContent" 
+              class="form-control" 
+              name="content" 
+              rows="5" 
+              placeholder="Write the content"><%= article?.content || '' %></textarea>
+  </div>
 
-	<div class="form-group">
-		<label for="thumbnail">Select a thumbnail</label>
-		<input type="file" class="form-control" name="thumbnail" id="thumbnail" accept="image/*" />
-	</div>
+  <div class="form-group">
+    <label for="thumbnail">Select a thumbnail</label>
+    <input type="file" 
+           class="form-control" 
+           name="thumbnail" 
+           id="thumbnail" 
+           accept="image/*" />
+    <% if (article && article.thumbnail) { %>
+      <img src="<%= article.thumbnail %>" 
+           alt="Can't fetch thumbnail" 
+           class="mt-2" 
+           style="max-width: 200px;">
+    <% } %>
+  </div>
 
-	<label for="category">Select category</label>
-	<!-- This should be loaded dynamically -->
-	<select name="category" id="category" class="form-control">
-		<option value="category-1" class="font-weight-bold">Category 1</option>
-		<option value="category-1-1">&nbsp;&nbsp;Category 1-1</option>
-		<option value="category-1-2">&nbsp;&nbsp;Category 1-2</option>
-		<option value="category-2" class="font-weight-bold">Category 2</option>
-		<option value="category-2-1">&nbsp;&nbsp;Category 2-1</option>
-	</select>
+  <label for="category">Select category</label>
+  <select name="category" id="category" class="form-control">
+    <option value="category-1" class="font-weight-bold" 
+            <%= article?.category_id === 'category-1' ? 'selected' : '' %>>Category 1</option>
+    <option value="category-1-1" 
+            <%= article?.category_id === 'category-1-1' ? 'selected' : '' %>>&nbsp;&nbsp;Category 1-1</option>
+    <option value="category-1-2"
+            <%= article?.category_id === 'category-1-2' ? 'selected' : '' %>>&nbsp;&nbsp;Category 1-2</option>
+    <option value="category-2" class="font-weight-bold"
+            <%= article?.category_id === 'category-2' ? 'selected' : '' %>>Category 2</option>
+    <option value="category-2-1"
+            <%= article?.category_id === 'category-2-1' ? 'selected' : '' %>>&nbsp;&nbsp;Category 2-1</option>
+  </select>
 
-	<a href="/writer" role="button" class="btn btn-outline-danger mt-3">Cancel</a>
-	<button type="submit" class="btn btn-outline-success mt-3">Submit</button>
+  <a href="/writer" role="button" class="btn btn-outline-danger mt-3">Cancel</a>
+  <button type="submit" class="btn btn-outline-success mt-3">
+    <%= article ? 'Update' : 'Create' %>
+  </button>
 </form>
+
+<script>
+  // Initialize TinyMCE
+  tinymce.init({
+    selector: '#txtContent',
+    height: 400,
+    plugins: 'advlist autolink lists link image charmap print preview anchor',
+    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+    setup: function (editor) {
+      editor.on('init', function () {
+        // Safely set content inside TinyMCE
+        const content = document.getElementById('hiddenContent').value || '';
+        editor.setContent(content);
+      });
+    }
+  });
+</script>
