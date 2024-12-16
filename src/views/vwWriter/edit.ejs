@@ -99,13 +99,19 @@
            name="thumbnail" 
            id="thumbnail" 
            accept="image/*" />
+    
     <% if (article && article.thumbnail) { %>
-      <img src="<%= article.thumbnail %>" 
-           alt="Can't fetch thumbnail" 
+      <p class="mt-2">Current Thumbnail:</p>
+      <img src="/img/<%= article.thumbnail %>" 
+           alt="Current Thumbnail" 
            class="mt-2" 
            style="max-width: 200px;">
+      <p class="text-muted">Upload a new image to replace the current thumbnail if you want</p>
+    <% } else { %>
+      <p class="text-muted">No thumbnail uploaded yet. You can add one now.</p>
     <% } %>
   </div>
+  
 
   <label for="category">Select category</label>
   <select name="category" id="category" class="form-control">
