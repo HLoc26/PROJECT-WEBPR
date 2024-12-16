@@ -6,4 +6,4 @@ router.get("/", function (req, res) {
 	res.render("vwArticle/Detail");
 });
 
-export default Router;
+export default router;

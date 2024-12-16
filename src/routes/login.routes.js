@@ -26,4 +26,4 @@ router.get("/forget", function(req,res){
 router.get("/OTP", function(req,res){
     res.render("vwLogin/OTP");
 })
-export default Router;
+export default router;
