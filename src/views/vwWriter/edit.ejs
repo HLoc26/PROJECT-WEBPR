@@ -1,4 +1,5 @@
 <!-- TinyMCE Script -->
+
 <script src="https://cdn.tiny.cloud/1/<%= api_key %>/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
 	function img_upload_handler(blobInfo, progress) {
@@ -39,6 +40,7 @@
 
 			xhr.send(formData);
 		});
+
 	}
 
 	tinymce.init({
@@ -48,6 +50,13 @@
 		toolbar: ["undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media"],
 		images_upload_url: "/api/images/upload",
 		images_upload_handler: img_upload_handler,
+    setup: function (editor) {
+      editor.on('init', function () {
+        // Safely set content inside TinyMCE
+        const content = document.getElementById('hiddenContent').value || '';
+        editor.setContent(content);
+      });
+    }
 	});
 </script>
 <!-- Hidden input to store content (for fallback or other JS access) -->
@@ -133,19 +142,4 @@
   </button>
 </form>
 
-<script>
-  // Initialize TinyMCE
-  tinymce.init({
-    selector: '#txtContent',
-    height: 400,
-    plugins: 'advlist autolink lists link image charmap print preview anchor',
-    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-    setup: function (editor) {
-      editor.on('init', function () {
-        // Safely set content inside TinyMCE
-        const content = document.getElementById('hiddenContent').value || '';
-        editor.setContent(content);
-      });
-    }
-  });
-</script>
+
