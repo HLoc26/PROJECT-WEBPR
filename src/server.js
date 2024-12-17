@@ -7,7 +7,6 @@ import defaultRoute from "./routes/default.routes.js";
 import writerRoute from "./routes/writer.routes.js";
 import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
-import errorRoute from "./routes/error.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
 
