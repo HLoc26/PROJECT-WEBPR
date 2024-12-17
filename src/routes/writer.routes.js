@@ -31,7 +31,7 @@ router.get("/edit", async function (req, res) {
 		const article = await articleService.findArticleById(id);
 		if (!article) {
 			// Send a 404 response if the article is not found
-			return res.status(404).redirect("/error/500");
+			return res.status(404).redirect("/404");
 		}
 
 		console.log(article); // Note: fixed the "edit" variable to "article"
@@ -42,7 +42,7 @@ router.get("/edit", async function (req, res) {
 		});
 	} catch (error) {
 		console.error("Error fetching article:", error);
-		res.status(500).redirect("/error/404");
+		res.status(500).redirect("/500");
 	}
 });
 
