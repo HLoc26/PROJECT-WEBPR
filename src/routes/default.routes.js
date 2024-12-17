@@ -3,7 +3,7 @@ import express from "express";
 const router = express.Router();
 
 router.get("/register", function (req, res) {
-	res.render("vwLogin/Register");
+	res.render("vwLogin/Register", { layout: false });
 });
 
 router.post("/register", function (req, res) {
@@ -11,7 +11,7 @@ router.post("/register", function (req, res) {
 });
 
 router.get("/login", function (req, res) {
-	res.render("vwLogin/Login");
+	res.render("vwLogin/Login", { layout: false });
 });
 
 router.post("/login", function (req, res) {
@@ -19,11 +19,11 @@ router.post("/login", function (req, res) {
 });
 
 router.get("/forget", function (req, res) {
-	res.render("vwLogin/Forget");
+	res.render("vwLogin/Forget", { layout: false });
 });
 
 router.get("/OTP", function (req, res) {
-	res.render("vwLogin/OTP");
+	res.render("vwLogin/OTP", { layout: false });
 });
 
 router.get("/404", function (req, res) {
