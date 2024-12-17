@@ -23,7 +23,6 @@ app.use(
 
 // When route starts with "/api", use apiRoutes to handle
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
-app.use("/error", errorRoute);
 app.use("/api", apiRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/writer", writerRoute);
