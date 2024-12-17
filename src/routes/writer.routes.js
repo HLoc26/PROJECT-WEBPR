@@ -32,7 +32,7 @@ router.get("/edit", async function (req, res) {
 	try {
 		const article = await articleService.findArticleById(id);
 		if (!article) {
-			return res.status(404).redirect("/error/500"); // Handle article not found
+			return res.status(404).redirect("/error/404"); // Handle article not found
 		}
 
 		res.render("vwWriter/edit", {
@@ -42,7 +42,7 @@ router.get("/edit", async function (req, res) {
 		});
 	} catch (error) {
 		console.error("Error fetching article:", error);
-		res.status(500).redirect("/error/404"); // Handle errors
+		res.status(500).redirect("/error/500"); // Handle errors
 	}
 });
 
