@@ -3,7 +3,7 @@ import "dotenv/config";
 
 import apiRoutes from "./routes/api.routes.js";
 import articleRoutes from "./routes/article.routes.js"; // Lộc: Sáng import thiếu
-import loginRoute from "./routes/login.routes.js";
+import defaultRoute from "./routes/default.routes.js";
 import writerRoute from "./routes/writer.routes.js";
 import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
@@ -23,10 +23,10 @@ app.use(
 );
 
 // When route starts with "/api", use apiRoutes to handle
+app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
 app.use("/error", errorRoute);
 app.use("/api", apiRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
-app.use("/login", loginRoute);
 app.use("/writer", writerRoute);
 app.use("/homepage", homepageRoute);
 app.use("/list", homepageRoute);
