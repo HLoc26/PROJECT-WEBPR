@@ -1,0 +1,29 @@
+<!-- Size: small -->
+<!-- Image position: left -->
+
+<style>
+	.card-xs .title-text {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-height: 3.5rem;
+	}
+	.card-xs {
+		width: <%= width %>px;
+		max-width: 300px;
+		margin: 0;
+	}
+</style>
+<div class="card-wrapper card-xs pl-3">
+	<% if (typeof show_cat !== 'undefined' && show_cat) { %>
+	<div class="category-text">
+		<a href="/category/<%= article.category_id %>" class="text-decoration-none text-reset"> <%= article.category_name %> </a>
+	</div>
+	<% } %>
+	<a href="/article/<%= article.article_id %>" class="text-reset title-text">
+		<p class="mb-2"><%= article.title %></p>
+	</a>
+</div>

@@ -1,0 +1,45 @@
+<!-- Size: small -->
+<!-- Image position: left -->
+<style>
+	.card-s {
+		width: <%= width %>;
+		max-width: 500px;
+		margin: 0 auto;
+	}
+	.card-s .category-text {
+		color: gray;
+		font-weight: bold;
+	}
+	.card-s .abstract-text,
+	.card-s .title-text {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-height: 3rem;
+	}
+	.card-s .title-text {
+		-webkit-line-clamp: 1;
+		line-clamp: 1;
+	}
+</style>
+
+<div class="card-wrapper card-s d-flex align-items-center">
+	<img src="/img/<%= article.thumbnail %>" alt="<%= article.title %>" class="img-fluid w-50" style="height: 150px; object-fit: cover" />
+	<div class="card-content w-50 pl-3">
+		<% if (typeof show_cat !== 'undefined' && show_cat) { %>
+		<div class="category-text">
+			<a href="/category/<%= article.category_id %>" class="text-decoration-none text-reset"> <%= article.category_name %> </a>
+		</div>
+		<% } %>
+		<a href="/article/<%= article.article_id %>" class="text-reset title-text">
+			<h5 class="mb-2"><%= article.title %></h5>
+		</a>
+		<div class="text-muted small">
+			<p class="abstract-text"><%= article.abstract %></p>
+			<p class="mb-1"><%= new Date(article.published_date).toLocaleDateString('vi-VN') %></p>
+		</div>
+	</div>
+</div>

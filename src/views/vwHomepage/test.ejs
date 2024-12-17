@@ -1,0 +1,51 @@
+<div class="card w-75 m-auto">
+	<div class="card-header"><h1>Size: M</h1></div>
+	<div class="card-body d-flex flex-row">
+		<div class="card mr-3">
+			<div class="card-header"><h3>Show category</h3></div>
+			<div class="card-body"><%- include("../partials/article_m", {article: articles[0], width: 270, show_cat: true}) %></div>
+		</div>
+		<div class="card mr-3">
+			<div class="card-header"><h3>No category</h3></div>
+			<div class="card-body"><%- include("../partials/article_m", {article: articles[0], width: 270, show_cat: false}) %></div>
+		</div>
+	</div>
+</div>
+<div class="card">
+	<div class="card-header"><h1>Size: S; Img position: left</h1></div>
+	<div class="card-body d-flex flex-wrap flex-row" style="gap: 1em">
+		<!-- prettier-ignore -->
+		<%- include("../partials/article_sl", {article: articles[0], width: 400}) %>
+        <%- include("../partials/article_sl", {article: articles[1], width: 400, show_cat: true}) %>
+        <%- include("../partials/article_sl", {article: articles[2], width: 400}) %>
+        <%- include("../partials/article_sl", {article: articles[1], width: 400, show_cat: true}) %>
+        <%- include("../partials/article_sl", {article: articles[1], width: 400}) %>
+        <%- include("../partials/article_sl", {article: articles[1], width: 400, show_cat: true}) %>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header"><h1>Size: S; Img position: right</h1></div>
+	<div class="card-body d-flex flex-wrap flex-row" style="gap: 1em">
+		<!-- prettier-ignore -->
+		<%- include("../partials/article_sr", {article: articles[0], width: 400}) %>
+        <%- include("../partials/article_sr", {article: articles[1], width: 400, show_cat: true}) %>
+        <%- include("../partials/article_sr", {article: articles[2], width: 400}) %>
+        <%- include("../partials/article_sr", {article: articles[0], width: 400, show_cat: true}) %>
+        <%- include("../partials/article_sr", {article: articles[0], width: 400}) %>
+        <%- include("../partials/article_sr", {article: articles[0], width: 400, show_cat: true}) %>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header"><h1>Size: XS</h1></div>
+	<div class="card-body d-flex flex-wrap flex-row" style="gap: 1em">
+		<!-- prettier-ignore -->
+		<%- include("../partials/article_xs", {article: articles[0], width: 300, align: 'left'}) %>
+        <%- include("../partials/article_xs", {article: articles[1], width: 300, align: 'left'}) %>
+        <%- include("../partials/article_xs", {article: articles[2], width: 300, align: 'left'}) %>
+        <%- include("../partials/article_xs", {article: articles[0], width: 300, align: 'right'}) %>
+        <%- include("../partials/article_xs", {article: articles[0], width: 300, align: 'right'}) %>
+        <%- include("../partials/article_xs", {article: articles[0], width: 300, align: 'right'}) %>
+	</div>
+</div>
