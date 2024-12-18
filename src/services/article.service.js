@@ -25,7 +25,9 @@ export default {
 
 	// Lấy các articles by category cho sections cụ thể, bao gồm subcategories
 	findArticlesByCategoryIncludingSubcategories(categoryId) {
-		const mainCategoryArticles = db("articles").where("articles.category_id", categoryId).select("article_id", "title", "abstract", "thumbnail", "views", "status", "published_date", "is_premium");
+		const mainCategoryArticles = db("articles")
+			.where("articles.category_id", categoryId)
+			.select("article_id", "title", "abstract", "thumbnail", "views", "status", "published_date", "is_premium ");
 
 		const subcategoryArticles = db("articles")
 			.whereIn("articles.category_id", function () {
@@ -35,9 +37,46 @@ export default {
 
 		return mainCategoryArticles.union(subcategoryArticles).orderBy("published_date", "desc");
 	},
+	findArticlesWithEditor(categoryId) {
+		// Main query with UNION wrapped in a subquery to allow ordering
+		return db
+			.select(
+				"combined.article_id",
+				"combined.title",
+				"combined.abstract",
+				"combined.thumbnail",
+				"combined.views",
+				"combined.status",
+				"combined.published_date",
+				"combined.is_premium",
+				"combined.category_name",
+				"combined.editor_name"
+			)
+			.from(function () {
+				// Main category articles
+				this.union([
+					db("articles AS a")
+						.leftJoin("categories AS c", "a.category_id", "c.category_id")
+						.leftJoin("users AS u", "a.editor_id", "u.user_id")
+						.where("c.category_id", categoryId)
+						.select("a.article_id", "a.title", "a.abstract", "a.thumbnail", "a.views", "a.status", "a.published_date", "a.is_premium", "c.category_name", "u.full_name AS editor_name"),
+
+					// Subcategory articles
+					db("articles AS a")
+						.leftJoin("categories AS c", "a.category_id", "c.category_id")
+						.leftJoin("users AS u", "a.editor_id", "u.user_id")
+						.whereIn("c.category_id", function () {
+							this.select("category_id").from("categories").where("belong_to", categoryId);
+						})
+						.select("a.article_id", "a.title", "a.abstract", "a.thumbnail", "a.views", "a.status", "a.published_date", "a.is_premium", "c.category_name", "u.full_name AS editor_name"),
+				]).as("combined"); // Combine results as a derived table
+			})
+			.orderBy("combined.published_date", "desc");
+	},
 
 	//Lấy articles thêm tag cho editor
 	findArticlesWithTag(categoryId) {
+		// Query for main category articles
 		const mainCategoryArticles = db("articles")
 			.where("articles.category_id", categoryId)
 			.select(
@@ -55,9 +94,11 @@ export default {
 			.leftJoin("tags", "articletags.tag_id", "tags.tag_id")
 			.groupBy("articles.article_id");
 
+		// Query for subcategory articles (using belong_to relationship)
 		const subcategoryArticles = db("articles")
 			.whereIn("articles.category_id", function () {
-				this.select("category_id").from("categories").where("category_id", categoryId);
+				// Fetch category ids where belong_to matches the given categoryId
+				this.select("category_id").from("categories").where("belong_to", categoryId);
 			})
 			.select(
 				"articles.article_id",
@@ -74,6 +115,7 @@ export default {
 			.leftJoin("tags", "articletags.tag_id", "tags.tag_id")
 			.groupBy("articles.article_id");
 
+		// Combine the results using UNION and sort by published date
 		return mainCategoryArticles.union(subcategoryArticles).orderBy("articles.published_date", "desc");
 	},
 
