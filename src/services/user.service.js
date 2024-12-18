@@ -18,15 +18,7 @@ export default {
 	},
 
 	addReader(entity) {
-		return db("users").insert({
-			username: entity.username,
-			password: entity.password,
-			email: entity.email,
-			full_name: entity.full_name,
-			dob: entity.dob,
-			user_role: "reader",
-			is_active: true,
-		});
+		return db("users").insert(entity);
 	},
 
     registerPremium(id, subscriptionExpiredDate) {
