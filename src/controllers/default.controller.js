@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import userService from "../services/user.service.js";
 import { validationResult } from "express-validator";
 import "dotenv/config";
+
 export default {
 	async postRegister(req, res) {
 		const errors = validationResult(req);
@@ -43,17 +44,55 @@ export default {
 	},
 
 	async postLogin(req, res) {
-		// console.log(req.body); // Debug
-		// Find user by email or by username (user can use both to login)
-		// Check if user is using email
-		// Else, user is using username
-		// Get user using email or username
-		// Check match password
-		// If password match, set req.session.user is the current user
-		// Get user's role, then redirect to their homepage
-		// User is reader: redirect to /homepage
-		// User is writer: redirect to /writer
-		// User is editor: redirect to /editor
-		// Catch error, redirect to /404 or /500
-	},
+        try {
+            const { email, password } = req.body;
+
+            // Find user by email or username
+            const userByEmail = await userService.findByEmail(email);
+            const userByUsername = await userService.findByUsername(email);
+            const user = userByEmail || userByUsername;
+
+            if (!user) {
+                return res.status(400).render("vwLogin/Login", {
+                    layout: "layouts/login.main.ejs",
+                    errors: [{ msg: "Email/Username không tồn tại" }]
+                });
+            }
+
+            // Verify password
+            const match = await bcrypt.compare(password, user.password);
+            if (!match) {
+                return res.status(400).render("vwLogin/Login", {
+                    layout: "layouts/login.main.ejs",
+                    errors: [{ msg: "Mật khẩu không đúng" }]
+                });
+            }
+
+            // Set session
+            req.session.user = {
+                user_id: user.user_id,
+                username: user.username,
+                role: user.user_role
+            };
+
+            // Redirect based on role
+            switch (user.user_role) {
+                case "reader":
+                    res.redirect("/homepage");
+                    break;
+                case "writer":
+                    res.redirect("/writer");
+                    break;
+                case "editor":
+                    res.redirect("/editor");
+                    break;
+                default:
+                    res.redirect("/homepage");
+            }
+
+        } catch (error) {
+            console.error("Login error:", error);
+            res.status(500).redirect("/500");
+        }
+    },
 };
