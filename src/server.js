@@ -9,6 +9,7 @@ import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
+import setCategoriesMiddleware from "./middlewares/category.middleware.js"; // Huy
 
 // Initialize express app
 const app = express();
