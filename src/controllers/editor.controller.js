@@ -20,9 +20,17 @@ export default {
 						...article,
 						tags: tags.map((tag) => tag.tag_name).join(", "), // Format tags as comma-separated string
 					};
-
-					if (article.status === "pending") {
+					if (article.status === "draft") {
+						//khong add logic vi la draft
+					}
+					if (article.status === "need changes") {
 						pendingArticles.push(articleWithTags);
+					}
+					if (article.status === "archived") {
+						pendingArticles.push(articleWithTags);
+					}
+					if (article.status === "waiting") {
+						publishedArticles.push(articleWithTags);
 					} else if (article.status === "published") {
 						publishedArticles.push(articleWithTags);
 					}
