@@ -1,12 +1,28 @@
 import bcrypt from "bcrypt";
 import userService from "../services/user.service.js";
+import { validationResult } from "express-validator";
 import "dotenv/config";
 export default {
 	async postRegister(req, res) {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).render("vwLogin/register", { layout: "layouts/login.main.ejs", errors: errors.array() });
+		}
 		// console.log(req.body); // Debug
 		// Assume that password and password2 is the same
 		const { username, email, password, password2, fullname, dob } = req.body;
 		const pwd = await bcrypt.hash(password, +process.env.PASSWORD_ROUND);
+
+		// Check xem username và email có tồn tại không
+		const usedUsername = false; // Placeholder
+		const usedEmail = false; // Placeholder
+
+		if (usedUsername) {
+			return res.status(400).render("vwLogin/register", { layout: "layouts/login.main.ejs", errors: [{ msg: "Username is used" }] });
+		}
+		if (usedEmail) {
+			return res.status(400).render("vwLogin/register", { layout: "layouts/login.main.ejs", errors: [{ msg: "Email is used" }] });
+		}
 
 		const entity = {
 			username: username,
