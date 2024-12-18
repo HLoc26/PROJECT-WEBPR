@@ -1,47 +1,110 @@
 <style>
-  /* Custom Styling for the Tables */
-  .tab-content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-  }
-  .tab-content th, .tab-content td {
-      padding: 12px;
-      text-align: center;
-      border: 1px solid #ddd;
-  }
-  .tab-content th {
-      background-color: #f4f4f4;
-      font-weight: bold;
-  }
-  .tab-content img {
-      border-radius: 8px;
-  }
-  .tab-content tbody tr:hover {
-      background-color: #f9f9f9;
-  }
-  /* Active Tab Styling */
-  .tabs a {
-      text-decoration: none;
-      color: #007bff;
-      padding: 8px 16px;
-      display: inline-block;
-      border-bottom: 2px solid transparent;
-  }
-  .tabs a.active {
-      font-weight: bold;
-      border-bottom: 2px solid #007bff;
-  }
-  .tabs ul {
-      list-style: none;
-      display: flex;
-      gap: 10px;
-      padding: 0;
-  }
-  .tabs {
-      margin-bottom: 20px;
-  }
+/* Custom Styling for the Tables */
+.tab-content {
+    display: none; /* Hide all tabs by default */
+}
+.tab-content.active {
+    display: block; /* Show active tab */
+}
+/* General Table Styling */
+.tab-content table {
+    width: 100%; /* Ensure the table spans its container */
+    border-collapse: collapse; /* Merge borders for a clean look */
+    margin: 20px 0; /* Add space above and below */
+    background-color: #fff; /* Set a background color for visibility */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+/* Header Styling */
+.tab-content th {
+    padding: 12px;
+    text-align: left; /* Align text to the left for better readability */
+    border: 1px solid #ddd;
+    background-color: #f4f4f4; /* Light background for header */
+    font-weight: bold;
+    color: #333; /* Darker text color for contrast */
+}
+
+/* Data Cell Styling */
+.tab-content td {
+    padding: 12px;
+    text-align: left; /* Align text to the left */
+    border: 1px solid #ddd;
+    color: #555; /* Slightly lighter text color */
+}
+
+/* Image Styling */
+.tab-content img {
+    max-width: 100px; /* Restrict maximum width */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Add rounded corners */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+/* Row Hover Effect */
+.tab-content tbody tr:hover {
+    background-color: #f9f9f9; /* Light grey hover effect */
+    cursor: pointer; /* Show pointer to indicate row interactivity */
+}
+
+/* No Data Row Styling */
+.tab-content tbody tr td[colspan] {
+    text-align: center; /* Center-align the text */
+    color: #999; /* Light text color for emphasis */
+    font-style: italic; /* Italicize the message */
+}
+
+/* Tabs Navigation */
+.tabs ul {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    padding: 0;
+    margin-bottom: 20px; /* Space below tabs */
+    border-bottom: 2px solid #ddd; /* Bottom border for visual separation */
+}
+
+.tabs a {
+    text-decoration: none;
+    color: #007bff; /* Primary link color */
+    padding: 8px 16px;
+    display: inline-block;
+    border-bottom: 2px solid transparent; /* Default state */
+    transition: all 0.3s ease; /* Smooth hover effect */
+}
+
+.tabs a.active {
+    font-weight: bold;
+    border-bottom: 2px solid #007bff; /* Active tab highlight */
+    color: #0056b3; /* Slightly darker color for active tab */
+}
+
+.tab-content img {
+    width: 800px; /* Set the width to at least 300px */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+    object-fit: cover; /* Ensure the image fits within the dimensions */
+}
+
+/* Zoom-In on Hover */
+.tab-content img:hover {
+    transform: scale(1.2); /* Zoom in by 20% on hover */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tab-content table {
+        display: block; /* Enable horizontal scrolling */
+        overflow-x: auto;
+    }
+    .tab-content th, .tab-content td {
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+}
 </style>
+
+
 <!-- Tabs Navigation -->
 <div class="tabs">
   <ul>
@@ -133,6 +196,7 @@
     </tbody>    
   </table>
 </div>
+
 <!-- Tab Switching Script -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -143,11 +207,11 @@
           tab.addEventListener('click', (e) => {
               e.preventDefault();
 
-              // Remove active class
+              // Remove active class from all tabs and content
               tabs.forEach(t => t.classList.remove('active'));
               contents.forEach(c => c.classList.remove('active'));
 
-              // Add active class to clicked tab and corresponding content
+              // Add active class to the clicked tab and corresponding content
               tab.classList.add('active');
               const target = document.querySelector(tab.getAttribute('href'));
               target.classList.add('active');
