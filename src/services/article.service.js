@@ -36,7 +36,9 @@ export default {
           'views', 
           'status', 
           'published_date', 
-          'is_premium'
+          'is_premium',
+          
+
         );
   
       const subcategoryArticles = db('articles')
@@ -58,7 +60,50 @@ export default {
   
       return mainCategoryArticles.union(subcategoryArticles).orderBy('published_date', 'desc');
     },
-  
+
+    //Lấy articles thêm tag cho editor
+    findArticlesWithTag(categoryId) {
+      const mainCategoryArticles = db('articles')
+        .where('articles.category_id', categoryId)
+        .select(
+          'articles.article_id', 
+          'articles.title', 
+          'articles.abstract', 
+          'articles.thumbnail', 
+          'articles.views', 
+          'articles.status', 
+          'articles.published_date', 
+          'articles.is_premium',
+          db.raw('GROUP_CONCAT(tags.tag_name ORDER BY tags.tag_name SEPARATOR ", ") as tags')
+        )
+        .leftJoin('articletags', 'articles.article_id', 'articletags.article_id')
+        .leftJoin('tags', 'articletags.tag_id', 'tags.tag_id')
+        .groupBy('articles.article_id');
+    
+      const subcategoryArticles = db('articles')
+        .whereIn('articles.category_id', function () {
+          this.select('category_id')
+            .from('categories')
+            .where('belong_to', categoryId);
+        })
+        .select(
+          'articles.article_id', 
+          'articles.title', 
+          'articles.abstract', 
+          'articles.thumbnail', 
+          'articles.views', 
+          'articles.status', 
+          'articles.published_date', 
+          'articles.is_premium',
+          db.raw('GROUP_CONCAT(tags.tag_name ORDER BY tags.tag_name SEPARATOR ", ") as tags')
+        )
+        .leftJoin('articletags', 'articles.article_id', 'articletags.article_id')
+        .leftJoin('tags', 'articletags.tag_id', 'tags.tag_id')
+        .groupBy('articles.article_id');
+    
+      return mainCategoryArticles.union(subcategoryArticles).orderBy('articles.published_date', 'desc');
+    },
+
     // Lấy một article cụ thể by ID
     findArticleById(id) {
       return db('articles')
