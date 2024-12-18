@@ -11,6 +11,8 @@ import editorRoute from "./routes/editor.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
 
+import { setUser } from "./middlewares/user.mdw.js";
+
 // Initialize express app
 const app = express();
 
@@ -34,6 +36,8 @@ app.use(
 		},
 	})
 );
+
+app.use(setUser);
 
 // When route starts with "/api", use apiRoutes to handle
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
