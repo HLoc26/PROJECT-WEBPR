@@ -47,3 +47,5 @@ async function updatePasswords() {
 }
 
 updatePasswords();
+
+// run with node scripts/update_passwords.js
