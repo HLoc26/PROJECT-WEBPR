@@ -64,29 +64,31 @@
           </tr>
       </thead>
       <tbody>
-          <% if (pendingArticles.length > 0) { %>
-              <% pendingArticles.forEach(article => { %>
-                  <tr>
+        <% if (pendingArticles.length > 0) { %>
+            <% pendingArticles.forEach(article => { %>
+                <tr>
                     <td>
-                      <% if (article.thumbnail) { %>
-                          <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" width="50" />
-                      <% } else { %>
-                          <img src="/img/default-thumbnail.png" alt="Default Thumbnail" width="50" />
-                      <% } %>
-                  </td>
-                      <td><%= article.title %></td>
-                      <td><%= article.category_name || 'N/A' %></td>
-                      <td><%= article.tags || 'Không có nhãn dán' %></td>
-                      <td><%= article.published_date || 'Chưa có' %></td>
-                      <td>--</td> <!-- Placeholder since "pending" doesn't have an editor -->
-                  </tr>
-              <% }) %>
-          <% } else { %>
-              <tr>
-                  <td colspan="6">Không có bài viết chờ duyệt.</td>
-              </tr>
-          <% } %>
-      </tbody>
+                        <% if (article.thumbnail) { %>
+                            <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" width="50" />
+                        <% } else { %>
+                            <img src="/img/default-thumbnail.png" alt="Default Thumbnail" width="50" />
+                        <% } %>
+                    </td>
+                    <td>
+                        <a href="#" title="<%= article.title %>"><%= article.title %></a>
+                    </td>
+                    <td><%= article.category_name || 'N/A' %></td>
+                    <td><%= article.tags || 'Không có nhãn dán' %></td>
+                    <td><%= article.published_date || 'Chưa có' %></td>
+                    <td>--</td>
+                </tr>
+            <% }) %>
+        <% } else { %>
+            <tr>
+                <td colspan="6">Không có bài viết chờ duyệt.</td>
+            </tr>
+        <% } %>
+    </tbody>    
   </table>
 </div>
 
