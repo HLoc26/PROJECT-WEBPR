@@ -12,9 +12,7 @@ router.get("/login", function (req, res) {
 	res.render("vwLogin/Login", { layout: "layouts/login.main.ejs" });
 });
 
-router.post("/login", function (req, res) {
-	// code to handle the form data
-});
+router.post("/login", defaultController.postLogin);
 
 router.get("/forget", function (req, res) {
 	res.render("vwLogin/Forget", { layout: "layouts/login.main.ejs" });
