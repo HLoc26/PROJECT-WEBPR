@@ -1,5 +1,13 @@
 <form action="" method="post" class="d-flex flex-column" autocomplete="on">
 	<h1>Register</h1>
+	<!-- Hiển thị lỗi -->
+	<% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+	<ul class="text-danger">
+		<% errors.forEach(error => { %>
+		<li><%= error.msg %></li>
+		<% }) %>
+	</ul>
+	<% } %>
 	<!-- Please do not change id and name attribute of the input  -->
 	<label for="username">Username</label>
 	<input type="text" id="username" name="username" />
