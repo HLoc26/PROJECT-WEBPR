@@ -1,79 +1,83 @@
 <div class="d-flex w-100">
-	<div class="article-detail w-75 mr-5">
-		<div class="article-card card">
-			<!-- Chứa title, ngày đăng, lượt xem -->
-			<div class="card-header">
-				<h1>Article Title: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque, eaque.</h1>
-				<p class="text-muted">
-					<span class="mr-2"> <i class="bi bi-calendar-event-fill"></i> 01/01/2024 </span>
-					<span> <i class="bi bi-eye-fill"></i> 12 view </span>
-				</p>
-			</div>
-			<!-- Content -->
-			<div class="card-body d-flex flex-column">
-				<p>
-					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi ad eos, sed explicabo dolorum iure amet consequatur corrupti ipsa rerum culpa architecto ullam debitis commodi
-					omnis magni, reprehenderit, enim rem.
-				</p>
-				<p>
-					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente facilis nam aspernatur eaque. Consequatur incidunt quisquam ullam necessitatibus fuga veniam, sapiente, optio
-					accusantium nesciunt labore quibusdam dolorum a minima consectetur? Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi labore officia doloremque asperiores odio earum,
-					pariatur vero in. Culpa ipsam possimus consequatur ratione, consequuntur autem mollitia sed quis excepturi delectus aliquam. At, officia vero? Incidunt maiores, a neque eaque
-					beatae ducimus ullam ex totam consequuntur deleniti sit possimus laborum, expedita cupiditate mollitia ratione sed. Ullam saepe, quibusdam nostrum, aut recusandae in, fugiat iste
-					voluptatum accusamus eius consequuntur nulla dolores natus asperiores molestiae adipisci aliquam nesciunt ipsa velit suscipit sint dignissimos quidem. Optio a dicta nisi molestias
-					consectetur odio provident unde magnam quibusdam iusto! Ad ipsa natus ut eaque voluptas? Excepturi.
-				</p>
-				<img src="https://placehold.co/600x400/000000/FFFFFF/png" alt="" class="m-auto" title="This is a placeholder" />
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia dolores rerum debitis amet atque sint est enim dicta non commodi fuga, consectetur magni. Molestias, accusamus
-					aspernatur iure hic ullam ex. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus, eaque. Atque ut, repellat culpa libero nihil hic facere veniam inventore velit
-					voluptates cum in quibusdam distinctio nemo est harum accusantium eos recusandae iste odio! Eligendi odit totam sunt alias nemo, iste itaque ad asperiores iure dolor, corrupti
-					ullam quidem est suscipit. Tempore, suscipit voluptatem voluptates culpa molestiae itaque praesentium voluptatibus voluptate alias veritatis dolorem, ab blanditiis. Sunt voluptate,
-					sequi in, amet, maiores repellendus nam totam sit ipsam debitis ab! Amet, quis nisi? Tempore in id minima porro ipsam fugiat, maxime corporis iusto natus mollitia, deleniti,
-					dolores dignissimos officia alias harum.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur, quas sed numquam porro, exercitationem labore quibusdam natus, incidunt tempore optio asperiores fugit eveniet
-					mollitia adipisci culpa deserunt aspernatur! Ex, autem!
-				</p>
-				<!-- Author -->
-				<div class="align-self-end">
-					<strong> Author: abc </strong>
-				</div>
-			</div>
-			<!-- Tags -->
-			<div class="card-footer d-flex flex-row flex-wrap justify-content-lg-start">
-				<span class="bg-secondary p-2 mr-1">
-					<a href="#" class="text-light text-decoration-none">Tag 1</a>
-				</span>
-				<span class="bg-secondary p-2 mr-1">
-					<a href="#" class="text-light text-decoration-none">Tag 2</a>
-				</span>
-				<span class="bg-secondary p-2 mr-1">
-					<a href="#" class="text-light text-decoration-none">Tag 3</a>
-				</span>
-			</div>
-		</div>
-		<!-- Comments -->
-		<div class="comment-section card mt-5">
-			<div class="card-header">
-				<h2>Comments</h2>
-			</div>
-			<div class="card-body">Comments</div>
-		</div>
-	</div>
-	<!-- Side articles -->
-	<div class="side-content w-25">
-		<div class="card">
-			<div class="card-header"><h3>Related articles</h3></div>
-			<div class="card-body">
-				<% for (let i = 0; i < 3; i++) { %>
-				<div class="side-article d-flex flex-row mb-2">
-					<img src="https://placehold.co/150x75" alt="" class="mr-2" />
-					<p class="font-weight-bold">Side article # <%= i %> Lorem ipsum dolor sit amet.</p>
-				</div>
-				<% } %>
-			</div>
-		</div>
-	</div>
+    <div class="article-detail w-75 mr-5">
+        <div class="article-card card">
+            <div class="card-header">
+                <h1><%= article.title %></h1>
+                <p class="text-muted">
+                    <span class="mr-2"> 
+                        <i class="bi bi-calendar-event-fill"></i> 
+                        <%= new Date(article.published_date).toLocaleDateString('vi-VN') %> 
+                    </span>
+                    <span> 
+                        <i class="bi bi-eye-fill"></i> 
+                        <%= article.views %> views 
+                    </span>
+                </p>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <p class="lead"><%= article.abstract %></p>
+                <%- article.content %>
+                <div class="align-self-end">
+                    <strong>Author: <%= article.writer_name %></strong>
+                </div>
+            </div>
+            <div class="card-footer d-flex flex-row flex-wrap justify-content-lg-start">
+                <% if (article.tags && article.tags.length > 0) { %>
+                    <% article.tags.forEach(tag => { %>
+                    <span class="bg-secondary p-2 mr-1">
+                        <a href="/tag/<%= tag.tag_id %>" class="text-light text-decoration-none">
+                            <%= tag.tag_name %>
+                        </a>
+                    </span>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="comment-section card mt-5">
+            <div class="card-header">
+                <h2>Comments (<%= comments.length %>)</h2>
+            </div>
+            <div class="card-body">
+                <% if (comments.length > 0) { %>
+                    <% comments.forEach(comment => { %>
+                    <div class="comment mb-3">
+                        <strong><%= comment.commenter_name %></strong>
+                        <small class="text-muted">
+                            <%= new Date(comment.created_at).toLocaleDateString('vi-VN') %>
+                        </small>
+                        <p><%= comment.content %></p>
+                    </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>No comments yet.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-content w-25">
+        <div class="card">
+            <div class="card-header"><h3>Related articles</h3></div>
+            <div class="card-body">
+                <% if (relatedArticles.length > 0) { %>
+                    <% relatedArticles.forEach(related => { %>
+                    <div class="side-article d-flex flex-row mb-2">
+                        <img src="/img/<%= related.thumbnail %>" 
+                             alt="<%= related.title %>" 
+                             class="mr-2" 
+                             style="width:150px; height:75px; object-fit:cover"
+                        />
+                        <a href="/article/<%= related.article_id %>" 
+                           class="text-reset font-weight-bold">
+                            <%= related.title %>
+                        </a>
+                    </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>No related articles found.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
 </div>
