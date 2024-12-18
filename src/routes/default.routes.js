@@ -1,14 +1,12 @@
 import express from "express";
-
+import defaultController from "../controllers/default.controller.js";
 const router = express.Router();
 
 router.get("/register", function (req, res) {
 	res.render("vwLogin/Register", { layout: "layouts/login.main.ejs" });
 });
 
-router.post("/register", function (req, res) {
-	// code to handle the form data
-});
+router.post("/register", defaultController.postRegister);
 
 router.get("/login", function (req, res) {
 	res.render("vwLogin/Login", { layout: "layouts/login.main.ejs" });
