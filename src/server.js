@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import "dotenv/config";
 
 import apiRoutes from "./routes/api.routes.js";
@@ -18,6 +19,19 @@ configViewEngine(app);
 app.use(
 	express.urlencoded({
 		extended: true,
+	})
+);
+
+// Dùng session để lưu trạng thái đăng nhập
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET,
+		resave: false,
+		saveUninitialized: true,
+		cookie: {
+			maxAge: 1000 * 60 * 60, // 1 h
+			secure: false,
+		},
 	})
 );
 
