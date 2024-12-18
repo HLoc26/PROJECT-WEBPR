@@ -47,7 +47,7 @@ export default {
         try {
             const { email, password } = req.body;
 
-            // Find user by email or username
+            // Find user by email or username with complete user information
             const userByEmail = await userService.findByEmail(email);
             const userByUsername = await userService.findByUsername(email);
             const user = userByEmail || userByUsername;
@@ -68,11 +68,17 @@ export default {
                 });
             }
 
-            // Set session
+            // Set session with complete user information
             req.session.user = {
                 user_id: user.user_id,
                 username: user.username,
-                role: user.user_role
+                email: user.email,
+                full_name: user.full_name,
+                role: user.user_role,
+                is_active: user.is_active,
+                subscription_expired_date: user.subscription_expired_date,
+                premium: user.premium,
+                managed_category_id: user.managed_category_id
             };
 
             // Redirect based on role
@@ -85,6 +91,12 @@ export default {
                     break;
                 case "editor":
                     res.redirect("/editor");
+                    break;
+                case "admin":
+                    res.render("vwAdmin/Dashboard", { 
+                        layout: "layouts/admin.main.ejs",
+                        user: req.session.user 
+                    });
                     break;
                 default:
                     res.redirect("/homepage");

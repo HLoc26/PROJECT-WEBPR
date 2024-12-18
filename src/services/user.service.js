@@ -38,6 +38,43 @@ export default {
             editor_id: editorId, // Gán bài viết cho Editor duyệt
             status: 'waiting'   // Cập nhật trạng thái bài viết thành "waiting"
           });
-      }      
+      },
 
+    findByEmail(email) {
+        return db("users")
+            .where("email", email)
+            .first()
+            .select(
+                "user_id",
+                "username",
+                "password",
+                "email",
+                "full_name",
+                "dob",
+                "user_role",
+                "is_active",
+                "subscription_expired_date",
+                "premium",
+                "managed_category_id"
+            );
+    },
+
+    findByUsername(username) {
+        return db("users")
+            .where("username", username)
+            .first()
+            .select(
+                "user_id",
+                "username", 
+                "password",
+                "email",
+                "full_name",
+                "dob",
+                "user_role",
+                "is_active",
+                "subscription_expired_date",
+                "premium",
+                "managed_category_id"
+            );
+    }      
 };
