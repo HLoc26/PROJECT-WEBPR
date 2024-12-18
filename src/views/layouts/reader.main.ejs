@@ -22,12 +22,15 @@
 				<a class="navbar-brand" href="#">L O G O</a>
 			</div>
 			<div class="nav-center form-inline d-lg-flex">
-				<select class="custom-select mr-2">
-					<option selected>Danh mục</option>
-					<option value="1">Danh mục 1</option>
-					<option value="2">Danh mục 2</option>
-					<option value="3">Danh mục 3</option>
+				<select class="custom-select mr-2" name="category_id">
+					<option selected>Chuyên mục</option>
+					<% categories.forEach(function(category) { %> <% if (category.belong_to===null) { %>
+					<option value="<%= category.category_id %>" style="font-weight: bold"><%= category.category_name %></option>
+					<% categories.forEach(function(subCategory) { %> <% if (subCategory.belong_to===category.category_id) { %>
+					<option value="<%= subCategory.category_id %>"><%= subCategory.category_name %></option>
+					<% } %> <% }) %> <% } %> <% }) %>
 				</select>
+
 				<form class="form-inline">
 					<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
