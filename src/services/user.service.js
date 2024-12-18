@@ -17,6 +17,38 @@ export default {
             );
 	},
 
+  findUserByEmail(email) {
+    return db('Users')
+        .where({ email })
+        .first()
+        .select(
+            'user_id', 
+            'username', 
+            'email', 
+            'full_name', 
+            'dob', 
+            'subscription_expired_date', 
+            'premium', 
+            'is_active'
+        );
+  },
+
+findUserByUsername(username) {
+    return db('Users')
+        .where({ username })
+        .first()
+        .select(
+            'user_id', 
+            'username', 
+            'email', 
+            'full_name', 
+            'dob', 
+            'subscription_expired_date', 
+            'premium', 
+            'is_active'
+        );
+  },
+
 	addReader(entity) {
 		return db("users").insert({
 			username: entity.username,
