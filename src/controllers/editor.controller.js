@@ -13,6 +13,7 @@ export default {
 			const pendingArticles = [];
 			const publishedArticles = [];
 
+			// Use Promise.all with map instead of forEach
 			await Promise.all(
 				articles.map(async (article) => {
 					const tags = await TagService.findTagsByArticleId(article.article_id);
@@ -20,19 +21,23 @@ export default {
 						...article,
 						tags: tags.map((tag) => tag.tag_name).join(", "), // Format tags as comma-separated string
 					};
-					if (article.status === "draft") {
-						//khong add logic vi la draft
-					}
-					if (article.status === "need changes") {
-						pendingArticles.push(articleWithTags);
-					}
-					if (article.status === "archived") {
-						pendingArticles.push(articleWithTags);
-					}
-					if (article.status === "waiting") {
-						publishedArticles.push(articleWithTags);
-					} else if (article.status === "published") {
-						publishedArticles.push(articleWithTags);
+
+					switch (article.status) {
+						case "draft":
+							// Skip drafts
+							break;
+						case "need changes":
+						case "archived":
+							pendingArticles.push(articleWithTags);
+							break;
+						case "waiting":
+							pendingArticles.push(articleWithTags); // Waiting articles should be pending
+							break;
+						case "published":
+							publishedArticles.push(articleWithTags);
+							break;
+						default:
+							console.warn(`Unknown article status: ${article.status}`);
 					}
 				})
 			);
