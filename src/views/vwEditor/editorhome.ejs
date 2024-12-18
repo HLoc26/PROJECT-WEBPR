@@ -1,11 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>This is editor's main page</h1>
-</body>
-</html>
+<!-- Tabs Navigation -->
+<div class="tabs">
+    <ul>
+      <li><a href="#pending" class="active">Chờ duyệt</a></li>
+      <li><a href="#published">Đã đăng</a></li>
+    </ul>
+  </div>
+  
+  <!-- Tab Content: Chờ duyệt -->
+  <div id="pending" class="tab-content active">
+    <table>
+      <thead>
+        <tr>
+          <th>Ảnh đại diện</th>
+          <th>Tiêu đề</th>
+          <th>Chuyên mục</th>
+          <th>Nhãn dán</th>
+          <th>Ngày đăng</th>
+          <th>Người duyệt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% pendingArticles.forEach(article => { %>
+          <tr>
+            <td>
+              <img src="<%= article.thumbnail %>" alt="Thumbnail" width="50" />
+            </td>
+            <td><%= article.title %></td>
+            <td><%= article.category_name %></td>
+            <td>tag 1, tag 2, tag 3</td>
+            <td><%= article.published_date %></td>
+            <td>--</td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Tab Content: Đã đăng -->
+  <div id="published" class="tab-content">
+    <table>
+      <thead>
+        <tr>
+          <th>Ảnh đại diện</th>
+          <th>Tiêu đề</th>
+          <th>Chuyên mục</th>
+          <th>Nhãn dán</th>
+          <th>Ngày đăng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% publishedArticles.forEach(article => { %>
+          <tr>
+            <td>
+              <img src="<%= article.thumbnail %>" alt="Thumbnail" width="50" />
+            </td>
+            <td><%= article.title %></td>
+            <td><%= article.category_name %></td>
+            <td>tag 1, tag 2, tag 3</td>
+            <td><%= article.published_date %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Tab Switching Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs = document.querySelectorAll('.tabs a');
+      const contents = document.querySelectorAll('.tab-content');
+  
+      tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          e.preventDefault();
+  
+          // Remove active class
+          tabs.forEach(t => t.classList.remove('active'));
+          contents.forEach(c => c.classList.remove('active'));
+  
+          // Add active class to clicked tab and corresponding content
+          tab.classList.add('active');
+          const target = document.querySelector(tab.getAttribute('href'));
+          target.classList.add('active');
+        });
+      });
+    });
+  </script>
+  
