@@ -17,7 +17,7 @@ export default {
 
 			// Thêm các chuyên mục con (subcategories) vào từng chuyên mục cha
 			const categoriesWithSubcategories = await Promise.all(
-				parentCategories.map(async (category) => {
+				parentCategories.map(async function (category) {
 					const subcategories = await CategoryService.findSubcategories(category.category_id);
 					return {
 						...category,
