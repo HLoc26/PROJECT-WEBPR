@@ -20,87 +20,82 @@
     <div class="tab-content mt-3">
         <!-- Tab Content: Chờ duyệt -->
         <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
-            <table class="table table-bordered table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>Ảnh đại diện</th>
-                        <th>Tiêu đề</th>
-                        <th>Chuyên mục</th>
-                        <th>Nhãn dán</th>
-                        <th>Ngày đăng</th>
-                        <th>Người duyệt</th>
-                    </tr>
+            <table class="table table-striped table-bordered align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 15%;">Ảnh đại diện</th>
+                    <th style="width: 30%;">Tiêu đề</th>
+                    <th style="width: 15%;">Chuyên mục</th>
+                    <th style="width: 15%;">Nhãn dán</th>
+                    <th style="width: 10%;">Ngày đăng</th>
+                    <th style="width: 20%;">Người duyệt</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <% if (pendingArticles.length > 0) { %>
-                        <% pendingArticles.forEach(article => { %>
-                            <tr>
-                                <td>
-                                    <% if (article.thumbnail) { %>
-                                        <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail" style="width: 50px; height: auto;">
-                                    <% } else { %>
-                                        <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail" style="width: 50px; height: auto;">
-                                    <% } %>
-                                </td>
-                                <td>
-                                    <a href="#" title="<%= article.title %>"><%= article.title %></a>
-                                </td>
-                                <td><%= article.category_name || 'N/A' %></td>
-                                <td><%= article.tags || 'Không có nhãn dán' %></td>
-                                <td><%= article.published_date ? new Date(article.published_date).toLocaleDateString("vi-VN") : "Chưa có" %></td>
-
-                                <td>--</td>
-                            </tr>
-                        <% }) %>
-                    <% } else { %>
-                        <tr>
-                            <td colspan="6" class="text-center text-muted">Không có bài viết chờ duyệt.</td>
-                        </tr>
-                    <% } %>
+                  <% if (pendingArticles.length > 0) { %>
+                    <% pendingArticles.forEach(article => { %>
+                      <tr>
+                        <td>
+                          <% if (article.thumbnail) { %>
+                            <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto;" />
+                          <% } else { %>
+                            <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto;" />
+                          <% } %>
+                        </td>
+                        <td><%= article.title %></td>
+                        <td><%= article.category_name || 'N/A' %></td>
+                        <td><%= article.tags || 'Không có nhãn dán' %></td>
+                        <td><%= article.published_date ? article.published_date.split('T')[0] : 'Chưa có' %></td>
+                        <td style="width: 20%;"><%= article.editor_name || '--' %></td>
+                    </tr>
+                    <% }) %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="6" class="text-center">Không có bài viết chờ duyệt.</td>
+                    </tr>
+                  <% } %>
                 </tbody>
-            </table>
+              </table>
         </div>
 
         <!-- Tab Content: Đã đăng -->
         <div class="tab-pane fade" id="published" role="tabpanel" aria-labelledby="published-tab">
-            <table class="table table-bordered table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>Ảnh đại diện</th>
-                        <th>Tiêu đề</th>
-                        <th>Chuyên mục</th>
-                        <th>Nhãn dán</th>
-                        <th>Ngày đăng</th>
-                        <th>Người duyệt</th>
-                    </tr>
+            <table class="table table-striped table-bordered align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 15%;">Ảnh đại diện</th>
+                    <th style="width: 30%;">Tiêu đề</th>
+                    <th style="width: 15%;">Chuyên mục</th>
+                    <th style="width: 15%;">Nhãn dán</th>
+                    <th style="width: 10%;">Ngày đăng</th>
+                    <th style="width: 20%;">Người duyệt</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <% if (publishedArticles.length > 0) { %>
-                        <% publishedArticles.forEach(article => { %>
-                            <tr>
-                                <td>
-                                    <% if (article.thumbnail) { %>
-                                        <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail" style="width: 50px; height: auto;">
-                                    <% } else { %>
-                                        <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail" style="width: 50px; height: auto;">
-                                    <% } %>
-                                </td>
-                                <td>
-                                    <a href="#" title="<%= article.title %>"><%= article.title %></a>
-                                </td>
-                                <td><%= article.category_name || 'N/A' %></td>
-                                <td><%= article.tags || 'Không có nhãn dán' %></td>
-                                <td><%= article.published_date ? new Date(article.published_date).toLocaleDateString("vi-VN") : "Chưa có" %></td>
-                                <td><%= article.editor_name || '--' %></td>
-                            </tr>
-                        <% }) %>
-                    <% } else { %>
-                        <tr>
-                            <td colspan="6" class="text-center text-muted">Không có bài viết đã đăng.</td>
-                        </tr>
-                    <% } %>
+                  <% if (publishedArticles.length > 0) { %>
+                    <% publishedArticles.forEach(article => { %>
+                      <tr>
+                        <td>
+                          <% if (article.thumbnail) { %>
+                            <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto;" />
+                          <% } else { %>
+                            <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto;" />
+                          <% } %>
+                        </td>
+                        <td><%= article.title %></td>
+                        <td><%= article.category_name || 'N/A' %></td>
+                        <td><%= article.tags || 'Không có nhãn dán' %></td>
+                        <td><%= article.published_date ? new Date(article.published_date).toISOString().split('T')[0] : 'Chưa có' %></td>
+                        <td style="width: 20%;"><%= article.editor_name || '--' %></td>
+                    </tr>
+                    <% }) %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="6" class="text-center">Không có bài viết chờ duyệt.</td>
+                    </tr>
+                  <% } %>
                 </tbody>
-            </table>
+              </table>
         </div>
     </div>
 </div>
