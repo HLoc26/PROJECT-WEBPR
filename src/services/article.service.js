@@ -25,13 +25,14 @@ export default {
 
 	// Lấy các articles by category cho sections cụ thể, bao gồm subcategories
 	findArticlesByCategoryIncludingSubcategories(categoryId) {
-		const mainCategoryArticles = db("articles").where("articles.category_id", categoryId).select("article_id", "title", "abstract", "thumbnail", "views", "status", "published_date", "is_premium");
+		const mainCategoryArticles = db("articles").where("articles.category_id", categoryId).select("articles.*");
 
 		const subcategoryArticles = db("articles")
 			.whereIn("articles.category_id", function () {
 				this.select("category_id").from("categories").where("belong_to", categoryId);
 			})
-			.select("article_id", "title", "abstract", "thumbnail", "views", "status", "published_date", "is_premium");
+			.select("articles.*")
+			.join("users", "articles.editor_id", "users.user_id");
 
 		return mainCategoryArticles.union(subcategoryArticles).orderBy("published_date", "desc");
 	},
