@@ -5,7 +5,7 @@ export default async function setCategories(req, res, next) {
 		const response = await apiClient.get("/api/categories");
 		// Set biến categories để sử dụng trong các view
 		res.locals.categories = response.data;
-		console.log(response.data);
+		// console.log(response.data);
 		next();
 	} catch (error) {
 		console.error(error);
