@@ -30,7 +30,6 @@ export default {
 
 			// Render the homepage with all required data
 			res.render("vwHomepage/Homepage", {
-				categories: categories,
 				categoryArticles: categoryArticles,
 				newestArticles: top10Newest,
 				mostViewedArticles: top10MostViewed,

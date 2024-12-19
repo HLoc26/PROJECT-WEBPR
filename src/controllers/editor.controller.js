@@ -7,7 +7,7 @@ export default {
 			const { id: categoryId } = req.query; // Retrieve category ID from query parameters
 
 			// Fetch articles by category (including subcategories) using ArticleService
-			const articles = await ArticleService.findArticlesWithEditor(categoryId);
+			const articles = await ArticleService.findArticlesByCategoryIncludingSubcategories(categoryId);
 
 			// Separate articles into pending and published based on status
 			const pendingArticles = [];
@@ -41,7 +41,7 @@ export default {
 			);
 
 			// Render view with the separated articles
-			res.render("vwEditor/editorhome", {
+			res.render("vwEditor/home", {
 				pendingArticles,
 				publishedArticles,
 			});
