@@ -13,7 +13,7 @@
 	<div class="tab-content mt-3">
 		<!-- Tab Content: Chờ duyệt -->
 		<div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
-			<table class="table table-striped table-bordered align-middle">
+			<table class="table table-striped table-bordered align-middle fs-5">
 				<thead>
 					<tr>
 						<th style="width: 15%">Ảnh đại diện</th>
@@ -27,11 +27,11 @@
 				<tbody>
 					<% if (pendingArticles.length > 0) { %> <% pendingArticles.forEach(article => { %>
 					<tr>
-						<td>
+						<td class="text-center">
 							<% if (article.thumbnail) { %>
-							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
+							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 150px; height: auto;" />
 							<% } else { %>
-							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
+							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 150px; height: auto;" />
 							<% } %>
 						</td>
 						<td>
@@ -54,7 +54,7 @@
 
 		<!-- Tab Content: Đã đăng -->
 		<div class="tab-pane fade" id="published" role="tabpanel" aria-labelledby="published-tab">
-			<table class="table table-striped table-bordered align-middle">
+			<table class="table table-striped table-bordered align-middle fs-5">
 				<thead>
 					<tr>
 						<th style="width: 15%">Ảnh đại diện</th>
