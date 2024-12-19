@@ -189,5 +189,30 @@ export default {
       });
     });
   },
+
+  async findRelatedArticles(articleId, categoryId, limit = 5) {
+    return db('articles')
+        .where({
+            'articles.status': 'published',
+            'articles.category_id': categoryId
+        })
+        .whereNot('articles.article_id', articleId)
+        .select(
+            'articles.article_id',
+            'articles.title',
+            'articles.abstract', 
+            'articles.thumbnail',
+            'articles.views',
+            'articles.published_date',
+            'articles.is_premium',
+            'articles.category_id',
+            'categories.category_name',
+            'writers.full_name as writer_name'
+        )
+        .leftJoin('categories', 'articles.category_id', 'categories.category_id')
+        .leftJoin('users as writers', 'articles.writer_id', 'writers.user_id')
+        .orderBy('articles.published_date', 'desc')
+        .limit(limit);
+  },
   
 };
