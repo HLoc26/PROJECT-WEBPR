@@ -1,221 +1,107 @@
-<style>
-/* Custom Styling for the Tables */
-.tab-content {
-    display: none; /* Hide all tabs by default */
-}
-.tab-content.active {
-    display: block; /* Show active tab */
-}
-/* General Table Styling */
-.tab-content table {
-    width: 100%; /* Ensure the table spans its container */
-    border-collapse: collapse; /* Merge borders for a clean look */
-    margin: 20px 0; /* Add space above and below */
-    background-color: #fff; /* Set a background color for visibility */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-}
-
-/* Header Styling */
-.tab-content th {
-    padding: 12px;
-    text-align: left; /* Align text to the left for better readability */
-    border: 1px solid #ddd;
-    background-color: #f4f4f4; /* Light background for header */
-    font-weight: bold;
-    color: #333; /* Darker text color for contrast */
-}
-
-/* Data Cell Styling */
-.tab-content td {
-    padding: 12px;
-    text-align: left; /* Align text to the left */
-    border: 1px solid #ddd;
-    color: #555; /* Slightly lighter text color */
-}
-
-/* Image Styling */
-.tab-content img {
-    max-width: 100px; /* Restrict maximum width */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 8px; /* Add rounded corners */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
-}
-
-/* Row Hover Effect */
-.tab-content tbody tr:hover {
-    background-color: #f9f9f9; /* Light grey hover effect */
-    cursor: pointer; /* Show pointer to indicate row interactivity */
-}
-
-/* No Data Row Styling */
-.tab-content tbody tr td[colspan] {
-    text-align: center; /* Center-align the text */
-    color: #999; /* Light text color for emphasis */
-    font-style: italic; /* Italicize the message */
-}
-
-/* Tabs Navigation */
-.tabs ul {
-    list-style: none;
-    display: flex;
-    gap: 10px;
-    padding: 0;
-    margin-bottom: 20px; /* Space below tabs */
-    border-bottom: 2px solid #ddd; /* Bottom border for visual separation */
-}
-
-.tabs a {
-    text-decoration: none;
-    color: #007bff; /* Primary link color */
-    padding: 8px 16px;
-    display: inline-block;
-    border-bottom: 2px solid transparent; /* Default state */
-    transition: all 0.3s ease; /* Smooth hover effect */
-}
-
-.tabs a.active {
-    font-weight: bold;
-    border-bottom: 2px solid #007bff; /* Active tab highlight */
-    color: #0056b3; /* Slightly darker color for active tab */
-}
-
-.tab-content img {
-    width: 800px; /* Set the width to at least 300px */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
-    object-fit: cover; /* Ensure the image fits within the dimensions */
-}
-
-/* Zoom-In on Hover */
-.tab-content img:hover {
-    transform: scale(1.2); /* Zoom in by 20% on hover */
-    cursor: pointer; /* Change cursor to pointer on hover */
-}
-/* Responsive Design */
-@media (max-width: 768px) {
-    .tab-content table {
-        display: block; /* Enable horizontal scrolling */
-        overflow-x: auto;
-    }
-    .tab-content th, .tab-content td {
-        white-space: nowrap; /* Prevent text wrapping */
-    }
-}
-</style>
 
 
-<!-- Tabs Navigation -->
-<div class="tabs">
-  <ul>
-      <li><a href="#pending" class="active">Chờ duyệt</a></li>
-      <li><a href="#published">Đã đăng</a></li>
-  </ul>
+
+<div class="container my-4">
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs" id="editorTabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true">
+                Chờ duyệt
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="published-tab" data-bs-toggle="tab" data-bs-target="#published" type="button" role="tab" aria-controls="published" aria-selected="false">
+                Đã đăng
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content mt-3">
+        <!-- Tab Content: Chờ duyệt -->
+        <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Ảnh đại diện</th>
+                        <th>Tiêu đề</th>
+                        <th>Chuyên mục</th>
+                        <th>Nhãn dán</th>
+                        <th>Ngày đăng</th>
+                        <th>Người duyệt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (pendingArticles.length > 0) { %>
+                        <% pendingArticles.forEach(article => { %>
+                            <tr>
+                                <td>
+                                    <% if (article.thumbnail) { %>
+                                        <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail" style="width: 50px; height: auto;">
+                                    <% } else { %>
+                                        <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail" style="width: 50px; height: auto;">
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <a href="#" title="<%= article.title %>"><%= article.title %></a>
+                                </td>
+                                <td><%= article.category_name || 'N/A' %></td>
+                                <td><%= article.tags || 'Không có nhãn dán' %></td>
+                                <td><%= article.published_date || 'Chưa có' %></td>
+                                <td>--</td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">Không có bài viết chờ duyệt.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tab Content: Đã đăng -->
+        <div class="tab-pane fade" id="published" role="tabpanel" aria-labelledby="published-tab">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Ảnh đại diện</th>
+                        <th>Tiêu đề</th>
+                        <th>Chuyên mục</th>
+                        <th>Nhãn dán</th>
+                        <th>Ngày đăng</th>
+                        <th>Người duyệt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (publishedArticles.length > 0) { %>
+                        <% publishedArticles.forEach(article => { %>
+                            <tr>
+                                <td>
+                                    <% if (article.thumbnail) { %>
+                                        <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail" style="width: 50px; height: auto;">
+                                    <% } else { %>
+                                        <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail" style="width: 50px; height: auto;">
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <a href="#" title="<%= article.title %>"><%= article.title %></a>
+                                </td>
+                                <td><%= article.category_name || 'N/A' %></td>
+                                <td><%= article.tags || 'Không có nhãn dán' %></td>
+                                <td><%= article.published_date || 'Chưa có' %></td>
+                                <td><%= article.editor_name || '--' %></td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">Không có bài viết đã đăng.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<!-- Tab Content: Chờ duyệt -->
-<div id="pending" class="tab-content active">
-  <table>
-      <thead>
-          <tr>
-              <th>Ảnh đại diện</th>
-              <th>Tiêu đề</th>
-              <th>Chuyên mục</th>
-              <th>Nhãn dán</th>
-              <th>Ngày đăng</th>
-              <th>Người duyệt</th>
-          </tr>
-      </thead>
-      <tbody>
-        <% if (pendingArticles.length > 0) { %>
-            <% pendingArticles.forEach(article => { %>
-                <tr>
-                    <td>
-                        <% if (article.thumbnail) { %>
-                            <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" width="50" />
-                        <% } else { %>
-                            <img src="/img/default-thumbnail.png" alt="Default Thumbnail" width="50" />
-                        <% } %>
-                    </td>
-                    <td>
-                        <a href="#" title="<%= article.title %>"><%= article.title %></a>
-                    </td>
-                    <td><%= article.category_name || 'N/A' %></td>
-                    <td><%= article.tags || 'Không có nhãn dán' %></td>
-                    <td><%= article.published_date || 'Chưa có' %></td>
-                    <td>--</td>
-                </tr>
-            <% }) %>
-        <% } else { %>
-            <tr>
-                <td colspan="6">Không có bài viết chờ duyệt.</td>
-            </tr>
-        <% } %>
-    </tbody>    
-  </table>
-</div>
-
-<!-- Tab Content: Đã đăng -->
-<div id="published" class="tab-content">
-  <table>
-      <thead>
-          <tr>
-              <th>Ảnh đại diện</th>
-              <th>Tiêu đề</th>
-              <th>Chuyên mục</th>
-              <th>Nhãn dán</th>
-              <th>Ngày đăng</th>
-              <th>Người duyệt</th>
-          </tr>
-      </thead>
-      <tbody>
-        <% if (publishedArticles.length > 0) { %>
-            <% publishedArticles.forEach(article => { %>
-                <tr>
-                    <td>
-                        <% if (article.thumbnail) { %>
-                            <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" width="50" />
-                        <% } else { %>
-                            <img src="/img/default-thumbnail.png" alt="Default Thumbnail" width="50" />
-                        <% } %>
-                    </td>
-                    <td>
-                        <a href="#" title="<%= article.title %>"><%= article.title %></a>
-                    </td>
-                    <td><%= article.category_name || 'N/A' %></td>
-                    <td><%= article.tags || 'Không có nhãn dán' %></td>
-                    <td><%= article.published_date || 'Chưa có' %></td>
-                    <td><%= article.editor_name || '--' %></td>
-                </tr>
-            <% }) %>
-        <% } else { %>
-            <tr>
-                <td colspan="6">Không có bài viết đã đăng.</td>
-            </tr>
-        <% } %>
-    </tbody>    
-  </table>
-</div>
-
-<!-- Tab Switching Script -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-      const tabs = document.querySelectorAll('.tabs a');
-      const contents = document.querySelectorAll('.tab-content');
-
-      tabs.forEach(tab => {
-          tab.addEventListener('click', (e) => {
-              e.preventDefault();
-
-              // Remove active class from all tabs and content
-              tabs.forEach(t => t.classList.remove('active'));
-              contents.forEach(c => c.classList.remove('active'));
-
-              // Add active class to the clicked tab and corresponding content
-              tab.classList.add('active');
-              const target = document.querySelector(tab.getAttribute('href'));
-              target.classList.add('active');
-          });
-      });
-  });
-</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
