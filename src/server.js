@@ -10,7 +10,7 @@ import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
-import setCategoriesMiddleware from "./middlewares/category.middleware.js"; // Huy
+import setCategoriesMiddleware from "./middlewares/category.mdw.js"; // Huy
 
 import { setUser } from "./middlewares/user.mdw.js";
 
