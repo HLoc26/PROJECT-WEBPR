@@ -1,1 +1,88 @@
-<h1>hello this is edit page</h1>
+<script src="https://cdn.tiny.cloud/1/<%= api_key %>/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+	tinymce.init({
+		selector: "textarea#txtContent",
+		plugins: "paste image link autolink lists table media",
+		menubar: false,
+		toolbar: ["undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media"],
+		images_upload_url: "/api/images/upload",
+		images_upload_handler: img_upload_handler,
+    setup: function (editor) {
+      editor.on('init', function () {
+        // Safely set content inside TinyMCE
+        const content = document.getElementById('hiddenContent').value || '';
+        editor.setContent(content);
+      });
+    }
+	});
+</script>
+<div class="container">
+    <!-- Article Header -->
+    <div class="my-4">
+        <p class="text-muted"><%= article.category_name %></p> <!-- Dynamic category -->
+        <h1 class="fw-bold"><%= article.title %></h1> <!-- Dynamic article title -->
+        <p class="text-muted"><%= article?.published_date.toLocaleDateString("vi-VN") %></p> <!-- Dynamic date -->
+    </div>
+
+    <!-- Image Placeholder -->
+    <div class="mb-4 text-center">
+        <% if (article.image_url) { %>
+            <img src="<%= article.image_url %>" alt="Article Image" class="img-fluid rounded"> <!-- Dynamic image URL -->
+        <% } else { %>
+            <img src="https://via.placeholder.com/800x400" alt="Placeholder Image" class="img-fluid rounded"> <!-- Fallback image -->
+        <% } %>
+    </div>
+
+    <!-- Abstract -->
+    <div class="mb-4">
+        <p class="fst-italic">(abstract) <%= article.abstract %></p> <!-- Dynamic abstract -->
+    </div>
+
+    <!-- Tags -->
+     <!-- Need to meet with be to fix - Sang-->
+    <div class="mb-4">
+        <% if (article.tags) { %>
+            <% article.tags.split(",").forEach(tag => { %> <!-- Assuming tags are stored as a comma-separated string -->
+                <span class="badge bg-secondary me-1"><%= tag.trim() %></span>
+            <% }) %>
+        <% } %>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-center gap-3">
+        <button type="button" class="btn btn-outline-danger" onclick="handleReject('<%= article.article_id %>')">Từ chối</button>
+        <button type="button" class="btn btn-success" onclick="handleApprove('<%= article.article_id %>')">Duyệt bài</button>
+    </div>
+</div>
+
+<script>
+    // Handle Reject Button
+    function handleReject(articleId) {
+        if (confirm('Are you sure you want to reject this article?')) {
+            fetch(`/articles/reject/${articleId}`, { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Article rejected successfully.');
+                        window.location.reload();
+                    } else {
+                        alert('Failed to reject the article.');
+                    }
+                });
+        }
+    }
+
+    // Handle Approve Button
+    function handleApprove(articleId) {
+        if (confirm('Are you sure you want to approve this article?')) {
+            fetch(`/articles/approve/${articleId}`, { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Article approved successfully.');
+                        window.location.reload();
+                    } else {
+                        alert('Failed to approve the article.');
+                    }
+                });
+        }
+    }
+</script>
