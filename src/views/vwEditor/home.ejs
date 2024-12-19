@@ -68,11 +68,11 @@
 				<tbody>
 					<% if (publishedArticles.length > 0) { %> <% publishedArticles.forEach(article => { %>
 					<tr>
-						<td>
+						<td class="text-center">
 							<% if (article.thumbnail) { %>
-							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
+							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 150px; height: auto;" />
 							<% } else { %>
-							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
+							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 150px; height: auto;" />
 							<% } %>
 						</td>
 						<td>
