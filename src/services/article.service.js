@@ -25,16 +25,15 @@ export default {
 
 	// Lấy các articles by category cho sections cụ thể, bao gồm subcategories
 	findArticlesByCategoryIncludingSubcategories(categoryId) {
-		const mainCategoryArticles = db("articles").where("articles.category_id", categoryId).select("articles.*");
-
-		const subcategoryArticles = db("articles")
-			.whereIn("articles.category_id", function () {
-				this.select("category_id").from("categories").where("belong_to", categoryId);
+		return db("articles")
+			.select("articles.*", "users.user_id as editor_id", "users.username as editor_name")
+			.leftJoin("users", "articles.editor_id", "users.user_id")
+			.where(function () {
+				this.where("articles.category_id", categoryId).orWhereIn("articles.category_id", function () {
+					this.select("category_id").from("categories").where("belong_to", categoryId);
+				});
 			})
-			.select("articles.*")
-			.join("users", "articles.editor_id", "users.user_id");
-
-		return mainCategoryArticles.union(subcategoryArticles).orderBy("published_date", "desc");
+			.orderBy("published_date", "desc");
 	},
 
 	//Lấy articles thêm tag cho editor
@@ -166,59 +165,59 @@ export default {
 			});
 		});
 	},
-    async findRelatedArticles(articleId, categoryId, limit = 5) {
-    // First get all tags for the current article
-    const articleTags = await db('articletags')
-        .where('article_id', articleId)
-        .pluck('tag_id');
+	async findRelatedArticles(articleId, categoryId, limit = 5) {
+		// First get all tags for the current article
+		const articleTags = await db("articletags").where("article_id", articleId).pluck("tag_id");
 
-    // Get articles from same category and articles with same tags
-    const relatedByCategoryAndTags = await db('articles')
-        .distinct('articles.article_id', 
-                 'articles.title',
-                 'articles.abstract', 
-                 'articles.thumbnail',
-                 'articles.views',
-                 'articles.published_date',
-                 'articles.is_premium',
-                 'articles.category_id',
-                 'categories.category_name',
-                 'writers.full_name as writer_name')
-        .where('articles.status', 'published')
-        .whereNot('articles.article_id', articleId)
-        .where(function() {
-            // Articles from same category
-            this.where('articles.category_id', categoryId)
-            // OR articles with same tags
-            .orWhereExists(function() {
-                this.select('*')
-                    .from('articletags')
-                    .whereRaw('articletags.article_id = articles.article_id')
-                    .whereIn('articletags.tag_id', articleTags);
-            });
-        })
-        .leftJoin('categories', 'articles.category_id', 'categories.category_id')
-        .leftJoin('users as writers', 'articles.writer_id', 'writers.user_id')
-        // Prioritize articles that match both category and tags
-        .orderByRaw(`
+		// Get articles from same category and articles with same tags
+		const relatedByCategoryAndTags = await db("articles")
+			.distinct(
+				"articles.article_id",
+				"articles.title",
+				"articles.abstract",
+				"articles.thumbnail",
+				"articles.views",
+				"articles.published_date",
+				"articles.is_premium",
+				"articles.category_id",
+				"categories.category_name",
+				"writers.full_name as writer_name"
+			)
+			.where("articles.status", "published")
+			.whereNot("articles.article_id", articleId)
+			.where(function () {
+				// Articles from same category
+				this.where("articles.category_id", categoryId)
+					// OR articles with same tags
+					.orWhereExists(function () {
+						this.select("*").from("articletags").whereRaw("articletags.article_id = articles.article_id").whereIn("articletags.tag_id", articleTags);
+					});
+			})
+			.leftJoin("categories", "articles.category_id", "categories.category_id")
+			.leftJoin("users as writers", "articles.writer_id", "writers.user_id")
+			// Prioritize articles that match both category and tags
+			.orderByRaw(
+				`
             CASE 
                 WHEN articles.category_id = ? AND EXISTS (
                     SELECT 1 FROM articletags 
                     WHERE articletags.article_id = articles.article_id 
-                    AND articletags.tag_id IN (${articleTags.join(',')})
+                    AND articletags.tag_id IN (${articleTags.join(",")})
                 ) THEN 1
                 WHEN articles.category_id = ? THEN 2
                 ELSE 3
             END
-        `, [categoryId, categoryId])
-        .orderBy('articles.published_date', 'desc')
-        .limit(limit);
+        `,
+				[categoryId, categoryId]
+			)
+			.orderBy("articles.published_date", "desc")
+			.limit(limit);
 
-        /// Articles matching both category and tags appear first
-        /// Articles matching only category appear second
-        /// Articles matching only tags appear last
-        /// Within each group, newer articles appear first
+		/// Articles matching both category and tags appear first
+		/// Articles matching only category appear second
+		/// Articles matching only tags appear last
+		/// Within each group, newer articles appear first
 
-    return relatedByCategoryAndTags;
-  },
+		return relatedByCategoryAndTags;
+	},
 };
