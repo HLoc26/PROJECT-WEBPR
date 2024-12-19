@@ -52,7 +52,7 @@ export default {
     );
   },
 
-  findUserByUsername(username, role = null) {
+  findByUsername(username, role = null) {
     let query = db('users')
         .leftJoin('categories', 'users.managed_category_id', 'categories.category_id')
         .where({ username });
@@ -76,6 +76,10 @@ export default {
         'categories.category_name as managed_category_name'
     );
   },
+  // TODO: In register, use addUser instead of this
+  addReader(entity) {
+		return db("users").insert(entity);
+	},
 
 	addUser(entity, role) {
     return db("users").insert({
@@ -106,6 +110,24 @@ export default {
             editor_id: editorId, // Gán bài viết cho Editor duyệt
             status: 'waiting'   // Cập nhật trạng thái bài viết thành "waiting"
           });
-      }      
+      },
 
+    findByEmail(email) {
+        return db("users")
+            .where("email", email)
+            .first()
+            .select(
+                "user_id",
+                "username",
+                "password",
+                "email",
+                "full_name",
+                "dob",
+                "user_role",
+                "is_active",
+                "subscription_expired_date",
+                "premium",
+                "managed_category_id"
+            );
+    },   
 };
