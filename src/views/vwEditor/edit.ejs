@@ -27,7 +27,7 @@
     <!-- Image Placeholder -->
     <div class="mb-4 text-center">
         <% if (article.image_url) { %>
-            <img src="<%= article.image_url %>" alt="Article Image" class="img-fluid rounded"> <!-- Dynamic image URL -->
+            <img src="/img/<%= article.thumbnail %>" alt="Article Image" class="img-fluid rounded"> <!-- Dynamic image URL -->
         <% } else { %>
             <img src="https://via.placeholder.com/800x400" alt="Placeholder Image" class="img-fluid rounded"> <!-- Fallback image -->
         <% } %>
