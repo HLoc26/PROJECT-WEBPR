@@ -60,6 +60,14 @@
 				<p class="text-center text-muted">Hoặc</p>
 
 				<!-- Form đăng ký -->
+        	<!-- Hiển thị lỗi -->
+          <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+          <ul class="text-danger">
+            <% errors.forEach(error => { %>
+            <li><%= error.msg %></li>
+            <% }) %>
+          </ul>
+          <% } %>
 				<form action="" method="POST" autocomplete="on">
 					<div class="form-group">
 						<input type="text" class="form-control" id="displayName" name="displayName" placeholder="Tên hiển thị" required autocomplete="name" />
