@@ -36,48 +36,27 @@
 		<div class="row border-bottom">
 			<!-- Latest Articles -->
 			<div class="col-md-6 border-right">
-				<div class="text-center mb-4">
-					<h3>BÀI VIẾT MỚI NHẤT</h3>
-				</div>
-				<% newestArticles.forEach(article => { %>
-				<div class="d-flex align-items-center border-bottom p-3 mb-3">
-					<div class="flex-grow-1">
-						<a href="/article/<%= article.article_id %>" class="text-reset">
-							<h5 class="mb-2"><%= article.title %></h5>
-						</a>
-						<div class="text-muted small">
-							<p><%= new Date(article.published_date).toLocaleDateString('vi-VN') %> |</p>
-							<a href="/category/<%= article.category_id %>" class="text-decoration-none text-reset"><%= article.category_name %></a>
-						</div>
+				<div class="card">
+					<div class="text-center mb-4 card-header">
+						<h3>BÀI VIẾT MỚI NHẤT</h3>
 					</div>
-					<img src="/img/<%= article.thumbnail %>" alt="<%= article.title %>" class="img-fluid" style="width: 200px; height: 150px; object-fit: cover" />
+					<ul class="card-body">
+						<% newestArticles.forEach(article => { %>
+						<li class="list-unstyled mb-3"><%- include("../partials/article_sr", {article: article, width: 400}) %></li>
+						<% }) %>
+					</ul>
 				</div>
-				<% }) %>
 			</div>
 
 			<!-- Top Categories -->
 			<div class="col-md-6">
 				<% Object.entries(categoryArticles).forEach(([categoryName, articles]) => { %>
-				<div class="card my-2">
+				<div class="card mb-2">
 					<div class="card-header">
 						<a href="/category/<%= articles[0]?.category_id %>" class="h5 text-decoration-none text-reset"> <%= categoryName.toUpperCase() %> </a>
 						<!-- You can add subcategories here if needed -->
 					</div>
-					<div class="card-body">
-						<% if (articles[0]) { %>
-						<div class="d-flex align-items-center">
-							<img src="/img/<%= articles[0].thumbnail %>" alt="<%= articles[0].title %>" class="img-fluid" style="width: 200px; height: 150px; object-fit: cover" />
-							<div class="flex-grow-1 pl-4">
-								<a href="/article/<%= articles[0].article_id %>" class="text-reset">
-									<h5 class="mb-2"><%= articles[0].title %></h5>
-								</a>
-								<div class="text-muted small">
-									<p><%= new Date(articles[0].published_date).toLocaleDateString('vi-VN') %> |</p>
-								</div>
-							</div>
-						</div>
-						<% } %>
-					</div>
+					<div class="card-body"><% if (articles[0]) { %> <%- include("../partials/article_sl", {article: articles[0], width: 400}) %> <% } %></div>
 				</div>
 				<% }) %>
 			</div>
@@ -85,27 +64,12 @@
 	</div>
 
 	<!-- Row 3: Most Viewed Articles -->
-	<div class="container my-5">
-		<h2 class="text-center mb-4">BÀI VIẾT ĐƯỢC XEM NHIỀU NHẤT</h2>
-		<% mostViewedArticles.forEach((article, index) => { %> <% if (index % 5 === 0) { %>
-		<div class="row d-flex justify-content-between mb-4">
-			<% } %>
-			<div class="col card-wrapper">
-				<div class="card h-100 border-0">
-					<img src="/img/<%= article.thumbnail %>" class="card-img-top" alt="<%= article.title %>" style="width: 210px; height: 150px; object-fit: cover" />
-					<div class="card-body p-0">
-						<a href="/article/<%= article.article_id %>" class="text-reset">
-							<h5 class="card-title"><%= article.title %></h5>
-						</a>
-						<div class="text-muted small">
-							<p><%= new Date(article.published_date).toLocaleDateString('vi-VN') %> |</p>
-							<a href="/category/<%= article.category_id %>" class="text-decoration-none text-reset"><%= article.category_name %></a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<% if ((index + 1) % 5 === 0 || index === mostViewedArticles.length - 1) { %>
+	<div class="card my-5">
+		<div class="card-header">
+			<h2 class="text-center">BÀI VIẾT ĐƯỢC XEM NHIỀU NHẤT</h2>
 		</div>
-		<% } %> <% }) %>
+		<div class="card-body d-flex flex-wrap" style="gap: 1em">
+			<% mostViewedArticles.forEach((article, index) => { %> <%- include("../partials/article_m", {article: article, width: 260, show_cat: false}) %> <% }) %>
+		</div>
 	</div>
 </div>
