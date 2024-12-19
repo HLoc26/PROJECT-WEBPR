@@ -35,7 +35,7 @@
 							<% } %>
 						</td>
 						<td>
-							<a href="#" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
 						</td>
 
 						<td><%= article.category_name || 'N/A' %></td>
@@ -76,7 +76,7 @@
 							<% } %>
 						</td>
 						<td>
-							<a href="#" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
 						</td>
 
 						<td><%= article.category_name || 'N/A' %></td>
