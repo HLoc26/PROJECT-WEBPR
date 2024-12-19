@@ -10,6 +10,7 @@ import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
+import setCategoriesMiddleware from "./middlewares/category.middleware.js"; // Huy
 
 import { setUser } from "./middlewares/user.mdw.js";
 
@@ -23,6 +24,10 @@ app.use(
 		extended: true,
 	})
 );
+app.use("/api", apiRoutes);
+
+// Huy: Middleware to set category variable
+app.use(setCategoriesMiddleware);
 
 // Dùng session để lưu trạng thái đăng nhập
 app.use(
@@ -41,7 +46,6 @@ app.use(setUser);
 
 // When route starts with "/api", use apiRoutes to handle
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
-app.use("/api", apiRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/writer", writerRoute);
 app.use("/homepage", homepageRoute);
