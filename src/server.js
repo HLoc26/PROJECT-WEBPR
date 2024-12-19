@@ -21,13 +21,13 @@ app.use(
 		extended: true,
 	})
 );
+app.use("/api", apiRoutes);
 
 // Huy: Middleware to set category variable
 app.use(setCategoriesMiddleware);
 
 // When route starts with "/api", use apiRoutes to handle
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
-app.use("/api", apiRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/writer", writerRoute);
 app.use("/homepage", homepageRoute);
