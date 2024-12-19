@@ -28,8 +28,6 @@ export default {
 							break;
 						case "need changes":
 						case "archived":
-							pendingArticles.push(articleWithTags);
-							break;
 						case "waiting":
 							pendingArticles.push(articleWithTags); // Waiting articles should be pending
 							break;
