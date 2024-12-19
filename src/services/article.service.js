@@ -62,47 +62,47 @@ export default {
     },
 
     //Lấy articles thêm tag cho editor
-    findArticlesWithTag(categoryId) {
-      const mainCategoryArticles = db('articles')
-        .where('articles.category_id', categoryId)
-        .select(
-          'articles.article_id', 
-          'articles.title', 
-          'articles.abstract', 
-          'articles.thumbnail', 
-          'articles.views', 
-          'articles.status', 
-          'articles.published_date', 
-          'articles.is_premium',
-          db.raw('GROUP_CONCAT(tags.tag_name ORDER BY tags.tag_name SEPARATOR ", ") as tags')
-        )
-        .leftJoin('articletags', 'articles.article_id', 'articletags.article_id')
-        .leftJoin('tags', 'articletags.tag_id', 'tags.tag_id')
-        .groupBy('articles.article_id');
+    // findArticlesWithTag(categoryId) {
+    //   const mainCategoryArticles = db('articles')
+    //     .where('articles.category_id', categoryId)
+    //     .select(
+    //       'articles.article_id', 
+    //       'articles.title', 
+    //       'articles.abstract', 
+    //       'articles.thumbnail', 
+    //       'articles.views', 
+    //       'articles.status', 
+    //       'articles.published_date', 
+    //       'articles.is_premium',
+    //       db.raw('GROUP_CONCAT(tags.tag_name ORDER BY tags.tag_name SEPARATOR ", ") as tags')
+    //     )
+    //     .leftJoin('articletags', 'articles.article_id', 'articletags.article_id')
+    //     .leftJoin('tags', 'articletags.tag_id', 'tags.tag_id')
+    //     .groupBy('articles.article_id');
     
-      const subcategoryArticles = db('articles')
-        .whereIn('articles.category_id', function () {
-          this.select('category_id')
-            .from('categories')
-            .where('belong_to', categoryId);
-        })
-        .select(
-          'articles.article_id', 
-          'articles.title', 
-          'articles.abstract', 
-          'articles.thumbnail', 
-          'articles.views', 
-          'articles.status', 
-          'articles.published_date', 
-          'articles.is_premium',
-          db.raw('GROUP_CONCAT(tags.tag_name ORDER BY tags.tag_name SEPARATOR ", ") as tags')
-        )
-        .leftJoin('articletags', 'articles.article_id', 'articletags.article_id')
-        .leftJoin('tags', 'articletags.tag_id', 'tags.tag_id')
-        .groupBy('articles.article_id');
+    //   const subcategoryArticles = db('articles')
+    //     .whereIn('articles.category_id', function () {
+    //       this.select('category_id')
+    //         .from('categories')
+    //         .where('belong_to', categoryId);
+    //     })
+    //     .select(
+    //       'articles.article_id', 
+    //       'articles.title', 
+    //       'articles.abstract', 
+    //       'articles.thumbnail', 
+    //       'articles.views', 
+    //       'articles.status', 
+    //       'articles.published_date', 
+    //       'articles.is_premium',
+    //       db.raw('GROUP_CONCAT(tags.tag_name ORDER BY tags.tag_name SEPARATOR ", ") as tags')
+    //     )
+    //     .leftJoin('articletags', 'articles.article_id', 'articletags.article_id')
+    //     .leftJoin('tags', 'articletags.tag_id', 'tags.tag_id')
+    //     .groupBy('articles.article_id');
     
-      return mainCategoryArticles.union(subcategoryArticles).orderBy('articles.published_date', 'desc');
-    },
+    //   return mainCategoryArticles.union(subcategoryArticles).orderBy('articles.published_date', 'desc');
+    // },
 
     // Lấy một article cụ thể by ID
     findArticleById(id) {
@@ -170,63 +170,32 @@ export default {
 
   getPendingArticles(editorId) {
     return db('articles')
-      .leftJoin('categories', 'articles.category_id', 'categories.category_id')
-      .leftJoin('users', 'articles.editor_id', 'users.user_id')
-      .where('articles.status', 'waiting')
-      .andWhere('users.user_id', editorId)
-      .andWhere(function () {
-        this.where('articles.category_id', function () {
-          this.select('managed_category_id')
-            .from('users')
-            .where('user_id', editorId);
-        }).orWhere('categories.belong_to', function () {
-          this.select('managed_category_id')
-            .from('users')
-            .where('user_id', editorId);
-        });
-      })
-      .select(
-        'articles.article_id',
-        'articles.title',
-        'articles.abstract',
-        'articles.thumbnail',
-        'articles.views',
-        'articles.status',
-        'articles.published_date',
-        'articles.is_premium'
-      )
-      .orderBy('articles.published_date', 'desc');
+    .leftJoin('categories', 'articles.category_id', 'categories.category_id')
+    .leftJoin('users', 'articles.editor_id', 'users.user_id')
+    .where('articles.status', 'waiting')
+    .andWhere('users.user_id', editorId)
+    .select(
+      'articles.article_id',
+      'articles.title',
+      'articles.abstract',
+      'articles.thumbnail',
+      'articles.views',
+      'articles.status',
+      'articles.published_date',
+      'articles.is_premium',
+      'articles.category_id',
+      'categories.belong_to'
+    )
+    .orderBy('articles.published_date', 'desc');
   },
 
-  updateArticleStatus(articleId, status, noteContent, editorId) {
+  approveArticle(articleId, status, noteContent, editorId) {
     return db.transaction(async (trx) => {
-      // Lấy thông tin bài viết và chuyên mục do editor quản lý
-      const article = await trx('articles')
-        .where('articles.article_id', articleId)
-        .leftJoin('categories', 'articles.category_id', 'categories.category_id') // Join với cate
-        .select('articles.category_id', 'categories.belong_to')
-        .first();
-  
-      // lấy thông tin editor
-      const editor = await trx('users')
-        .where('users.user_id', editorId)
-        .select('managed_category_id') // Lấy chuyên mục chính mà editor quản lý
-        .first();
-  
-      // Kiểm tra quyền
-      if (
-        article.category_id !== editor.managed_category_id && // Không thuộc cat chính
-        article.belong_to !== editor.managed_category_id     // Không thuộc cat phụ
-      ) {
-        throw new Error('Editor is not authorized to approve this article');
-      }
-  
-      // Update trạng thái article
+      // Cập nhật lại status và insert approval history
       await trx('articles')
         .where('article_id', articleId)
         .update({ status });
   
-      // Ghi lại lịch sử phê duyệt
       await trx('approvalhistories').insert({
         article_id: articleId,
         editor_id: editorId,
