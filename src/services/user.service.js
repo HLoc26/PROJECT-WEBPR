@@ -50,15 +50,7 @@ findUserByUsername(username) {
   },
 
 	addReader(entity) {
-		return db("users").insert({
-			username: entity.username,
-			password: entity.password,
-			email: entity.email,
-			full_name: entity.full_name,
-			dob: entity.dob,
-			user_role: "reader",
-			is_active: true,
-		});
+		return db("users").insert(entity);
 	},
 
     registerPremium(id, subscriptionExpiredDate) {
@@ -78,6 +70,43 @@ findUserByUsername(username) {
             editor_id: editorId, // Gán bài viết cho Editor duyệt
             status: 'waiting'   // Cập nhật trạng thái bài viết thành "waiting"
           });
-      }      
+      },
 
+    findByEmail(email) {
+        return db("users")
+            .where("email", email)
+            .first()
+            .select(
+                "user_id",
+                "username",
+                "password",
+                "email",
+                "full_name",
+                "dob",
+                "user_role",
+                "is_active",
+                "subscription_expired_date",
+                "premium",
+                "managed_category_id"
+            );
+    },
+
+    findByUsername(username) {
+        return db("users")
+            .where("username", username)
+            .first()
+            .select(
+                "user_id",
+                "username", 
+                "password",
+                "email",
+                "full_name",
+                "dob",
+                "user_role",
+                "is_active",
+                "subscription_expired_date",
+                "premium",
+                "managed_category_id"
+            );
+    }      
 };

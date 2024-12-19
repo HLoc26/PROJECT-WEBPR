@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import "dotenv/config";
 
 import apiRoutes from "./routes/api.routes.js";
@@ -10,6 +11,8 @@ import editorRoute from "./routes/editor.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
 
+import { setUser } from "./middlewares/user.mdw.js";
+
 // Initialize express app
 const app = express();
 
@@ -20,6 +23,21 @@ app.use(
 		extended: true,
 	})
 );
+
+// Dùng session để lưu trạng thái đăng nhập
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET,
+		resave: false,
+		saveUninitialized: true,
+		cookie: {
+			maxAge: 1000 * 60 * 60, // 1 h
+			secure: false,
+		},
+	})
+);
+
+app.use(setUser);
 
 // When route starts with "/api", use apiRoutes to handle
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
