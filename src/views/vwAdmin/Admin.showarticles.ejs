@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --background: #ffffff;
+            --foreground: #1f2937;
+            --primary: #1e3a8a;
+            --primary-foreground: #ffffff;
+            --accent: #2563eb;
+            --accent-foreground: #ffffff;
+            --input: #e5e7eb;
+            --radius: 8px;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            min-height: 100vh;
+            margin: 0;
+            padding: 32px;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            margin-bottom: 32px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 32px;
+        }
+
+        th, td {
+            padding: 16px;
+            border: 1px solid var(--input);
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+
+        td img {
+            max-width: 50px;
+            max-height: 50px;
+        }
+
+        input[type="date"] {
+            padding: 4px 8px;
+            border: 1px solid var(--input);
+            border-radius: var(--radius);
+            outline: none;
+        }
+
+        input[type="date"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5);
+        }
+
+        .button {
+            padding: 8px 16px;
+            background-color: var(--accent);
+            color: var(--accent-foreground);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #1e40af;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Approved Articles Table -->
+        <div class="section-title">Approved Articles</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Thumbnail</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Publish Date</th>
+                        <th>Premium Article</th>
+                        <th>Writer Name</th>
+                        <th>Editor Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% approvedArticles.forEach(article => { %>
+                    <tr>
+                        <td><%= article.article_id %></td>
+                        <td><img src="<%= article.thumbnail %>" alt="Thumbnail" /></td>
+                        <td><%= article.title %></td>
+                        <td><%= article.category_name %></td>
+                        <td><%= article.status %></td>
+                        <td><%= new Date(article.published_date).toDateString() %></td>
+                        <td><%= article.is_premium ? 'Yes' : 'No' %></td>
+                        <td><%= article.writer_name %></td>
+                        <td><%= article.editor_name %></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pending Articles Table -->
+        <div class="section-title">Pending Articles</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Thumbnail</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Publish Date</th>
+                        <th>Premium Article</th>
+                        <th>Writer Name</th>
+                        <th>Editor Name</th>
+                        <th>Admin Choice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% pendingArticles.forEach(article => { %>
+                    <tr>
+                        <td><%= article.article_id %></td>
+                        <td><img src="<%= article.thumbnail %>" alt="Thumbnail" /></td>
+                        <td><%= article.title %></td>
+                        <td><%= article.category_id %></td>
+                        <td><%= article.status %></td>
+                        <td><input type="date" /></td>
+                        <td><%= article.is_premium ? 'Yes' : 'No' %></td>
+                        <td><%= article.writer_name %></td>
+                        <td><%= article.editor_name %></td>
+                        <td><button class="button">Choose</button></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
