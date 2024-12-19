@@ -1,5 +1,10 @@
 <script src="https://cdn.tiny.cloud/1/<%= api_key %>/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
+    document.addEventListener('focusin', function (e) { 
+  if (e.target.closest('.tox-tinymce-aux, .moxman-window, .tam-assetmanager-root') !== null) { 
+    e.stopImmediatePropagation();
+  } 
+});
 	tinymce.init({
 		selector: "textarea#txtContent",
 		plugins: "paste image link autolink lists table media",
@@ -52,10 +57,38 @@
         <% } %>
     </div>
 
-    <!-- Action Buttons -->
-    <div class="d-flex justify-content-center gap-3">
-        <button type="button" class="btn btn-outline-danger" onclick="handleReject('<%= article.article_id %>')">Từ chối</button>
-        <button type="button" class="btn btn-success" onclick="handleApprove('<%= article.article_id %>')">Duyệt bài</button>
-    </div>
-</div>
 
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModal">
+Từ chối
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Lý do từ chối</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label for="txtContent">Nội dung từ chối</label>
+            <textarea id="txtContent" 
+                      class="form-control" 
+                      name="content" 
+                      rows="5" 
+                      placeholder="Write the content"></textarea>
+          </div>      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary">Gửi</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+    Phê duyệt
+    </button>
