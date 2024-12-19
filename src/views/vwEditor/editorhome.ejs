@@ -42,7 +42,12 @@
                             <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto;" />
                           <% } %>
                         </td>
-                        <td><%= article.title %></td>
+                        <td>
+                            <a href="#" class="text-decoration-none text-primary" title="<%= article.title %>">
+                              <%= article.title %>
+                            </a>
+                          </td>
+                          
                         <td><%= article.category_name || 'N/A' %></td>
                         <td><%= article.tags || 'Không có nhãn dán' %></td>
                         <td><%= article.published_date ? article.published_date.split('T')[0] : 'Chưa có' %></td>
@@ -82,7 +87,12 @@
                             <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto;" />
                           <% } %>
                         </td>
-                        <td><%= article.title %></td>
+                        <td>
+                            <a href="#" class="text-decoration-none text-primary" title="<%= article.title %>">
+                              <%= article.title %>
+                            </a>
+                          </td>
+                          
                         <td><%= article.category_name || 'N/A' %></td>
                         <td><%= article.tags || 'Không có nhãn dán' %></td>
                         <td><%= article.published_date ? new Date(article.published_date).toISOString().split('T')[0] : 'Chưa có' %></td>
