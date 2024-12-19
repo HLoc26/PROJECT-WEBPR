@@ -57,27 +57,62 @@
     </div>
 
     <div class="side-content w-25">
-        <div class="card">
-            <div class="card-header"><h3>Related articles</h3></div>
-            <div class="card-body">
-                <% if (relatedArticles.length > 0) { %>
-                    <% relatedArticles.forEach(related => { %>
-                    <div class="side-article d-flex flex-row mb-2">
-                        <img src="/img/<%= related.thumbnail %>" 
-                             alt="<%= related.title %>" 
-                             class="mr-2" 
-                             style="width:150px; height:75px; object-fit:cover"
-                        />
-                        <a href="/article/<%= related.article_id %>" 
-                           class="text-reset font-weight-bold">
-                            <%= related.title %>
-                        </a>
-                    </div>
-                    <% }) %>
-                <% } else { %>
-                    <p>No related articles found.</p>
-                <% } %>
+        <% if (relatedArticles.length > 0) { %>
+            <!-- Medium size card -->
+            <div class="card mb-4">
+                <div class="card-header"><h3>Related Articles (Medium)</h3></div>
+                <div class="card-body">
+                    <%- include("../partials/article_m", {
+                        article: relatedArticles[0], 
+                        width: 270, 
+                        show_cat: true
+                    }) %>
+                </div>
             </div>
-        </div>
+
+            <!-- Small size card with left image -->
+            <div class="card mb-4">
+                <div class="card-header"><h3>Related Articles (Small Left)</h3></div>
+                <div class="card-body">
+                    <% relatedArticles.slice(0,2).forEach(article => { %>
+                        <%- include("../partials/article_sl", {
+                            article: article,
+                            width: 270,
+                            show_cat: true
+                        }) %>
+                    <% }) %>
+                </div>
+            </div>
+
+            <!-- Small size card with right image -->
+            <div class="card mb-4">
+                <div class="card-header"><h3>Related Articles (Small Right)</h3></div>
+                <div class="card-body">
+                    <% relatedArticles.slice(0,2).forEach(article => { %>
+                        <%- include("../partials/article_sr", {
+                            article: article,
+                            width: 270,
+                            show_cat: true
+                        }) %>
+                    <% }) %>
+                </div>
+            </div>
+
+            <!-- Extra small size cards -->
+            <div class="card mb-4">
+                <div class="card-header"><h3>More Articles</h3></div>
+                <div class="card-body">
+                    <% relatedArticles.forEach(article => { %>
+                        <%- include("../partials/article_xs", {
+                            article: article,
+                            width: 270,
+                            align: 'left'
+                        }) %>
+                    <% }) %>
+                </div>
+            </div>
+        <% } else { %>
+            <p>No related articles found.</p>
+        <% } %>
     </div>
 </div>
