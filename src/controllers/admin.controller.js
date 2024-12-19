@@ -8,7 +8,7 @@ export default {
             const writer_ids = writerIds.map(user => user.user_id);
     
             const pendingArticlePromises = writer_ids.map(writerId => 
-                articleService.getArticlesByStatus(writerId, 'pending')
+                articleService.getArticlesByStatus(writerId, 'waiting')
             );
             const pendingArticleResults = await Promise.all(pendingArticlePromises);
             const pendingArticles = pendingArticleResults.flat();
