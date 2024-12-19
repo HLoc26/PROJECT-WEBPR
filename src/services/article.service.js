@@ -26,13 +26,14 @@ export default {
 	// Lấy các articles by category cho sections cụ thể, bao gồm subcategories
 	findArticlesByCategoryIncludingSubcategories(categoryId) {
 		return db("articles")
-			.select("articles.*", "users.user_id as editor_id", "users.username as editor_name")
+			.select("articles.*", "categories.*", "users.user_id as editor_id", "users.username as editor_username", "users.full_name as editor_fullname")
 			.leftJoin("users", "articles.editor_id", "users.user_id")
 			.where(function () {
 				this.where("articles.category_id", categoryId).orWhereIn("articles.category_id", function () {
 					this.select("category_id").from("categories").where("belong_to", categoryId);
 				});
 			})
+			.join("categories", "articles.category_id", "categories.category_id")
 			.orderBy("published_date", "desc");
 	},
 
