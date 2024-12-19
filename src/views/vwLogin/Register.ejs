@@ -17,7 +17,7 @@
 	<body>
 		<!-- Container chính -->
 		<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh">
-			<div class="col-md-6 col-lg-4 shadow p-4 rounded">
+			<div class="col-md-6 col-lg-6 shadow p-4 rounded">
 				<div class="text-center mb-4">
 					<h3 class="font-weight-bold">LOGO</h3>
 					<h5 class="font-weight-bold">Đăng ký tài khoản</h5>
@@ -60,26 +60,55 @@
 				<p class="text-center text-muted">Hoặc</p>
 
 				<!-- Form đăng ký -->
-        	<!-- Hiển thị lỗi -->
-          <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-          <ul class="text-danger">
-            <% errors.forEach(error => { %>
-            <li><%= error.msg %></li>
-            <% }) %>
-          </ul>
-          <% } %>
+				<!-- Hiển thị lỗi -->
+				<% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+				<ul class="text-danger">
+					<% errors.forEach(error => { %>
+					<li><%= error.msg %></li>
+					<% }) %>
+				</ul>
+				<% } %>
 				<form action="" method="POST" autocomplete="on">
-					<div class="form-group">
-						<input type="text" class="form-control" id="displayName" name="displayName" placeholder="Tên hiển thị" required autocomplete="name" />
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="username"><i class="bi bi-person-fill"></i></label>
+						</div>
+						<input type="text" class="form-control" id="username" name="username" placeholder="Username" required />
 					</div>
-					<div class="form-group">
+
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="fullname"><i class="bi bi-alphabet"></i></label>
+						</div>
+						<input type="text" class="form-control" id="fullname" name="fullname" placeholder="Full name" required />
+					</div>
+
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="email"><i class="bi bi-envelope-fill"></i></label>
+						</div>
 						<input type="email" class="form-control" id="email" name="email" placeholder="Email" required autocomplete="email" />
 					</div>
-					<div class="form-group position-relative">
-						<input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required autocomplete="new-password" />
+
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="password"><i class="bi bi-key-fill"></i></label>
+						</div>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required />
 					</div>
-					<div class="form-group position-relative">
-						<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Xác nhận mật khẩu" required autocomplete="new-password" />
+
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="password2"><i class="bi bi-arrow-repeat"></i></label>
+						</div>
+						<input type="password" class="form-control" id="password2" name="password2" placeholder="Xác nhận mật khẩu" required />
+					</div>
+
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="dob"><i class="bi bi-calendar-event"></i></label>
+						</div>
+						<input type="date" timezome="" name="dob" id="dob" class="form-control" />
 					</div>
 					<button type="submit" class="btn btn-secondary btn-block font-weight-bold">ĐĂNG KÝ</button>
 				</form>
