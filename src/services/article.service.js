@@ -168,26 +168,31 @@ export default {
           .orderBy('comments.created_at', 'asc');
   },
 
-  getPendingArticles(editorId) {
+  getArticlesByStatus(editorId, status) {
     return db('articles')
-    .leftJoin('categories', 'articles.category_id', 'categories.category_id')
-    .leftJoin('users', 'articles.editor_id', 'users.user_id')
-    .where('articles.status', 'waiting')
-    .andWhere('users.user_id', editorId)
-    .select(
-      'articles.article_id',
-      'articles.title',
-      'articles.abstract',
-      'articles.thumbnail',
-      'articles.views',
-      'articles.status',
-      'articles.published_date',
-      'articles.is_premium',
-      'articles.category_id',
-      'categories.belong_to'
-    )
-    .orderBy('articles.published_date', 'desc');
-  },
+        .leftJoin('categories', 'articles.category_id', 'categories.category_id')
+        .leftJoin('users as editors', 'articles.editor_id', 'editors.user_id')
+        .leftJoin('users as writers', 'articles.writer_id', 'writers.user_id')
+        .where('articles.status', status)
+        .andWhere('editors.user_id', editorId)
+        .select(
+            'articles.article_id',
+            'articles.title',
+            'articles.abstract',
+            'articles.thumbnail',
+            'articles.views',
+            'articles.status',
+            'articles.published_date',
+            'articles.is_premium',
+            'articles.category_id',
+            'categories.category_name',
+            'writers.full_name as writer_name',
+            'writers.user_id as writer_id',
+            'editors.full_name as editor_name',
+            'editors.user_id as editor_id'
+        )
+        .orderBy('articles.published_date', 'desc');
+},
 
   approveArticle(articleId, status, noteContent, editorId) {
     return db.transaction(async (trx) => {
