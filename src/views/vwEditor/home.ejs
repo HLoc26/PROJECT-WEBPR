@@ -41,7 +41,7 @@
 						<td><%= article.category_name || 'N/A' %></td>
 						<td><%= article.tags || 'Không có nhãn dán' %></td>
 						<td><%= article.published_date ? article.published_date : 'Chưa có' %></td>
-						<td style="width: 20%"><%= article.editor_name || '--' %></td>
+						<td style="width: 20%"><%= article.editor_fullname || '--' %></td>
 					</tr>
 					<% }) %> <% } else { %>
 					<tr>
@@ -82,7 +82,7 @@
 						<td><%= article.category_name || 'N/A' %></td>
 						<td><%= article.tags || 'Không có nhãn dán' %></td>
 						<td><%= article.published_date ? new Date(article.published_date).toISOString().split('T')[0] : 'Chưa có' %></td>
-						<td style="width: 20%"><%= article.editor_name || '--' %></td>
+						<td style="width: 20%"><%= article.editor_fullname || '--' %></td>
 					</tr>
 					<% }) %> <% } else { %>
 					<tr>
