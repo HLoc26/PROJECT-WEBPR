@@ -1,0 +1,45 @@
+<div class="container my-4">
+	<!-- Tabs Navigation -->
+	<ul class="nav nav-tabs" id="editorTabs" role="tablist">
+		<li class="nav-item">
+			<button class="nav-link active" id="editors-tab" data-bs-toggle="tab" data-bs-target="#editors" type="button" role="tab" aria-controls="editors" aria-selected="true">Danh sách Editors</button>
+		</li>
+	</ul>
+
+	<!-- Tab Content -->
+	<div class="tab-content mt-3">
+		<!-- Tab Content: Editors -->
+		<div class="tab-pane fade show active" id="editors" role="tabpanel" aria-labelledby="editors-tab">
+			<table class="table table-striped table-bordered align-middle">
+				<thead>
+					<tr>
+						<th style="width: 10%">ID</th>
+						<th style="width: 20%">Tên đầy đủ</th>
+						<th style="width: 15%">Ngày sinh</th>
+						<th style="width: 25%">Email</th>
+						<th style="width: 20%">Chuyên mục quản lý</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% if (editors && editors.length > 0) { %> <!-- Check if editors exists and has elements -->
+						<% editors.forEach(editor => { %>
+							<tr>
+								<td><%= editor.user_id %></td>
+								<td><%= editor.full_name %></td>
+								<td><%= new Date(editor.dob).toISOString().split('T')[0] %></td>
+								<td><%= editor.email %></td>
+								<td><%= editor.managed_category_name || 'Chưa có' %></td>
+							</tr>
+						<% }) %>
+					<% } else { %>
+						<tr>
+							<td colspan="5" class="text-center">Không có editor nào.</td>
+						</tr>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
