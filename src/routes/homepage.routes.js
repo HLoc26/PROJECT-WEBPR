@@ -1,6 +1,7 @@
 import express from "express";
 import homeController from "../controllers/homepage.controller.js";
 import articleService from "../services/article.service.js";
+import tagController from "../controllers/tag.controller.js";
 const router = express.Router();
 
 router.get("/", homeController.GetHomepage);
@@ -24,4 +25,7 @@ router.get("/art-card", async (req, res) => {
 router.get("/list", function (req, res) {
 	res.render("vwHomepage/List");
 });
+
+router.get("/tag", tagController.getArticlesByTag);
+
 export default router;
