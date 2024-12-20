@@ -4,51 +4,6 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const tagsTextarea = document.getElementById("tagsTextarea");
-    const tagList = document.getElementById("approvedTagList");
-
-    // Add tag when user presses Space or Enter
-    tagsTextarea.addEventListener("keydown", function (event) {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        const tagText = tagsTextarea.value.trim();
-        if (tagText) {
-          addTag(tagText);
-          tagsTextarea.value = ""; // Clear the textarea
-        }
-      }
-    });
-
-    // Function to add a tag
-    function addTag(tagText) {
-      const tagItem = document.createElement("li");
-      tagItem.className = "list-inline-item bg-secondary text-white p-2 rounded mr-2";
-      tagItem.innerHTML = `${tagText} <span class="remove-tag ml-2 text-danger" style="cursor: pointer;">&times;</span>`;
-
-      // Add remove functionality
-      tagItem.querySelector(".remove-tag").addEventListener("click", function () {
-        tagList.removeChild(tagItem);
-      });
-
-      tagList.appendChild(tagItem);
-    }
-
-    // Submit form handler (optional customization)
-    document.getElementById("approveForm").addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      // Collect comment and tags data
-      const comment = document.getElementById("approvalComment").value;
-      const tags = Array.from(tagList.children).map(tag => tag.textContent.trim().replace("×", ""));
-
-      console.log({ comment, tags });
-
-      // Submit logic (e.g., send to server) can be added here
-      alert("Form submitted successfully!");
-    });
-  });
-
   tinymce.init({
       selector:   "textarea",
       width:      '100%',
