@@ -46,6 +46,9 @@ app.use(
 
 app.use(setUser);
 
+app.use(express.json());
+
+
 // When route starts with "/api", use apiRoutes to handle
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu

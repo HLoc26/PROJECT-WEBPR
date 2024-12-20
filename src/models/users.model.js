@@ -3,6 +3,7 @@ import knex from '../config/db.js';
 export const UserModel = {
   // Find user by email
   findByEmail: async (email) => {
+    console.log('Email provided:', email);
     return await knex('users').where({ email }).first();
   },
 
