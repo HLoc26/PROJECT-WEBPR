@@ -38,7 +38,20 @@
 				</form>
 			</div>
 			<div class="nav-right">
-				<a class="navbar-brand" href="#"><i class="bi bi-person-circle"></i></a>
+				<% if (user) { %>
+					<div class="dropdown">
+						<a class="navbar-brand dropdown-toggle" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="bi bi-person-circle"></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+							<a class="dropdown-item" href="/profile">Edit Profile</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="/logout">Logout</a>
+						</div>
+					</div>
+				<% } else { %>
+					<a class="navbar-brand" href="/login"><i class="bi bi-person-circle"></i></a>
+				<% } %>
 			</div>
 		</nav>
 

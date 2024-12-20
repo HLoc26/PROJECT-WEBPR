@@ -8,6 +8,7 @@ import defaultRoute from "./routes/default.routes.js";
 import writerRoute from "./routes/writer.routes.js";
 import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
+import profileRoute from "./routes/profile.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
 import setCategoriesMiddleware from "./middlewares/category.mdw.js"; // Huy
@@ -51,6 +52,7 @@ app.use("/writer", writerRoute);
 app.use("/homepage", homepageRoute);
 app.use("/list", homepageRoute);
 app.use("/editor", editorRoute);
+app.use("/profile", profileRoute);
 
 app.listen(process.env.PORT, function (req, res) {
 	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
