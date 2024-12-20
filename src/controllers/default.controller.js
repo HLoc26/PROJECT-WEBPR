@@ -80,7 +80,7 @@ export default {
 					res.redirect("/writer");
 					break;
 				case "editor":
-					res.redirect(`/editor/home`);
+					res.redirect(`/editor/home?id=${user.managed_category_id}`);
 					break;
 				case "admin":
 					res.render("vwAdmin/Dashboard", {
