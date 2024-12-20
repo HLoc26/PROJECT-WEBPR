@@ -1,6 +1,7 @@
 import express from "express";
 import userService from "../services/user.service.js";
 import { body } from "express-validator";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
@@ -24,15 +25,19 @@ const updateProfileValidation = [
     .withMessage("Date of birth is required")
     .isISO8601()
     .withMessage("Invalid date format"),
+  body("old_password")
+    .if(body("password").exists({checkFalsy: true}))
+    .notEmpty()
+    .withMessage("Current password is required when changing password"),
   body("password")
     .optional()
     .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters"),
+    .withMessage("New password must be at least 6 characters"),
   body("confirm_password")
     .optional()
     .custom((value, { req }) => {
       if (req.body.password && value !== req.body.password) {
-        throw new Error("Passwords don't match");
+        throw new Error("New passwords don't match");
       }
       return true;
     })
@@ -56,7 +61,30 @@ router.post("/", updateProfileValidation, async (req, res) => {
       return res.redirect("/login");
     }
 
-    const { username, email, full_name, dob, password } = req.body;
+    const { username, email, full_name, dob, old_password, password } = req.body;
+
+    // If attempting password change, verify old password
+    if (password) {
+      const user = await userService.findUserById(req.session.user.user_id);
+      
+      if (!user || !user.password) {
+        return res.render("vwProfile/Edit", {
+          layout: "layouts/reader.main.ejs",
+          user: req.session.user,
+          error: "User authentication failed"
+        });
+      }
+
+      const isValidPassword = await bcrypt.compare(old_password, user.password);
+      
+      if (!isValidPassword) {
+        return res.render("vwProfile/Edit", {
+          layout: "layouts/reader.main.ejs",
+          user: req.session.user,
+          error: "Current password is incorrect"
+        });
+      }
+    }
     
     // Validate unique username/email
     const existingUser = await userService.findByUsername(username);

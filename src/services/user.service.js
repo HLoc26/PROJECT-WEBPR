@@ -15,6 +15,7 @@ export default {
 			.select(
 				"users.user_id",
 				"users.username",
+				"users.password",
 				"users.email",
 				"users.full_name",
 				db.raw("DATE_FORMAT(users.dob, '%Y-%m-%d') as dob"),
@@ -96,9 +97,10 @@ export default {
 		if (updateData.dob) updates.dob = new Date(updateData.dob);
 		if (updateData.managed_category_id) updates.managed_category_id = updateData.managed_category_id;
 
-		// Add password update if provided
+		 // Hash password if provided
 		if (updateData.password) {
-			updates.password = bcrypt.hashSync(updateData.password, +process.env.PASSWORD_ROUND);
+			const hashedPassword = bcrypt.hashSync(updateData.password, 10);
+			updates.password = hashedPassword;
 		}
 
 		return db("users")
