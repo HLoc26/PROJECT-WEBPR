@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { query } from "express";
 import db from "../config/db.js";
 
@@ -16,7 +17,7 @@ export default {
 				"users.username",
 				"users.email",
 				"users.full_name",
-				"users.dob",
+				db.raw("DATE_FORMAT(users.dob, '%Y-%m-%d') as dob"),
 				"users.subscription_expired_date",
 				"users.premium",
 				"users.is_active",
@@ -87,13 +88,22 @@ export default {
 	},
 
 	updateUserProfile(userId, updateData) {
+		const updates = {};
+		
+		if (updateData.username) updates.username = updateData.username;
+		if (updateData.email) updates.email = updateData.email;
+		if (updateData.full_name) updates.full_name = updateData.full_name;
+		if (updateData.dob) updates.dob = new Date(updateData.dob);
+		if (updateData.managed_category_id) updates.managed_category_id = updateData.managed_category_id;
+
+		// Add password update if provided
+		if (updateData.password) {
+			updates.password = bcrypt.hashSync(updateData.password, +process.env.PASSWORD_ROUND);
+		}
+
 		return db("users")
 			.where("user_id", userId)
-			.update({
-				username: updateData.username,
-				email: updateData.email,
-				full_name: updateData.full_name,
-				dob: updateData.dob
-			});
+			.update(updates)
+			.then(() => this.findUserById(userId));
 	},
 };

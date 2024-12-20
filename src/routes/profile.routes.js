@@ -23,7 +23,19 @@ const updateProfileValidation = [
     .notEmpty()
     .withMessage("Date of birth is required")
     .isISO8601()
-    .withMessage("Invalid date format")
+    .withMessage("Invalid date format"),
+  body("password")
+    .optional()
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters"),
+  body("confirm_password")
+    .optional()
+    .custom((value, { req }) => {
+      if (req.body.password && value !== req.body.password) {
+        throw new Error("Passwords don't match");
+      }
+      return true;
+    })
 ];
 
 // Get profile page
@@ -44,17 +56,35 @@ router.post("/", updateProfileValidation, async (req, res) => {
       return res.redirect("/login");
     }
 
-    const { username, email, full_name, dob } = req.body;
+    const { username, email, full_name, dob, password } = req.body;
     
-    // Update user in database
-    await userService.updateUserProfile(req.session.user.user_id, {
-      username,
-      email, 
-      full_name,
-      dob
-    });
+    // Validate unique username/email
+    const existingUser = await userService.findByUsername(username);
+    if (existingUser && existingUser.user_id !== req.session.user.user_id) {
+      return res.render("vwProfile/Edit", {
+        layout: "layouts/reader.main.ejs",
+        user: req.session.user,
+        error: "Username already exists"
+      });
+    }
 
-    // Update session
+    // Create update data object
+    const updateData = {
+      username,
+      email,  
+      full_name,
+      dob: new Date(dob)
+    };
+
+    // Add password if provided
+    if (password) {
+      updateData.password = password;
+    }
+
+    // Update user
+    await userService.updateUserProfile(req.session.user.user_id, updateData);
+
+    // Get updated user data
     const updatedUser = await userService.findUserById(req.session.user.user_id);
     req.session.user = updatedUser;
 
