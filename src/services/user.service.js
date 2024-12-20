@@ -95,17 +95,14 @@ export default {
 		if (updateData.email) updates.email = updateData.email;
 		if (updateData.full_name) updates.full_name = updateData.full_name;
 		if (updateData.dob) updates.dob = new Date(updateData.dob);
-		if (updateData.managed_category_id) updates.managed_category_id = updateData.managed_category_id;
-
-		 // Hash password if provided
+		
+		// Hash password if provided using process.env.PASSWORD_ROUND
 		if (updateData.password) {
-			const hashedPassword = bcrypt.hashSync(updateData.password, 10);
-			updates.password = hashedPassword;
+			updates.password = bcrypt.hashSync(updateData.password, +process.env.PASSWORD_ROUND);
 		}
 
 		return db("users")
 			.where("user_id", userId)
-			.update(updates)
-			.then(() => this.findUserById(userId));
+			.update(updates);
 	},
 };
