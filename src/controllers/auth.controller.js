@@ -5,9 +5,11 @@ import { generateOTP, sendOTPEmail } from '../utils/emailService.js';
 export const requestPasswordReset = async (req, res) => {
   try {
     const { email } = req.body;
+    console.log('Email received:', email);
 
     // Find user
     const user = await UserModel.findByEmail(email);
+    console.log(user);
     if (!user) {
       return res.status(404).json({ 
         success: false, 
@@ -17,16 +19,23 @@ export const requestPasswordReset = async (req, res) => {
 
     // Generate OTP
     const otp = generateOTP();
+    console.log('Generated OTP:', otp);
     
-    // Hash OTP before saving
-    const hashedOTP = await bcrypt.hash(otp, 10);
-    const expiryTime = new Date(Date.now() + 600000); // 10 minutes
-
-    // Save OTP and expiry time
-    await UserModel.updateResetToken(email, hashedOTP, expiryTime);
-
-    // Send OTP email
-    await sendOTPEmail(email, otp);
+    try {
+        const hashedOTP = await bcrypt.hash(otp, 10);
+        console.log('Hashed OTP:', hashedOTP);
+      
+        const expiryTime = new Date(Date.now() + 600000); // 10 minutes
+        console.log('Expiry Time:', expiryTime);
+      
+        await UserModel.updateResetToken(email, hashedOTP, expiryTime);
+        console.log('Reset token updated in the database');
+      
+        await sendOTPEmail(email, otp);
+        console.log('OTP email sent');
+      } catch (error) {
+        console.error('Error occurred:', error.message);
+      }
 
     res.status(200).json({
       success: true,
