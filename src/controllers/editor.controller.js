@@ -1,10 +1,13 @@
 import ArticleService from "../services/article.service.js";
-import CategoryService from "../services/category.service.js";
 import TagService from "../services/tag.service.js";
 export default {
 	async getEditorHome(req, res) {
 		try {
-			const { id: categoryId } = req.query; // Retrieve category ID from query parameters
+			// Avoid using this, SQLi
+			// const { id: categoryId } = req.query; // Retrieve category ID from query parameters
+
+			// Using editor's information to load articles
+			const categoryId = req.session.user.managed_category_id;
 
 			// Fetch articles by category (including subcategories) using ArticleService
 			const articles = await ArticleService.findArticlesByCategoryIncludingSubcategories(categoryId);
