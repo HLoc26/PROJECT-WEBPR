@@ -1,20 +1,13 @@
 import articleService from "../services/article.service.js";
 import categoryService from "../services/category.service.js";
-import userService from "../services/user.service.js";
+import userService from "../services/user.service";
 export default {
-	async getEditors(req, res) {
+	async fetchEditors(req, res) {
 		try {
-			// Fetch all user IDs with the role of "editor"
-			const editorIds = await UserService.findUserIdsByRole("editor");
+			// Fetch all users with the role of "editor"
+			const editors = await userService.findUserById(null, "editor");
 
-			// Fetch each editor's details using findUserById
-			const editors = await Promise.all(
-				editorIds.map(async (editor) => {
-					return userService.findUserById(editor.user_id, "editor");
-				})
-			);
-
-			// Render the vwAdmin/editor view with the fetched data
+			// Render the vwAdmin/editor view with the fetched editors
 			res.render("vwAdmin/editor", {
 				editors,
 			});
