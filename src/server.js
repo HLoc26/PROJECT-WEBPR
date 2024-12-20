@@ -8,6 +8,7 @@ import defaultRoute from "./routes/default.routes.js";
 import writerRoute from "./routes/writer.routes.js";
 import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
+import categoryRoutes from "./routes/api.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
 import setCategoriesMiddleware from "./middlewares/category.mdw.js"; // Huy
