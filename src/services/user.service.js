@@ -85,4 +85,23 @@ export default {
 			.first()
 			.select("user_id", "username", "password", "email", "full_name", "dob", "user_role", "is_active", "subscription_expired_date", "premium", "managed_category_id");
 	},
+
+	findUsersByRole(role) {
+        return db("users")
+            .leftJoin("categories", "users.managed_category_id", "categories.category_id")
+            .where("users.user_role", role)
+            .select(
+                "users.user_id",
+                "users.username",
+                "users.email",
+                "users.full_name",
+                "users.dob",
+                "users.subscription_expired_date",
+                "users.premium",
+                "users.is_active",
+                "users.user_role",
+                "users.managed_category_id",
+                "categories.category_name as managed_category_name"
+            );
+    },
 };
