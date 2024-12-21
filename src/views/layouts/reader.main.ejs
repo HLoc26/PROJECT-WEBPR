@@ -32,7 +32,7 @@
 			</div>
 			<div class="nav-center form-inline d-lg-flex">
 				<form class="form-inline">
-					<select class="custom-select mr-2" name="category_id">
+					<select class="custom-select mr-2" name="category_id" id="categorySelect">
 						<option selected>Chuyên mục</option>
 						<% categories.forEach(category => { %>
 						<option value="<%= category.category_id %>" style="font-weight: bold"><%= category.category_name %></option>
@@ -109,6 +109,14 @@
 					categoryBar.classList.remove("scrolled-down");
 				}
 				lastScroll = currentScroll;
+			});
+			// Lắng nghe sự kiện thay đổi trên select
+			document.getElementById("categorySelect").addEventListener("change", function () {
+				const selectedValue = this.value; // Lấy giá trị đã chọn
+				if (selectedValue) {
+					// Chuyển hướng đến URL tương ứng
+					window.location.href = `/homepage/cate?id=${selectedValue}`;
+				}
 			});
 		</script>
 	</body>
