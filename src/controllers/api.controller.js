@@ -1,5 +1,7 @@
 import CategoryService from "../services/category.service.js";
 
+const ITEMS_PER_PAGE = 10; // Số bài viết trên mỗi trang
+
 export default {
 	async imgUpload(req, res) {
 		// console.log("api upload: ", req.file);
