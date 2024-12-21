@@ -1,4 +1,4 @@
-import adminControllerSang from "../controllers/admin.controller.sang";
+import adminControllerSang from "../controllers/admin.controller.sang.js";
 import express from "express";
 const router = express.Router();
 
