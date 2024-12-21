@@ -34,7 +34,7 @@ export default {
 	},
 	async getEditorDetails(req, res) {
 		try {
-			const { editorId } = req.params; // Get editor ID from request parameters
+			const editorId = req.params.id || req.query.id;
 			//This is admin, so if SQLi, then it's admin's fault
 			if (!editorId) {
 				return res.status(400).send("Editor ID is required.");
