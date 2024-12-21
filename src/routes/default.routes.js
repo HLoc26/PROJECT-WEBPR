@@ -15,6 +15,8 @@ router.get("/login", function (req, res) {
 
 router.post("/login", defaultController.postLogin);
 
+router.get("/logout", defaultController.getLogout);
+
 router.get("/forget", function (req, res) {
 	res.render("vwLogin/Forget", { layout: "layouts/login.main.ejs" });
 });
