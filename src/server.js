@@ -3,7 +3,7 @@ import session from "express-session";
 import "dotenv/config";
 
 import apiRoutes from "./routes/api.routes.js";
-import articleRoutes from "./routes/article.routes.js"; // Lộc: Sáng import thiếu
+import articleRoutes from "./routes/article.routes.js";
 import defaultRoute from "./routes/default.routes.js";
 import writerRoute from "./routes/writer.routes.js";
 import homepageRoute from "./routes/homepage.routes.js";
@@ -11,12 +11,9 @@ import editorRoute from "./routes/editor.routes.js";
 import profileRoute from "./routes/profile.routes.js";
 
 import configViewEngine from "./config/viewEngine.js";
-import setCategoriesMiddleware from "./middlewares/category.mdw.js"; // Huy
-
+import { setLocalCategories } from "./middlewares/category.mdw.js";
 import { setUser } from "./middlewares/user.mdw.js";
-
-import { isAuth, isEditor, isWriter } from "./middlewares/auth.mdw.js"; // Add auth middleware imports at the top with other imports
-
+import { isAuth, isEditor, isWriter } from "./middlewares/auth.mdw.js";
 
 // Initialize express app
 const app = express();
@@ -30,8 +27,8 @@ app.use(
 );
 app.use("/api", apiRoutes);
 
-// Huy: Middleware to set category variable
-app.use(setCategoriesMiddleware);
+// Quang: Middleware to set category variable - using direct DB access for better performance
+app.use(setLocalCategories);
 
 // Dùng session để lưu trạng thái đăng nhập
 app.use(
