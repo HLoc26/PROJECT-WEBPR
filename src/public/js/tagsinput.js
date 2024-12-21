@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 	// Replace the original input with our custom tags input
 	const originalInput = document.getElementById("tags-input");
 	const hiddenInput = document.getElementById("tags-hidden");
@@ -10,11 +10,32 @@ document.addEventListener("DOMContentLoaded", function () {
 	input.className = "tags-input";
 	input.placeholder = "Input tag...";
 
+	const suggestionsContainer = document.createElement("div");
+	suggestionsContainer.className = "suggestions-container";
+
 	// Insert the new elements
 	originalInput.parentNode.replaceChild(wrapper, originalInput);
 	wrapper.appendChild(input);
+	wrapper.appendChild(suggestionsContainer);
 
 	let tags = [];
+	let allTags = [];
+	let suggestedTags = [];
+	let selectedSuggestionIndex = -1;
+
+	// Fetch all tags from the API
+	const response = await fetch("/api/tags", {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+	const result = await response.json();
+
+	allTags = result.data.map((tag) => tag.tag_name); // Get an array of tag names
+
+	// console.log(result);
+	// console.log(allTags);
 
 	// Initialize with existing tags if any
 	if (hiddenInput.value) {
@@ -64,8 +85,67 @@ document.addEventListener("DOMContentLoaded", function () {
 		wrapper.insertBefore(tag, input);
 	}
 
+	function updateSuggestions(value) {
+		if (!value.trim()) {
+			suggestionsContainer.style.display = "none";
+			suggestedTags = [];
+			return;
+		}
+
+		// Filter tags based on input
+		suggestedTags = allTags.filter((tag) => tag.toLowerCase().includes(value.toLowerCase()) && !tags.includes(tag));
+
+		// Update suggestions UI
+		suggestionsContainer.innerHTML = "";
+		suggestedTags.forEach((tag, index) => {
+			const div = document.createElement("div");
+			div.className = "suggestion-item";
+			div.textContent = tag;
+			div.addEventListener("click", () => {
+				if (!tags.includes(tag)) {
+					addTagToDOM(tag);
+					tags.push(tag);
+					updateHiddenInput();
+					input.value = "";
+					suggestionsContainer.style.display = "none";
+				}
+			});
+			suggestionsContainer.appendChild(div);
+		});
+
+		suggestionsContainer.style.display = suggestedTags.length ? "block" : "none";
+		selectedSuggestionIndex = -1;
+	}
+
+	function handleKeyNavigation(e) {
+		const suggestionItems = suggestionsContainer.querySelectorAll(".suggestion-item");
+
+		if (e.key === "ArrowDown") {
+			e.preventDefault();
+			selectedSuggestionIndex = Math.min(selectedSuggestionIndex + 1, suggestionItems.length - 1);
+		} else if (e.key === "ArrowUp") {
+			e.preventDefault();
+			selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, -1);
+		}
+
+		// Update selected item visual
+		suggestionItems.forEach((item, index) => {
+			item.classList.toggle("selected", index === selectedSuggestionIndex);
+		});
+
+		// Update input value if item selected
+		if (selectedSuggestionIndex >= 0) {
+			input.value = suggestedTags[selectedSuggestionIndex];
+		}
+	}
+
 	function addTag(e) {
 		let value = e.target.value.trim();
+
+		// Prevent form submission if Enter is pressed
+		if (e.key === "Enter") {
+			e.preventDefault(); // Prevent form submission
+		}
 
 		if (e.key === "Backspace" && value === "") {
 			if (tags.length > 0) {
@@ -80,12 +160,21 @@ document.addEventListener("DOMContentLoaded", function () {
 			return;
 		}
 
+		if (["ArrowUp", "ArrowDown"].includes(e.key)) {
+			handleKeyNavigation(e);
+			return;
+		}
+
 		if (e.key === ",") {
 			e.preventDefault();
 			value = value.replace(/,/g, "").trim();
 		}
 
 		if ((e.key === "," || e.key === "Enter") && value !== "") {
+			if (selectedSuggestionIndex >= 0) {
+				value = suggestedTags[selectedSuggestionIndex];
+			}
+
 			if (tags.includes(value)) {
 				flashDuplicateTag(value);
 			} else {
@@ -93,7 +182,9 @@ document.addEventListener("DOMContentLoaded", function () {
 				tags.push(value);
 				updateHiddenInput();
 			}
-			e.target.value = "";
+			input.value = "";
+			suggestionsContainer.style.display = "none";
+			selectedSuggestionIndex = -1;
 		}
 	}
 
@@ -107,6 +198,15 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	}
 
+	// Event listeners
 	input.addEventListener("keydown", addTag);
+	input.addEventListener("input", (e) => updateSuggestions(e.target.value));
 	wrapper.addEventListener("click", removeTag);
+
+	// Close suggestions when clicking outside
+	document.addEventListener("click", (e) => {
+		if (!wrapper.contains(e.target)) {
+			suggestionsContainer.style.display = "none";
+		}
+	});
 });
