@@ -11,6 +11,4 @@ router.post("/images/upload", upload.single("image"), apiController.imgUpload);
 // API to get category list
 router.get("/categories", apiController.getCategories);
 
-router.get('/cate', apiController.getCategoryArticles);
-
 export default router;
