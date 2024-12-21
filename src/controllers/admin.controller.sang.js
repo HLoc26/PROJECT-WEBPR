@@ -32,4 +32,5 @@ export default {
 			return res.status(500).redirect("/500");
 		}
 	},
+	async getEditorDetail(req, res) {},
 };
