@@ -114,7 +114,17 @@ export default {
 
 	// Thêm article (entity: { title, content, abstract, thumbnail, category_id, writer_id, editor_id, status, is_premium, published_date })
 	addArticle(entity) {
-		return db("articles").insert(entity);
+		return db("articles")
+			.insert(entity)
+			.then(([id]) => {
+				// 'id' represents the newly inserted article ID
+				return id;
+			})
+			.catch((error) => {
+				// Handle any errors that occur during the insert operation
+				console.error("Error inserting article:", error);
+				throw error;
+			});
 	},
 
 	// Xóa article by ID
