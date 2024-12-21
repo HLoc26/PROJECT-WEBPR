@@ -3,7 +3,7 @@
 <style>
 	.card-s {
 		width: <%= width %>;
-		max-width: 500px;
+		max-width: none;
 		margin: 0 auto;
 	}
 	.card-s .category-text {
@@ -26,8 +26,8 @@
 	}
 </style>
 
-<div class="card-wrapper card-s d-flex align-items-center justify-content-between">
-	<div class="card-content w-50">
+<div class="card-wrapper card-s d-flex align-items-center justify-content-between border-bottom">
+	<div class="card-content w-70">
 		<% if (typeof show_cat !== 'undefined' && show_cat) { %>
 		<div class="category-text">
 			<a href="/category/<%= article.category_id %>" class="text-decoration-none text-reset"> <%= article.category_name %> </a>
@@ -41,5 +41,5 @@
 			<p class="mb-1"><%= new Date(article.published_date).toLocaleDateString('vi-VN') %></p>
 		</div>
 	</div>
-	<img src="/img/<%= article.thumbnail %>" alt="<%= article.title %>" class="img-fluid w-50 pl-3" style="height: 150px; object-fit: cover" />
+	<img src="/img/<%= article.thumbnail %>" alt="<%= article.title %>" class="img-fluid w-30 pl-3" style="height: 150px; object-fit: cover" />
 </div>

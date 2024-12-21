@@ -1,0 +1,27 @@
+<div class="container-fluid">
+	<div class="border-bottom my-5">
+		<h1><%= tag.tag_name %></h1>
+	</div>
+	<% if (articles.length > 0) { %> <% articles.forEach(article => { %> <%- include('../partials/article_sr.ejs', { article: article, show_cat: true, width: '100%'}) %> <% }); %> <% } else { %>
+	<p>Không có bài viết nào cho nhãn này.</p>
+	<% } %>
+
+	<!-- Pagination -->
+	<ul class="pagination justify-content-center my-3">
+		<li class="page-item <%= currentPage == 1 ? 'disabled' : '' %>">
+			<a class="page-link" href="/homepage/cate?id=<%= tagId %>&page=<%= currentPage-1 %>"><i class="bi bi-caret-left"></i></i></a>
+		</li>
+		<% for (let i = 1; i <= totalPages; i++) { %> <% if (i === currentPage) { %>
+		<li class="page-item active">
+			<a class="page-link" href="#"><%= i %></a>
+		</li>
+		<% } else { %>
+		<li class="page-item">
+			<a class="page-link" href="?id=<%= tagId %>&page=<%= i %>"><%= i %></a>
+		</li>
+		<% }} %>
+		<li class="page-item <%= currentPage == totalPages ? 'disabled' : '' %>">
+			<a class="page-link" href="/homepage/cate?id=<%= tagId %>&page=<%= currentPage+1 %>"><i class="bi bi-caret-right"></i></a>
+		</li>
+	</ul>
+</div>

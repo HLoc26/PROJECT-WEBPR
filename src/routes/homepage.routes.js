@@ -1,6 +1,7 @@
 import express from "express";
 import homeController from "../controllers/homepage.controller.js";
 import articleService from "../services/article.service.js";
+import tagController from "../controllers/tag.controller.js";
 const router = express.Router();
 
 router.get("/", homeController.GetHomepage);
@@ -21,5 +22,8 @@ router.get("/art-card", async (req, res) => {
 	});
 });
 
+router.get("/tag", tagController.getArticlesByTag);
+
 router.get("/list", homeController.getCategoryArticles);
+
 export default router;
