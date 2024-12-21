@@ -12,30 +12,26 @@ export default {
 
 	async getCategories(req, res) {
 		try {
-			// Lấy danh sách tất cả các chuyên mục cấp 1 (parent)
-			const parentCategories = await CategoryService.findAllCategories().where("belong_to", null);
+			const parentCategories = await CategoryService.findAllCategories()
+				.where("belong_to", null);
 
-			// Thêm các chuyên mục con (subcategories) vào từng chuyên mục cha
 			const categoriesWithSubcategories = await Promise.all(
-				parentCategories.map(async function (category) {
-					const subcategories = await CategoryService.findSubcategories(category.category_id);
-					return {
-						...category,
-						subcategories,
-					};
-				})
+				parentCategories.map(async (category) => ({
+					...category,
+					subcategories: await CategoryService.findSubcategories(category.category_id)
+				}))
 			);
 
-			// Trả về JSON chứa danh sách chuyên mục
 			res.json({
 				success: true,
-				data: categoriesWithSubcategories,
+				data: categoriesWithSubcategories
 			});
 		} catch (error) {
-			console.error(error);
+			console.error('Error in getCategories:', error);
 			res.status(500).json({
 				success: false,
 				message: "Failed to fetch categories",
+				data: [] // Ensure consistent empty response
 			});
 		}
 	},
