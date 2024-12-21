@@ -149,7 +149,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 		if (e.key === "Backspace" && value === "") {
 			if (tags.length > 0) {
-				const lastTag = wrapper.querySelector(".tag:last-of-type");
+				const wrapper_tags = wrapper.querySelectorAll(".tag");
+				const lastTag = wrapper_tags[wrapper_tags.length - 1];
 				if (lastTag) {
 					const tagText = lastTag.querySelector("span").innerHTML;
 					tags = tags.filter((t) => t !== tagText);
