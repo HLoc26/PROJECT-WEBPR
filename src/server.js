@@ -52,7 +52,6 @@ app.use(setUser);
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/homepage", homepageRoute);
-app.use("/list", homepageRoute);
 
 app.use(isAuth);
 app.use("/editor", isEditor, editorRoute);
