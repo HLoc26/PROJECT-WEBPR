@@ -1,5 +1,4 @@
 <!-- TinyMCE Script -->
-
 <script src="https://cdn.tiny.cloud/1/<%= api_key %>/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
 	function img_upload_handler(blobInfo, progress) {
@@ -114,6 +113,15 @@
 		</select>
 	</div>
 
+	<div class="form-group">
+		<label for="tags-input">Select tags</label>
+		<input type="text" class="form-control" id="tags-input" data-role="tagsinput" placeholder="Input tag..." />
+	</div>
+	<input type="hidden" name="tags" id="tags-hidden" />
+
 	<a href="/writer" role="button" class="btn btn-outline-danger mt-3">Cancel</a>
 	<button type="submit" class="btn btn-outline-success mt-3"><%= article ? 'Update' : 'Create' %></button>
 </form>
+<!-- tags input script and styling -->
+<link rel="stylesheet" href="/css/tagsinput.css">
+<script src="/js/tagsinput.js"></script>
