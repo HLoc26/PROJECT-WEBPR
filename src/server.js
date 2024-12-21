@@ -14,6 +14,7 @@ import configViewEngine from "./config/viewEngine.js";
 import setCategoriesMiddleware from "./middlewares/category.mdw.js"; // Huy
 
 import { setUser } from "./middlewares/user.mdw.js";
+import { isAuth, isEditor, isWriter } from "./middlewares/auth.mdw.js"; // Add auth middleware imports at the top with other imports
 
 // Initialize express app
 const app = express();
@@ -45,14 +46,21 @@ app.use(
 
 app.use(setUser);
 
-// When route starts with "/api", use apiRoutes to handle
+// Public routes
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
-app.use("/writer", writerRoute);
+
+// Global auth middleware
+app.use(isAuth);
+
+// Protected routes with role-specific middleware
+app.use("/editor", isEditor, editorRoute);
+app.use("/writer", isWriter, writerRoute);
+
+// Protected routes - no specific role required
+app.use("/profile", profileRoute);
 app.use("/homepage", homepageRoute);
 app.use("/list", homepageRoute);
-app.use("/editor", editorRoute);
-app.use("/profile", profileRoute);
 
 app.listen(process.env.PORT, function (req, res) {
 	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
