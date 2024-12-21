@@ -24,6 +24,6 @@ router.get("/art-card", async (req, res) => {
 
 router.get("/tag", tagController.getArticlesByTag);
 
-router.get("/list", homeController.getCategoryArticles);
+router.get("/cate", homeController.getCategoryArticles);
 
 export default router;
