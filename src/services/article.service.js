@@ -233,4 +233,8 @@ export default {
 
 		return relatedByCategoryAndTags;
 	},
+
+	addComment(commentData) {
+		return db('comments').insert(commentData);
+	}
 };
