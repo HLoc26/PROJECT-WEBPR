@@ -9,7 +9,7 @@
 	<!-- Pagination -->
 	<ul class="pagination justify-content-center my-3">
 		<li class="page-item <%= currentPage == 1 ? 'disabled' : '' %>">
-			<a class="page-link" href="/homepage/cate?id=<%= tagId %>&page=<%= currentPage-1 %>"><i class="bi bi-caret-left"></i></i></a>
+			<a class="page-link" href="/homepage/tag?id=<%= tagId %>&page=<%= currentPage-1 %>"><i class="bi bi-caret-left"></i></i></a>
 		</li>
 		<% for (let i = 1; i <= totalPages; i++) { %> <% if (i === currentPage) { %>
 		<li class="page-item active">
@@ -21,7 +21,7 @@
 		</li>
 		<% }} %>
 		<li class="page-item <%= currentPage == totalPages ? 'disabled' : '' %>">
-			<a class="page-link" href="/homepage/cate?id=<%= tagId %>&page=<%= currentPage+1 %>"><i class="bi bi-caret-right"></i></a>
+			<a class="page-link" href="/homepage/tag?id=<%= tagId %>&page=<%= currentPage+1 %>"><i class="bi bi-caret-right"></i></a>
 		</li>
 	</ul>
 </div>
