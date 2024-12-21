@@ -44,57 +44,56 @@ export default {
 	},
 
 	async postLogin(req, res) {
-        try {
-            const { email, password } = req.body;
+		try {
+			const { email, password } = req.body;
 
-            // Find user by email or username with complete user information
-            const userByEmail = await userService.findByEmail(email);
-            const userByUsername = await userService.findByUsername(email);
-            const user = userByEmail || userByUsername;
+			// Find user by email or username with complete user information
+			const userByEmail = await userService.findByEmail(email);
+			const userByUsername = await userService.findByUsername(email);
+			const user = userByEmail || userByUsername;
 
-            if (!user) {
-                return res.status(400).render("vwLogin/Login", {
-                    layout: "layouts/login.main.ejs",
-                    errors: [{ msg: "Email/Username không tồn tại" }]
-                });
-            }
+			if (!user) {
+				return res.status(400).render("vwLogin/Login", {
+					layout: "layouts/login.main.ejs",
+					errors: [{ msg: "Email/Username không tồn tại" }],
+				});
+			}
 
-            // Verify password
-            const match = await bcrypt.compare(password, user.password);
-            if (!match) {
-                return res.status(400).render("vwLogin/Login", {
-                    layout: "layouts/login.main.ejs",
-                    errors: [{ msg: "Mật khẩu không đúng" }]
-                });
-            }
+			// Verify password
+			const match = await bcrypt.compare(password, user.password);
+			if (!match) {
+				return res.status(400).render("vwLogin/Login", {
+					layout: "layouts/login.main.ejs",
+					errors: [{ msg: "Mật khẩu không đúng" }],
+				});
+			}
 
-            // Set session with complete user information
-            req.session.user = user;
+			// Set session with complete user information
+			req.session.user = user;
 
-            // Redirect based on role
-            switch (user.user_role) {
-                case "reader":
-                    res.redirect("/homepage");
-                    break;
-                case "writer":
-                    res.redirect("/writer");
-                    break;
-                case "editor":
-                    res.redirect("/editor");
-                    break;
-                case "admin":
-                    res.render("vwAdmin/Dashboard", { 
-                        layout: "layouts/admin.main.ejs",
-                        user: req.session.user 
-                    });
-                    break;
-                default:
-                    res.redirect("/homepage");
-            }
-
-        } catch (error) {
-            console.error("Login error:", error);
-            res.status(500).redirect("/500");
-        }
-    },
+			// Redirect based on role
+			switch (user.user_role) {
+				case "reader":
+					res.redirect("/homepage");
+					break;
+				case "writer":
+					res.redirect("/writer");
+					break;
+				case "editor":
+					res.redirect(`/editor/home?id=${user.managed_category_id}`);
+					break;
+				case "admin":
+					res.render("vwAdmin/Dashboard", {
+						layout: "layouts/admin.main.ejs",
+						user: req.session.user,
+					});
+					break;
+				default:
+					res.redirect("/homepage");
+			}
+		} catch (error) {
+			console.error("Login error:", error);
+			res.status(500).redirect("/500");
+		}
+	},
 };
