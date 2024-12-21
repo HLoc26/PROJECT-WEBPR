@@ -21,7 +21,5 @@ router.get("/art-card", async (req, res) => {
 	});
 });
 
-router.get("/list", function (req, res) {
-	res.render("vwHomepage/List");
-});
+router.get("/list", homeController.getCategoryArticles);
 export default router;
