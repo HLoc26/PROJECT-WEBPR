@@ -9,6 +9,7 @@ import writerRoute from "./routes/writer.routes.js";
 import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
 import profileRoute from "./routes/profile.routes.js";
+// Note: categoryRoutes are handled through apiRoutes
 
 import configViewEngine from "./config/viewEngine.js";
 import { setLocalCategories } from "./middlewares/category.mdw.js";
