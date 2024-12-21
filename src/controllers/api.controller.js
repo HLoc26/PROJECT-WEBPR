@@ -1,5 +1,7 @@
 import CategoryService from "../services/category.service.js";
 
+const ITEMS_PER_PAGE = 10; // Số bài viết trên mỗi trang
+
 export default {
 	async imgUpload(req, res) {
 		// console.log("api upload: ", req.file);
@@ -39,4 +41,40 @@ export default {
 			});
 		}
 	},
+
+	async getCategoryArticles(req, res) {
+        try {
+            const categoryId = req.query.id;
+            const page = parseInt(req.query.page) || 1;
+
+            if (!categoryId) {
+                return res.redirect("../views/vwError/404.ejs");
+            }
+
+            const category = await CategoryService.findCategoryById(categoryId);
+
+            if (!category) {
+                return res.status(404).render('../views/vwError/404.ejs');
+            }
+
+            const result = await CategoryService.findCategoryWithArticles(categoryId, page, ITEMS_PER_PAGE);
+
+            if (!result) {
+                return res.status(404).render('../views/vwError/404.ejs');
+            }
+
+            const { articles, totalPages } = result;
+
+            res.render('../views/vwArticle/List.ejs', {
+                category,
+                articles,
+                currentPage: page,
+                totalPages,
+                categoryId,
+            });
+        } catch (err) {
+            console.error(err);
+            res.status(500).render('../views/vwError/500.ejs');
+        }
+    }
 };
