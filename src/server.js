@@ -14,7 +14,9 @@ import configViewEngine from "./config/viewEngine.js";
 import setCategoriesMiddleware from "./middlewares/category.mdw.js"; // Huy
 
 import { setUser } from "./middlewares/user.mdw.js";
+
 import { isAuth, isEditor, isWriter } from "./middlewares/auth.mdw.js"; // Add auth middleware imports at the top with other imports
+
 
 // Initialize express app
 const app = express();
@@ -61,6 +63,7 @@ app.use("/writer", isWriter, writerRoute);
 app.use("/profile", profileRoute);
 app.use("/homepage", homepageRoute);
 app.use("/list", homepageRoute);
+
 
 app.listen(process.env.PORT, function (req, res) {
 	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
