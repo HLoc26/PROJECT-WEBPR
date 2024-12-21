@@ -48,8 +48,10 @@ app.use(setUser);
 // Public routes
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
+app.use("/homepage", homepageRoute);
+app.use("/list", homepageRoute);
 
-// Global auth middleware
+// Global auth middleware - only protect routes below this
 app.use(isAuth);
 
 // Protected routes with role-specific middleware
@@ -58,9 +60,6 @@ app.use("/writer", isWriter, writerRoute);
 
 // Protected routes - no specific role required
 app.use("/profile", profileRoute);
-app.use("/homepage", homepageRoute);
-app.use("/list", homepageRoute);
-
 
 app.listen(process.env.PORT, function (req, res) {
 	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
