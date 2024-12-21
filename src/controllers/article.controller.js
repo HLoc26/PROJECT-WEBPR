@@ -30,6 +30,30 @@ export default {
             console.error('Error in getArticleDetail:', error);
             res.status(500).redirect('/500');
         }
+    },
+
+    async postComment(req, res) {
+        try {
+            const articleId = req.params.id;
+            const { content } = req.body;
+            const userId = req.session.user?.user_id;
+
+            if (!userId) {
+                return res.redirect('/login');
+            }
+
+            await ArticleService.addComment({
+                article_id: articleId,
+                user_id: userId,
+                content: content,
+                created_at: new Date()
+            });
+
+            res.redirect(`/article/${articleId}`);
+        } catch (error) {
+            console.error('Error posting comment:', error);
+            res.status(500).redirect('/500');
+        }
     }
 };
 
