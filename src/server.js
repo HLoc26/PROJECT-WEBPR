@@ -3,20 +3,18 @@ import session from "express-session";
 import "dotenv/config";
 
 import apiRoutes from "./routes/api.routes.js";
-import articleRoutes from "./routes/article.routes.js"; // Lộc: Sáng import thiếu
+import articleRoutes from "./routes/article.routes.js";
 import defaultRoute from "./routes/default.routes.js";
 import writerRoute from "./routes/writer.routes.js";
 import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
-import categoryRoutes from "./routes/api.routes.js";
+import profileRoute from "./routes/profile.routes.js";
+// Note: categoryRoutes are handled through apiRoutes
 
 import configViewEngine from "./config/viewEngine.js";
-import setCategoriesMiddleware from "./middlewares/category.mdw.js"; // Huy
-
+import { setLocalCategories } from "./middlewares/category.mdw.js";
 import { setUser } from "./middlewares/user.mdw.js";
-import { isAuth } from "./middlewares/authen.mdw.js";
-import { isWriter } from "./middlewares/isWriter.mdw.js";
-import { isEditor } from "./middlewares/isEditor.mdw.js";
+import { isAuth, isEditor, isWriter } from "./middlewares/auth.mdw.js";
 
 // Initialize express app
 const app = express();
@@ -30,8 +28,8 @@ app.use(
 );
 app.use("/api", apiRoutes);
 
-// Huy: Middleware to set category variable
-app.use(setCategoriesMiddleware);
+// Quang: Middleware to set category variable - using direct DB access for better performance
+app.use(setLocalCategories);
 
 // Dùng session để lưu trạng thái đăng nhập
 app.use(
@@ -48,14 +46,20 @@ app.use(
 
 app.use(setUser);
 
-// When route starts with "/api", use apiRoutes to handle
+// Public routes
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/homepage", homepageRoute);
 
+// Global auth middleware - only protect routes below this
 app.use(isAuth);
+
+// Protected routes with role-specific middleware
 app.use("/editor", isEditor, editorRoute);
 app.use("/writer", isWriter, writerRoute);
+
+// Protected routes - no specific role required
+app.use("/profile", profileRoute);
 
 app.listen(process.env.PORT, function (req, res) {
 	console.log(`Listening on ${process.env.HOST_NAME}:${process.env.PORT}`);
