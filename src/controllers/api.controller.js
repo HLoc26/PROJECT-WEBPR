@@ -39,4 +39,40 @@ export default {
 			});
 		}
 	},
+
+	async getCategoryArticles(req, res) {
+		try {
+			const categoryId = req.query.id;
+			const page = parseInt(req.query.page) || 1;
+
+			if (!categoryId) {
+				return res.redirect("/404");
+			}
+
+			const category = await CategoryService.findCategoryById(categoryId);
+
+			if (!category) {
+				return res.redirect("/404");
+			}
+
+			const result = await CategoryService.findCategoryWithArticles(categoryId, page, ITEMS_PER_PAGE);
+
+			if (!result) {
+				return res.redirect("/404");
+			}
+
+			const { articles, totalPages } = result;
+
+			res.render("../views/vwArticle/List.ejs", {
+				category,
+				articles,
+				currentPage: page,
+				totalPages,
+				categoryId,
+			});
+		} catch (err) {
+			console.error(err);
+			res.redirect("/500");
+		}
+	},
 };
