@@ -1,31 +1,31 @@
 <div class="container mt-4">
-    <h3 class="mb-4">Editor Details</h3>
+    <h3 class="mb-4">Thông tin cá nhân</h3>
     <form action="/admin/editors/<%= editor.user_id %>/submit" method="post">
       <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Full Name:</label>
+        <label class="col-sm-2 col-form-label">Họ và tên:</label>
         <div class="col-sm-10">
           <input type="text" class="form-control" value="<%= editor.full_name %>" readonly>
         </div>
       </div>
   
       <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Role:</label>
+        <label class="col-sm-2 col-form-label">Chức vụ:</label>
         <div class="col-sm-10">
           <input type="text" class="form-control" value="<%= editor.user_role %>" readonly>
         </div>
       </div>
   
       <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">DoB:</label>
+        <label class="col-sm-2 col-form-label">Ngày sinh:</label>
         <div class="col-sm-10">
           <input type="text" class="form-control" value="<%= editor.dob %>" readonly>
         </div>
       </div>
   
       <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Is Active:</label>
+        <label class="col-sm-2 col-form-label">Còn hoạt động:</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" value="<%= editor.is_active === 1 ? 'Yes' : 'No' %>" readonly>
+          <input type="text" class="form-control" value="<%= editor.is_active === 1 ? 'Có' : 'Không' %>" readonly>
         </div>
       </div>
   
@@ -37,13 +37,13 @@
       </div>
   
       <div class="row mb-3">
-        <label class="col-sm-2 col-form-label">Category Managing:</label>
+        <label class="col-sm-2 col-form-label">Hiện đang quản lý mục:</label>
         <div class="col-sm-10">
           <input type="text" class="form-control" value="<%= editor.managedCategory %>" readonly>
         </div>
       </div>
   
-      <h4 class="mt-4">Articles Details</h4>
+      <h4 class="mt-4">Những bài báo đang quản lí</h4>
       <div class="tab-pane fade show active" id="published" role="tabpanel" aria-labelledby="published-tab">
         <table class="table table-striped table-bordered align-middle">
           <thead>
@@ -67,13 +67,11 @@
                       <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
                     <% } %>
                   </td>
-                  <td>
-                    <a href="#" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
-                  </td>
+                  <td><%= article.title %></td>
                   <td><%= article.category_name || 'N/A' %></td>
                   <td><%= article.tags || 'Không có nhãn dán' %></td>
                   <td><%= article.published_date ? new Date(article.published_date).toISOString().split('T')[0] : 'Chưa có' %></td>
-                  <td><%= article.editor_name || '--' %></td>
+                  <td><%= article.editor_fullname || '--' %></td>
                 </tr>
               <% }) %>
             <% } else { %>
@@ -86,7 +84,7 @@
       </div>
   
       <div class="mt-4 d-flex justify-content-between">
-        <a href="/admin/editor" class="btn btn-secondary">Back</a>
+        <a class="btn btn-secondary">Back</a>
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </form>
