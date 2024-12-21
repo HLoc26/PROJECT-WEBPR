@@ -1,0 +1,57 @@
+.tags-input-wrapper {
+	background: white;
+	padding: 8px;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	min-height: calc(1.5em + 0.75rem + 2px);
+}
+
+.tags-input-wrapper:focus-within {
+	border-color: #86b7fe;
+	box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.tag {
+	background: #e9ecef;
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.25rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	transition: background-color 0.3s ease;
+}
+
+.tag.duplicate {
+	animation: flashRed 1s;
+}
+
+@keyframes flashRed {
+	0% {
+		background-color: #e9ecef;
+	}
+	50% {
+		background-color: #ff8a8a;
+	}
+	100% {
+		background-color: #e9ecef;
+	}
+}
+
+.tag-close {
+	cursor: pointer;
+	color: #6c757d;
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+.tags-input {
+	border: none;
+	outline: none;
+	flex: 1;
+	min-width: 100px;
+	padding: 0.2rem;
+	font-size: 1rem;
+}
