@@ -1,11 +1,14 @@
 import ArticleService from "../services/article.service.js";
-import CategoryService from "../services/category.service.js";
 import TagService from "../services/tag.service.js";
 export default {
 	async getEditorHome(req, res) {
 		try {
-			const { id: categoryId } = req.query; // Retrieve category ID from query parameters
+			// Avoid using this, SQLi
+			// const { id: categoryId } = req.query; // Retrieve category ID from query parameters
 
+			// Using editor's information to load articles
+			const categoryId = req.session.user.managed_category_id;
+			const user = req.session.user.user_role;
 			// Fetch articles by category (including subcategories) using ArticleService
 			const articles = await ArticleService.findArticlesByCategoryIncludingSubcategories(categoryId);
 
@@ -44,6 +47,9 @@ export default {
 			res.render("vwEditor/home", {
 				pendingArticles,
 				publishedArticles,
+				articles,
+				user,
+				layout: "layouts/admin.main.ejs",
 			});
 		} catch (error) {
 			console.error("Error fetching articles:", error);
