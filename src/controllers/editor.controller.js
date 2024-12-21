@@ -8,7 +8,7 @@ export default {
 
 			// Using editor's information to load articles
 			const categoryId = req.session.user.managed_category_id;
-
+			const user = req.session.user.user_role;
 			// Fetch articles by category (including subcategories) using ArticleService
 			const articles = await ArticleService.findArticlesByCategoryIncludingSubcategories(categoryId);
 
@@ -47,6 +47,9 @@ export default {
 			res.render("vwEditor/home", {
 				pendingArticles,
 				publishedArticles,
+				articles,
+				user,
+				layout: "layouts/admin.main.ejs",
 			});
 		} catch (error) {
 			console.error("Error fetching articles:", error);
