@@ -54,7 +54,7 @@ export default {
             const category = await CategoryService.findCategoryById(categoryId);
 
             if (!category) {
-                return res.redirect('404');
+                return res.redirect('/404');
             }
 
             const result = await CategoryService.findCategoryWithArticles(categoryId, page, ITEMS_PER_PAGE);
