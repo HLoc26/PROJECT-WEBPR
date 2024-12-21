@@ -65,7 +65,7 @@ export default {
 
 			const { articles, totalPages } = result;
 
-			res.render("../views/vwArticle/List.ejs", {
+			res.render("../views/vwHomepage/List", {
 				category,
 				articles,
 				currentPage: page,
