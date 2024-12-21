@@ -35,8 +35,8 @@
 							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
 							<% } %>
 						</td>
-						<td class="text-center align-middle">
-							<a href="#" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+						<td>
+							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
 						</td>
 						<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
 						<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
@@ -78,8 +78,8 @@
 							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
 							<% } %>
 						</td>
-						<td class="text-center align-middle">
-							<a href="#" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+						<td>
+							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
 						</td>
 						<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
 						<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
