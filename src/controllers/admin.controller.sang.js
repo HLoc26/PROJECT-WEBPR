@@ -2,10 +2,10 @@ import articleService from "../services/article.service.js";
 import categoryService from "../services/category.service.js";
 import userService from "../services/user.service";
 export default {
-	async fetchEditors(req, res) {
+	async getEditors(req, res) {
 		try {
 			// Fetch all users with the role of "editor"
-			const editors = await userService.findUserById(null, "editor");
+			const editors = await userService.findUsersByRole("editor");
 
 			// Render the vwAdmin/editor view with the fetched editors
 			res.render("vwAdmin/editor", {
