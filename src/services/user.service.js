@@ -26,7 +26,6 @@ export default {
 			)
 			.first();
 	},
-
 	findUserByEmail(email, role = null) {
 		let query = db("users").leftJoin("categories", "users.managed_category_id", "categories.category_id").where({ email });
 
@@ -47,6 +46,24 @@ export default {
 		}
 
 		return query.first().select("users.*", "categories.category_name as managed_category_name");
+	},
+	findUsersByRole(role) {
+		return db("users")
+			.leftJoin("categories", "users.managed_category_id", "categories.category_id")
+			.where("users.user_role", role)
+			.select(
+				"users.user_id",
+				"users.username",
+				"users.email",
+				"users.full_name",
+				"users.dob",
+				"users.subscription_expired_date",
+				"users.premium",
+				"users.is_active",
+				"users.user_role",
+				"users.managed_category_id",
+				"categories.category_name as managed_category_name"
+			);
 	},
 	// TODO: In register, use addUser instead of this
 	addReader(entity) {
