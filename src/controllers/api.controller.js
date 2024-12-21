@@ -48,19 +48,19 @@ export default {
             const page = parseInt(req.query.page) || 1;
 
             if (!categoryId) {
-                return res.redirect("../views/vwError/404.ejs");
+                return res.redirect("/404");
             }
 
             const category = await CategoryService.findCategoryById(categoryId);
 
             if (!category) {
-                return res.redirect('../views/vwError/404.ejs');
+                return res.redirect('404');
             }
 
             const result = await CategoryService.findCategoryWithArticles(categoryId, page, ITEMS_PER_PAGE);
 
             if (!result) {
-                return res.redirect('../views/vwError/404.ejs');
+                return res.redirect('/404');
             }
 
             const { articles, totalPages } = result;
@@ -74,7 +74,7 @@ export default {
             });
         } catch (err) {
             console.error(err);
-            res.redirect('../views/vwError/500.ejs');
+            res.redirect('/500');
         }
     }
 };
