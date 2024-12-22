@@ -105,4 +105,10 @@ export default {
 			.where("user_id", userId)
 			.update(updates);
 	},
+
+	findAllRoles() {
+        return db("users")
+            .distinct("user_role")
+            .select("user_role");
+    },
 };
