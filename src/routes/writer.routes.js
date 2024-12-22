@@ -37,10 +37,16 @@ router.get("/edit", async function (req, res) {
 			return res.status(404).redirect("/404");
 		}
 
+		const tagObj = await tagService.findTagsByArticleId(id);
+		const tagName = tagObj.map((tag) => tag.tag_name);
+
+		// console.log("article tags: ", tagName);
+
 		res.render("vwWriter/edit", {
 			layout: "layouts/admin.main.ejs",
 			api_key: process.env.TINY_API_KEY, // Pass TinyMCE API key
 			article: article, // Pass the article object to the template
+			tags: tagName,
 		});
 	} catch (error) {
 		console.error("Error fetching article:", error);
