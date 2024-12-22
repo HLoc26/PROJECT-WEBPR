@@ -8,7 +8,8 @@ export default {
 
 			// Using editor's information to load articles
 			const categoryId = req.session.user.managed_category_id;
-			const user = req.session.user.user_role;
+			const user = req.session.user;
+			// console.log(user); // Debug
 			// Fetch articles by category (including subcategories) using ArticleService
 			const articles = await ArticleService.findArticlesByCategoryIncludingSubcategories(categoryId);
 
