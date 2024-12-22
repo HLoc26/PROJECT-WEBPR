@@ -36,7 +36,7 @@
 		<!-- Dynamic category -->
 		<h1 class="fw-bold"><%= article.title %></h1>
 		<!-- Dynamic article title -->
-		<p class="text-muted"><%= article.published_date ? new Date(article.published_date).toLocaleDateString("vi-VN") : "Chưa có" %></p>
+		<p class="text-muted"><%= article.published_date ? new Date(article.published_date).toISOString().toLocaleDateString("vi-VN") : "Chưa có" %></p>
 	</div>
 
 	<!-- Image Placeholder -->
@@ -90,7 +90,7 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form id="rejectedForm" action="/edit/reject" method="POST">
+				<form id="rejectedForm" action="/editor/reject" method="POST">
 					<input type="hidden" name="articleId" value="<%= article.article_id %>">
 					<div class="modal-body">
 						<!-- Reason for Rejection -->
