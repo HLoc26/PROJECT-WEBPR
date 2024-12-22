@@ -39,14 +39,32 @@
                 <h2>Comments (<%= comments.length %>)</h2>
             </div>
             <div class="card-body">
+                <% if (user) { %>
+                    <form action="/article/<%= article.article_id %>/comment" method="POST" class="mb-4">
+                        <div class="form-group">
+                            <textarea 
+                                name="content" 
+                                class="form-control" 
+                                rows="3" 
+                                placeholder="Write a comment..."
+                                required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                <% } else { %>
+                    <div class="alert alert-info">
+                        Please <a href="/login">login</a> to comment
+                    </div>
+                <% } %>
+
                 <% if (comments.length > 0) { %>
                     <% comments.forEach(comment => { %>
-                    <div class="comment mb-3">
+                    <div class="comment mb-3 border-bottom pb-2">
                         <strong><%= comment.commenter_name %></strong>
                         <small class="text-muted">
                             <%= new Date(comment.created_at).toLocaleDateString('vi-VN') %>
                         </small>
-                        <p><%= comment.content %></p>
+                        <p class="mb-0"><%= comment.content %></p>
                     </div>
                     <% }) %>
                 <% } else { %>
