@@ -130,4 +130,6 @@ dist
 .pnp.*
 
 *.test.*
-.vscode/easycode.ignore
+
+src/public/img
+develop

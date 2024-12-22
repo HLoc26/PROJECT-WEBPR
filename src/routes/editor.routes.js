@@ -1,9 +1,9 @@
 import express from "express";
-
+import editorController from "../controllers/editor.controller.js";
 const router = express.Router();
 
-router.get("/", function (req, res) {
-	res.render("vwEditor/Editorpage");
-});
-
+router.get("/home", editorController.getEditorHome);
+router.get("/edit", editorController.getEdit);
+router.post("/approve", editorController.postApprove);
+router.post("/reject", editorController.postReject);
 export default router;
