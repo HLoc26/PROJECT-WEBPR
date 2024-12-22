@@ -36,7 +36,7 @@
 		<!-- Dynamic category -->
 		<h1 class="fw-bold"><%= article.title %></h1>
 		<!-- Dynamic article title -->
-		<p class="text-muted"><%= article.published_date ? new Date(article.published_date).toISOString().toLocaleDateString("vi-VN") : "Chưa có" %></p>
+		<p class="text-muted"><%= article.published_date ? new Date(article.published_date).toLocaleDateString("vi-VN") : "Chưa có" %></p>
 	</div>
 
 	<!-- Image Placeholder -->
