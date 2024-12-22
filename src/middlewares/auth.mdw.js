@@ -3,7 +3,7 @@ export function isAuth(req, res, next) {
   if (!req.session.user) {
     return res.redirect('/login');
   }
-  req.user = req.session.user;
+  // req.user = req.session.user;
   // console.log('Authenticated User:', req.user);
   next();
 }
