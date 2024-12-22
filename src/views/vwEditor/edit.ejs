@@ -61,12 +61,19 @@
 	</div>
 
 	<!-- Tags -->
-	<!-- Need to meet with be to fix - Sang-->
 	<div class="mb-4">
-		<% if (article.tags) { %> <% article.tags.split(",").forEach(tag => { %>
+		<% if (tags) { %> <% tags.forEach(tag => { %>
 		<!-- Assuming tags are stored as a comma-separated string -->
-		<span class="badge bg-secondary me-1"><%= tag.trim() %></span>
+		<span class="badge bg-secondary me-1 p-2 text-white"><%= tag.tag_name.trim() %></span>
 		<% }) %> <% } %>
+	</div>
+
+	<!-- Is premium -->
+	<div class="mb-4">
+		<div class="custom-control custom-switch">
+			<input type="checkbox" class="custom-control-input" id="customSwitch2" <%= article.is_preium ? '' : 'disabled' %> />
+			<label class="custom-control-label" for="customSwitch2">Is Premium</label>
+		</div>
 	</div>
 
 	<!-- Modal -->
