@@ -106,15 +106,38 @@
           </div>
           
 
-        <!-- Buttons -->
-        <div class="d-flex justify-content-end">
-          <a href="/admin/editor" class="btn btn-secondary me-3">Quay lại</a>
-          <button type="submit" class="btn btn-primary">Cập nhật</button>
-        </div>        
-      </form>
+          <div class="d-flex justify-content-between">
+            <a href="/admin/editor" class="btn btn-secondary">Quay lại</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+              Xóa người dùng
+            </button>
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+  
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="deleteModalLabel">Xóa người dùng</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Bạn có chắc chắn muốn xóa người dùng "<%= editor.full_name %>" không? Hành động này sẽ vô hiệu hóa tài khoản của họ.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <form action="/admin/editors/<%= editor.user_id %>/delete" method="post">
+            <button type="submit" class="btn btn-danger">Xóa</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <!-- Articles Managed Section -->
 <div class="container mt-4">
