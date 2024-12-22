@@ -30,5 +30,8 @@ export default {
 
 		return { articles, totalPages };
 	},
-	findEditorCategories(editor_id) {},
+
+	findEditorCategory(editor_id) {
+		return db("categories").join("users", "users.managed_category_id", "categories.category_id").select("categories.*");
+	},
 };
