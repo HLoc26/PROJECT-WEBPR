@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import userService from "../services/user.service.js";
 import { validationResult } from "express-validator";
 import "dotenv/config";
+import articleService from "../services/article.service.js";
 
 export default {
 	async postRegister(req, res) {
@@ -71,6 +72,15 @@ export default {
 			// Set session with complete user information
 			req.session.user = user;
 
+			// Update every archived articles to published
+			const articles = await articleService.findByStatus("archived");
+			const currentTime = new Date();
+			articles.forEach(async (article) => {
+				if (article.published_date < currentTime) {
+					await articleService.updateArticleStatus(article.article_id, "published");
+				}
+			});
+
 			// Redirect based on role
 			switch (user.user_role) {
 				case "reader":
@@ -80,7 +90,7 @@ export default {
 					res.redirect("/writer");
 					break;
 				case "editor":
-					res.redirect(`/editor/home?id=${user.managed_category_id}`);
+					res.redirect(`/editor/home`);
 					break;
 				case "admin":
 					res.render("vwAdmin/Dashboard", {

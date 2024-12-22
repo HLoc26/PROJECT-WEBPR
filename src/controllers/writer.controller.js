@@ -77,10 +77,14 @@ export default {
 
 			// Check if all the tags are already in the database if not, add them
 			// Get existing tags from DB
-			const tagsArr = tags
-				.split(",")
-				.map((tag) => tag.trim())
-				.filter((tag) => tag !== "");
+			const tagsArr = [
+				...new Set(
+					tags
+						.split(",")
+						.map((tag) => tag.trim())
+						.filter((tag) => tag !== "")
+				),
+			];
 			const tagsInDb = await tagService.findAllTags();
 			const existingTagNames = tagsInDb.map((tag) => tag.tag_name);
 

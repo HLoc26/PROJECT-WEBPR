@@ -16,17 +16,19 @@ export default {
 				categories.map(async (category) => {
 					const articles = await ArticleService.findArticlesByCategoryIncludingSubcategories(category.category_id);
 
+					const filtered = articles.filter((article) => article.status === "published");
+
 					// Take only the first 5 articles (they're already ordered by published_date desc)
-					categoryArticles[category.category_name] = articles.slice(0, 5);
+					categoryArticles[category.category_name] = filtered.slice(0, 5);
 				})
 			);
 
 			// Get overall newest articles across all categories
-			const newestArticles = await ArticleService.findAllArticles();
+			const newestArticles = await ArticleService.findByStatus("published");
 			const top10Newest = newestArticles.slice(0, 10);
 
 			// Get most viewed articles
-			const mostViewedArticles = await ArticleService.findAllArticles();
+			const mostViewedArticles = await ArticleService.findByStatus("published");
 			const top10MostViewed = mostViewedArticles.sort((a, b) => b.views - a.views).slice(0, 10);
 
 			// Render the homepage with all required data

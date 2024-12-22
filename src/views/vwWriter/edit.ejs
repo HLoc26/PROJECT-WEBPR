@@ -126,7 +126,7 @@
  		<input type="text" 
 			   class="form-control"
 			   id="tags-input"
-			   data-initial-tags='<%= tags ? JSON.stringify(tags) : "[]" %>'
+			   data-initial-tags='<%= typeof tags !== 'undefined' ? JSON.stringify(tags) : "[]" %>'
 			   data-role="tagsinput"
 			   placeholder="Input tag..."
 		/>
@@ -138,4 +138,4 @@
 </form>
 <!-- tags input script and styling -->
 <link rel="stylesheet" href="/css/tagsinput.css">
-<script src="/js/tagsinput.js"></script>
+<script src="/js/writer.tagsinput.js"></script>
