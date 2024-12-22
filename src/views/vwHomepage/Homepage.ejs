@@ -47,7 +47,7 @@
 				<% categoryArticles.forEach((article) => { %>
 				<div class="card my-2">
 					<div class="card-header">
-						<a href="/category/<%= article.category_id %>" class="h5 text-decoration-none text-reset"> <%= article.category_name.toUpperCase() %> </a>
+						<a href="/homepage/cate?id=<%= article.category_id %>" class="h5 text-decoration-none text-reset"> <%= article.category_name.toUpperCase() %> </a>
 					</div>
 					<div class="card-body"><%- include("../partials/article_sl", {article: article, width: 400, show_tags: true}) %></div>
 				</div>
