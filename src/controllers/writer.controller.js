@@ -57,10 +57,6 @@ export default {
 			const { title, summary, content, category, premium, tags } = req.body;
 			const writer_id = req.session.user.user_id;
 			const is_premium = premium === "on" ? 1 : 0;
-			const tagsArr = tags
-				.split(",")
-				.map((tag) => tag.trim())
-				.filter((tag) => tag !== "");
 			const thumbnail = req.file ? req.file.filename : "default-thumbnail.jpg";
 
 			const entity = {
@@ -81,6 +77,10 @@ export default {
 
 			// Check if all the tags are already in the database if not, add them
 			// Get existing tags from DB
+			const tagsArr = tags
+				.split(",")
+				.map((tag) => tag.trim())
+				.filter((tag) => tag !== "");
 			const tagsInDb = await tagService.findAllTags();
 			const existingTagNames = tagsInDb.map((tag) => tag.tag_name);
 
@@ -112,5 +112,48 @@ export default {
 
 	async postEdit(req, res) {
 		const articleId = req.query.id;
+		const { title, summary, content, category, premium, tags } = req.body;
+		const is_premium = premium === "on" ? 1 : 0;
+		const thumbnail = req.file.filename;
+
+		const entity = {
+			title: title,
+			content: content,
+			abstract: summary,
+			thumbnail: thumbnail,
+			status: "waiting",
+			is_premium: is_premium,
+			category_id: category,
+			editor_id: null,
+		};
+
+		await articleService.updateArticle(articleId, entity);
+
+		// Lấy danh sách tag từ request
+		const tagsArr = tags
+			.split(",")
+			.map((tag) => tag.trim())
+			.filter((tag) => tag !== "");
+
+		// Xóa các tag không còn trong danh sách mới
+		await tagService.removeTagsFromArticle(articleId);
+		const tagsInDb = await tagService.findAllTags();
+		const existingTagNames = tagsInDb.map((tag) => tag.tag_name);
+
+		// Thêm các tag mới
+		for (const tagName of tagsArr) {
+			let tagId;
+
+			if (!existingTagNames.includes(tagName)) {
+				tagId = await tagService.addTag(tagName);
+			} else {
+				tagId = tagsInDb.find((tag) => tag.tag_name === tagName).tag_id;
+			}
+
+			await tagService.addTagToArticle(articleId, tagId);
+		}
+
+		// Redirect to writer's dashboard or article list
+		res.redirect("/writer");
 	},
 };
