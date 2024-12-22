@@ -126,7 +126,7 @@
  		<input type="text" 
 			   class="form-control"
 			   id="tags-input"
-			   data-initial-tags='<%= tags ? JSON.stringify(tags) : "[]" %>'
+			   data-initial-tags='<%= typeof tags !== 'undefined' ? JSON.stringify(tags) : "[]" %>'
 			   data-role="tagsinput"
 			   placeholder="Input tag..."
 		/>
