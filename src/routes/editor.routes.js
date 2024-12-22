@@ -4,4 +4,5 @@ const router = express.Router();
 
 router.get("/home", editorController.getEditorHome);
 router.get("/edit", editorController.getEdit);
+router.post("/edit/reject", editorController.postReject);
 export default router;
