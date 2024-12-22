@@ -126,7 +126,7 @@ export default {
 			);
 
 			// Redirect back with success message
-			res.redirect(`/editor/edit?id=${articleId}`);
+			res.redirect(`/editor/home`);
 		} catch (error) {
 			console.error("Error rejecting article:", error);
 			res.status(500).redirect("/500");
