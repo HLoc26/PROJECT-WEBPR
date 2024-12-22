@@ -105,7 +105,7 @@
 		<div class="form-group mb-3">
 			<label for="premium-toggle">Premium Article</label>
 			<div class="custom-control custom-switch">
-				<input type="checkbox" class="custom-control-input" id="premium-toggle" name="premium" <%= article && article.premium ? 'checked' : '' %> />
+				<input type="checkbox" class="custom-control-input" id="premium-toggle" name="premium" <%= article && article.is_premium ? 'checked' : '' %> />
 				<label class="custom-control-label" for="premium-toggle">Mark as premium</label>
 			</div>
 		</div>
