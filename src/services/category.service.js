@@ -32,6 +32,6 @@ export default {
 	},
 
 	findEditorCategory(editor_id) {
-		return db("categories").join("users", "users.managed_category_id", "categories.category_id").select("categories.*");
+		return db("categories").join("users", "users.managed_category_id", "categories.category_id").where("users.user_id", editor_id).select("categories.*");
 	},
 };
