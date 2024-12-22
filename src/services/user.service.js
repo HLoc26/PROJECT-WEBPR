@@ -28,6 +28,16 @@ export default {
 			)
 			.first();
 	},
+
+	findAllUsers(role = null) {
+		let query = db("users").select("users.user_id");
+		if (role) {
+			query = query.where("users.user_role", role);
+		}
+
+		return query;
+	},
+
 	findUserByEmail(email, role = null) {
 		let query = db("users").leftJoin("categories", "users.managed_category_id", "categories.category_id").where({ email });
 
@@ -39,7 +49,7 @@ export default {
 		return query.first().select("users.*", "categories.category_name as managed_category_name");
 	},
 
-	findByUsername(username, role = null) {
+	findUserByUsername(username, role = null) {
 		let query = db("users").leftJoin("categories", "users.managed_category_id", "categories.category_id").where({ username });
 
 		// Add role filter if specified
@@ -47,8 +57,23 @@ export default {
 			query = query.andWhere("user_role", role);
 		}
 
-		return query.first().select("users.*", "categories.category_name as managed_category_name");
+		return query
+			.first()
+			.select(
+				"user_id",
+				"username",
+				"email",
+				"full_name",
+				"dob",
+				"subscription_expired_date",
+				"premium",
+				"is_active",
+				"user_role",
+				"managed_category_id",
+				"categories.category_name as managed_category_name"
+			);
 	},
+
 	findUsersByRole(role) {
 		return db("users")
 			.leftJoin("categories", "users.managed_category_id", "categories.category_id")
