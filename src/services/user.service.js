@@ -107,17 +107,14 @@ export default {
 
 	updateUserProfile(userId, updateData) {
 		const updates = {};
-
 		if (updateData.username) updates.username = updateData.username;
 		if (updateData.email) updates.email = updateData.email;
 		if (updateData.full_name) updates.full_name = updateData.full_name;
 		if (updateData.dob) updates.dob = new Date(updateData.dob);
-
 		// Hash password if provided using process.env.PASSWORD_ROUND
 		if (updateData.password) {
 			updates.password = bcrypt.hashSync(updateData.password, +process.env.PASSWORD_ROUND);
 		}
-
 		return db("users").where("user_id", userId).update(updates);
 	},
 
