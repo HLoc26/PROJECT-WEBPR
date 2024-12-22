@@ -130,7 +130,7 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form id="approveForm">
+				<form id="approveForm" method="POST" action="/editor/approve?id=<%= article.article_id %>">
 					<div class="modal-body">
 						<!-- Comment Section -->
 						<div class="form-group">
@@ -140,7 +140,7 @@
 						<!-- Publish Section -->
 						<div class="form-group">
 							<label for="datetimepicker">Select Date and Time</label>
-							<input type="text" class="form-control" id="datetimepicker" placeholder="Select date and time" />
+							<input type="text" class="form-control" id="datetimepicker" name="publish_date" placeholder="Select date and time" />
 						</div>
 					</div>
 					<div class="modal-footer">
