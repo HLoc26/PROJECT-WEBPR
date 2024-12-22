@@ -111,7 +111,9 @@
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
               Xóa người dùng
             </button>
-            <button type="submit" class="btn btn-primary">Cập nhật</button>
+            <form action="/admin/editor/<%= editor.user_id %>/submit" method="post">
+              <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </form>
           </div>
         </form>
       </div>
