@@ -35,10 +35,10 @@ export default {
 	async getEditorDetails(req, res) {
 		try {
 			const editorId = req.params.id || req.query.id;
-			//This is admin, so if SQLi, then it's admin's fault
 			if (!editorId) {
 				return res.status(400).send("Editor ID is required.");
 			}
+
 			// Fetch the editor details by ID
 			const editor = await userService.findUsersByRole("editor");
 			const editorDetails = editor.find((e) => e.user_id === parseInt(editorId, 10));
@@ -50,13 +50,22 @@ export default {
 			// Fetch articles managed by the editor's category
 			const articles = await articleService.findArticlesByCategoryIncludingSubcategories(editorDetails.managed_category_id);
 
-			// Render the vwAdmin/editor_detail view with editor details and articles
+			// Fetch all roles (excluding "admin")
+			const allRoles = await userService.findAllRoles();
+			const roles = allRoles.map((r) => r.user_role).filter((role) => role.toLowerCase() !== "admin");
+
+			// Fetch all categories
+			const categories = await categoryService.findAllCategories();
+
+			// Render the vwAdmin/editor_detail view with editor details, articles, roles, and categories
 			res.render("vwAdmin/editor_detail", {
 				editor: {
 					...editorDetails,
 					managedCategory: editorDetails.managed_category_name || "Chưa có", // Default if no category
 				},
 				articles: articles || [],
+				roles: roles || [],
+				categories: categories || [],
 			});
 		} catch (error) {
 			console.error("Error fetching editor details:", error);
