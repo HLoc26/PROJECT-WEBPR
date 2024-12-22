@@ -1,6 +1,7 @@
 import articleService from "../services/article.service.js";
 import categoryService from "../services/category.service.js";
 import userService from "../services/user.service.js";
+import tagService from "../services/tag.service.js";
 export default {
 	async getEditors(req, res) {
 		try {
@@ -35,11 +36,13 @@ export default {
 	async getEditorDetails(req, res) {
 		try {
 			const editorId = req.params.id || req.query.id;
+
 			if (!editorId) {
 				return res.status(400).send("Editor ID is required.");
 			}
+			const tags = await tagService.findTagsByArticleId("editor");
 
-			// Fetch the editor details by ID
+			// Fetch the editor details
 			const editor = await userService.findUsersByRole("editor");
 			const editorDetails = editor.find((e) => e.user_id === parseInt(editorId, 10));
 
@@ -47,25 +50,35 @@ export default {
 				return res.status(404).send("Editor not found.");
 			}
 
+			// Fetch categories and organize them with subcategories
+			const categories = await categoryService.findAllCategories();
+			const organizedCategories = await Promise.all(
+				categories.map(async (category) => {
+					const subcategories = await categoryService.findSubcategories(category.category_id);
+					return {
+						...category,
+						subcategories: subcategories || [],
+					};
+				})
+			);
+
 			// Fetch articles managed by the editor's category
 			const articles = await articleService.findArticlesByCategoryIncludingSubcategories(editorDetails.managed_category_id);
 
-			// Fetch all roles (excluding "admin")
-			const allRoles = await userService.findAllRoles();
-			const roles = allRoles.map((r) => r.user_role).filter((role) => role.toLowerCase() !== "admin");
+			// Fetch roles excluding admin
+			const roles = await userService.findAllRoles();
+			const filteredRoles = roles.filter((role) => role.user_role !== "admin");
 
-			// Fetch all categories
-			const categories = await categoryService.findAllCategories();
-
-			// Render the vwAdmin/editor_detail view with editor details, articles, roles, and categories
+			// Render the view with organized data
 			res.render("vwAdmin/editor_detail", {
 				editor: {
 					...editorDetails,
-					managedCategory: editorDetails.managed_category_name || "Chưa có", // Default if no category
+					managedCategory: editorDetails.managed_category_name || "Chưa có",
 				},
 				articles: articles || [],
-				roles: roles || [],
-				categories: categories || [],
+				categories: organizedCategories,
+				roles: filteredRoles,
+				tags: tags || [],
 			});
 		} catch (error) {
 			console.error("Error fetching editor details:", error);
