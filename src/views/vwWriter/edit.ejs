@@ -123,7 +123,13 @@
 
 	<div class="form-group">
 		<label for="tags-input">Select tags</label>
-		<input type="text" class="form-control" id="tags-input" data-role="tagsinput" placeholder="Input tag..." />
+ 		<input type="text" 
+			   class="form-control"
+			   id="tags-input"
+			   data-initial-tags='<%= tags ? JSON.stringify(tags) : "[]" %>'
+			   data-role="tagsinput"
+			   placeholder="Input tag..."
+		/>
 	</div>
 	<input type="hidden" name="tags" id="tags-hidden" />
 
