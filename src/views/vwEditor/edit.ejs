@@ -90,7 +90,8 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form id="rejectedForm">
+				<form id="rejectedForm" action="/edit/reject" method="POST">
+					<input type="hidden" name="articleId" value="<%= article.article_id %>">
 					<div class="modal-body">
 						<!-- Reason for Rejection -->
 						<div class="form-group">
@@ -103,6 +104,7 @@
 						<button type="submit" class="btn btn-primary">Gửi</button>
 					</div>
 				</form>
+				
 			</div>
 		</div>
 	</div>
