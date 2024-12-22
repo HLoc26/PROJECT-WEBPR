@@ -40,11 +40,10 @@ export default {
 			if (!editorId) {
 				return res.status(400).send("Editor ID is required.");
 			}
-			const tags = await tagService.findTagsByArticleId("editor");
 
 			// Fetch the editor details
-			const editor = await userService.findUsersByRole("editor");
-			const editorDetails = editor.find((e) => e.user_id === parseInt(editorId, 10));
+			const editors = await userService.findUsersByRole("editor");
+			const editorDetails = editors.find((e) => e.user_id === parseInt(editorId, 10));
 
 			if (!editorDetails) {
 				return res.status(404).send("Editor not found.");
@@ -52,18 +51,24 @@ export default {
 
 			// Fetch categories and organize them with subcategories
 			const categories = await categoryService.findAllCategories();
-			const organizedCategories = await Promise.all(
-				categories.map(async (category) => {
-					const subcategories = await categoryService.findSubcategories(category.category_id);
-					return {
-						...category,
-						subcategories: subcategories || [],
-					};
-				})
-			);
+			const organizedCategories = categories
+				.filter((category) => category.belong_to === null)
+				.map((category) => ({
+					...category,
+					subcategories: categories.filter((subcat) => subcat.belong_to === category.category_id),
+				}));
 
 			// Fetch articles managed by the editor's category
 			const articles = await articleService.findArticlesByCategoryIncludingSubcategories(editorDetails.managed_category_id);
+
+			// Fetch tags for each article
+			const articleTagsMap = {};
+			await Promise.all(
+				articles.map(async (article) => {
+					const articleTags = await tagService.findTagsByArticleId(article.article_id);
+					articleTagsMap[article.article_id] = articleTags || [];
+				})
+			);
 
 			// Fetch roles excluding admin
 			const roles = await userService.findAllRoles();
@@ -78,7 +83,7 @@ export default {
 				articles: articles || [],
 				categories: organizedCategories,
 				roles: filteredRoles,
-				tags: tags || [],
+				tags: articleTagsMap, // Pass tags as a map keyed by article_id
 			});
 		} catch (error) {
 			console.error("Error fetching editor details:", error);
