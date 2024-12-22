@@ -49,6 +49,14 @@ export default {
 		return db("tags").join("articletags", "tags.tag_id", "articletags.tag_id").where("articletags.article_id", articleId).select("tags.tag_id", "tags.tag_name");
 	},
 
+	addTagToArticle(articleId, tagId) {
+		const entity = {
+			article_id: articleId,
+			tag_id: tagId,
+		};
+		return db("articletags").insert(entity);
+	},
+
 	// Thêm các tags cho một bài viết cụ thể
 	addTagsToArticle(articleId, tagIds) {
 		const articleTags = tagIds.map((tagId) => ({

@@ -109,12 +109,23 @@ export default {
 			.leftJoin("categories", "articles.category_id", "categories.category_id")
 			.leftJoin("users as writers", "articles.writer_id", "writers.user_id")
 			.leftJoin("users as editors", "articles.editor_id", "editors.user_id")
-			.select("articles.*", "categories.category_name", "writers.full_name as writer_name", "editors.full_name as editor_name");
+			.select("articles.*", "categories.category_name", "writers.full_name as writer_name", "editors.full_name as editor_name")
+			.orderBy("articles.article_id", "desc");
 	},
 
 	// Thêm article (entity: { title, content, abstract, thumbnail, category_id, writer_id, editor_id, status, is_premium, published_date })
 	addArticle(entity) {
-		return db("articles").insert(entity);
+		return db("articles")
+			.insert(entity)
+			.then(([id]) => {
+				// 'id' represents the newly inserted article ID
+				return id;
+			})
+			.catch((error) => {
+				// Handle any errors that occur during the insert operation
+				console.error("Error inserting article:", error);
+				throw error;
+			});
 	},
 
 	// Xóa article by ID
