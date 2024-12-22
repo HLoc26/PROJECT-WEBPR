@@ -1,0 +1,200 @@
+<div class="container mt-4">
+  <!-- Personal Information Card -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">(Chỉnh sửa) Thông tin cá nhân</h4>
+    </div>
+    <div class="card-body">
+      <form action="/admin/editor/<%= editor.user_id %>/submit" method="post">
+        <!-- Full Name -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="fullName" class="form-label">Họ và tên:</label>
+            <input 
+              type="text" 
+              id="fullName" 
+              class="form-control" 
+              value="<%= editor.full_name %>" 
+              readonly 
+            />
+          </div>
+        </div>
+
+        <!-- Role Selection -->
+        <div class="row mb-3 align-items-center">
+          <div class="col-md-6">
+            <label for="roleSelect" class="form-label">Chức vụ:</label>
+            <select 
+              id="roleSelect" 
+              name="role" 
+              class="form-select form-select-lg bg-light shadow-sm border-primary text-dark" 
+              aria-label="Chọn chức vụ"
+            >
+              <% roles.forEach(role => { %>
+                <option 
+                  value="<%= role.user_role %>" 
+                  <%= editor.user_role === role.user_role ? 'selected' : '' %>
+                >
+                  <%= role.user_role %>
+                </option>
+              <% }); %>
+            </select>
+          </div>
+        </div>
+
+        <!-- Date of Birth & Active Status -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="dob" class="form-label">Ngày sinh:</label>
+            <input 
+              type="text" 
+              id="dob" 
+              class="form-control" 
+              value="<%= new Date(editor.dob).toISOString().split('T')[0] %>" 
+              readonly 
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="activeStatus" class="form-label">Còn hoạt động:</label>
+            <input 
+              type="text" 
+              id="activeStatus" 
+              class="form-control" 
+              value="<%= editor.is_active === 1 ? 'Có' : 'Không' %>" 
+              readonly 
+            />
+          </div>
+        </div>
+
+        <!-- Email & Managed Category -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email:</label>
+            <input 
+              type="email" 
+              id="email" 
+              class="form-control" 
+              value="<%= editor.email %>" 
+              readonly 
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="managedCategory" class="form-label fw-bold">Chuyên mục quản lý:</label>
+            <select id="managedCategory" name="category" class="form-select">
+              <% categories.forEach(category => { %>
+                <!-- Main Category -->
+                <option 
+                  value="<%= category.category_id %>" 
+                  style="font-weight: bold;" 
+                  <%= editor.managed_category_id === category.category_id ? "selected" : "" %>
+                >
+                  <%= category.category_name %>
+                </option>
+                
+                <!-- Subcategories -->
+                <% (category.subcategories || []).forEach(subcat => { %>
+                  <option 
+                    value="<%= subcat.category_id %>" 
+                    style="padding-left: 1.5em;" 
+                    <%= editor.managed_category_id === subcat.category_id ? "selected" : "" %>
+                  >
+                    <%= subcat.category_name %>
+                  </option>
+                <% }); %>
+              <% }); %>
+            </select>
+          </div>
+          
+
+          <div class="d-flex justify-content-between">
+            <a href="/admin/editor" class="btn btn-secondary">Quay lại</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+              Xóa người dùng
+            </button>
+            <form action="/admin/editor/<%= editor.user_id %>/submit" method="post">
+              <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </form>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="deleteModalLabel">Xóa người dùng</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Bạn có chắc chắn muốn xóa người dùng "<%= editor.full_name %>" không? Hành động này sẽ vô hiệu hóa tài khoản của họ.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <form action="/admin/editor/<%= editor.user_id %>/delete" method="post">
+            <button type="submit" class="btn btn-danger">Xóa</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Articles Managed Section -->
+<div class="container mt-4">
+  <h4>Những bài báo đang quản lí</h4>
+  <div class="tab-pane fade show active" id="published" role="tabpanel" aria-labelledby="published-tab">
+    <table class="table table-striped table-bordered align-middle">
+      <thead>
+        <tr>
+          <th style="width: 15%">Ảnh đại diện</th>
+          <th style="width: 30%">Tiêu đề</th>
+          <th style="width: 15%">Chuyên mục</th>
+          <th style="width: 15%">Nhãn dán</th>
+          <th style="width: 10%">Ngày đăng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (articles.length > 0) { %>
+          <% articles.forEach(article => { %>
+            <tr>
+              <td>
+                <% if (article.thumbnail) { %>
+                  <img 
+                    src="/img/<%= article.thumbnail %>" 
+                    alt="Thumbnail" 
+                    class="img-fluid rounded" 
+                    style="width: 100px; height: auto;" 
+                  />
+                <% } else { %>
+                  <img 
+                    src="/img/default-thumbnail.png" 
+                    alt="Default Thumbnail" 
+                    class="img-fluid rounded" 
+                    style="width: 100px; height: auto;" 
+                  />
+                <% } %>
+              </td>
+              <td><%= article.title %></td>
+              <td><%= article.category_name || 'N/A' %></td>
+              <td>
+                <% const articleTags = tags[article.article_id] || []; %>
+                <% if (articleTags.length > 0) { %>
+                  <%= articleTags.map(tag => tag.tag_name).join(", ") %>
+                <% } else { %>
+                  Không có nhãn dán
+                <% } %>
+              </td>
+              <td><%= article.published_date ? new Date(article.published_date).toISOString().split('T')[0] : 'Chưa có' %></td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="6" class="text-center">Không có bài viết.</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
