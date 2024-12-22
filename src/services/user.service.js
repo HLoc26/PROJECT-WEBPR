@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { query } from "express";
 import db from "../config/db.js";
 
@@ -14,9 +15,10 @@ export default {
 			.select(
 				"users.user_id",
 				"users.username",
+				"users.password",
 				"users.email",
 				"users.full_name",
-				"users.dob",
+				db.raw("DATE_FORMAT(users.dob, '%Y-%m-%d') as dob"),
 				"users.subscription_expired_date",
 				"users.premium",
 				"users.is_active",
@@ -26,7 +28,6 @@ export default {
 			)
 			.first();
 	},
-
 	findUserByEmail(email, role = null) {
 		let query = db("users").leftJoin("categories", "users.managed_category_id", "categories.category_id").where({ email });
 
@@ -47,6 +48,24 @@ export default {
 		}
 
 		return query.first().select("users.*", "categories.category_name as managed_category_name");
+	},
+	findUsersByRole(role) {
+		return db("users")
+			.leftJoin("categories", "users.managed_category_id", "categories.category_id")
+			.where("users.user_role", role)
+			.select(
+				"users.user_id",
+				"users.username",
+				"users.email",
+				"users.full_name",
+				"users.dob",
+				"users.subscription_expired_date",
+				"users.premium",
+				"users.is_active",
+				"users.user_role",
+				"users.managed_category_id",
+				"categories.category_name as managed_category_name"
+			);
 	},
 	// TODO: In register, use addUser instead of this
 	addReader(entity) {
@@ -84,5 +103,29 @@ export default {
 			.where("email", email)
 			.first()
 			.select("user_id", "username", "password", "email", "full_name", "dob", "user_role", "is_active", "subscription_expired_date", "premium", "managed_category_id");
+	},
+
+	updateUserProfile(userId, updateData) {
+		const updates = {};
+		if (updateData.username) updates.username = updateData.username;
+		if (updateData.email) updates.email = updateData.email;
+		if (updateData.full_name) updates.full_name = updateData.full_name;
+		if (updateData.dob) updates.dob = new Date(updateData.dob);
+		// Hash password if provided using process.env.PASSWORD_ROUND
+		if (updateData.password) {
+			updates.password = bcrypt.hashSync(updateData.password, +process.env.PASSWORD_ROUND);
+		}
+		return db("users").where("user_id", userId).update(updates);
+	},
+
+	findAllRoles() {
+		return db("users").distinct("user_role").select("user_role");
+	},
+	adminUpdateProfile(user_id, entity) {
+		return db("users").where("user_id", user_id).update(entity);
+	},
+
+	deleteUser(userId) {
+		return db("users").where("user_id", userId).update({ is_active: 0 });
 	},
 };

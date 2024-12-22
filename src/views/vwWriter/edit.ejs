@@ -1,5 +1,4 @@
 <!-- TinyMCE Script -->
-
 <script src="https://cdn.tiny.cloud/1/<%= api_key %>/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
 	function img_upload_handler(blobInfo, progress) {
@@ -40,7 +39,6 @@
 
 			xhr.send(formData);
 		});
-
 	}
 
 	tinymce.init({
@@ -50,96 +48,94 @@
 		toolbar: ["undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media"],
 		images_upload_url: "/api/images/upload",
 		images_upload_handler: img_upload_handler,
-    setup: function (editor) {
-      editor.on('init', function () {
-        // Safely set content inside TinyMCE
-        const content = document.getElementById('hiddenContent').value || '';
-        editor.setContent(content);
-      });
-    }
+		setup: function (editor) {
+			editor.on("init", function () {
+				// Safely set content inside TinyMCE
+				const content = document.getElementById("hiddenContent").value || "";
+				editor.setContent(content);
+			});
+		},
 	});
 </script>
 <!-- Hidden input to store content (for fallback or other JS access) -->
-<input type="hidden" id="hiddenContent" value="<%= article?.content || '' %>">
+<input type="hidden" id="hiddenContent" value="<%= article?.content || '' %>" />
 
 <form action="<%= article ? `/writer/edit?id=${article.article_id}` : '/writer/new' %>" method="post" class="p-3" enctype="multipart/form-data">
-  <div class="form-group">
-    <label for="status">Status</label>
-    <input type="text" 
-           id="status" 
-           class="form-control" 
-           disabled 
-           value="<%= article?.status || 'Draft' %>" 
-           name="status" />
-  </div>
+	<div class="form-group">
+		<label for="status">Status</label>
+		<input type="text" id="status" class="form-control" disabled value="<%= article?.status || 'Draft' %>" name="status" />
+	</div>
 
-  <div class="form-group">
-    <label for="txtTitle">Title</label>
-    <input type="text" 
-           id="txtTitle" 
-           class="form-control" 
-           name="title" 
-           placeholder="Enter the title"
-           value="<%= article?.title || '' %>" />
-  </div>
+	<div class="form-group">
+		<label for="txtTitle">Title</label>
+		<input type="text" id="txtTitle" class="form-control" name="title" placeholder="Enter the title" value="<%= article?.title || '' %>" />
+	</div>
 
-  <div class="form-group">
-    <label for="txtSummary">Summary</label>
-    <textarea id="txtSummary" 
-              class="form-control" 
-              name="summary" 
-              rows="3" 
-              placeholder="Write a brief summary"><%= article?.abstract || '' %></textarea>
-  </div>
+	<div class="form-group">
+		<label for="txtSummary">Summary</label>
+		<textarea id="txtSummary" class="form-control" name="summary" rows="3" placeholder="Write a brief summary"><%= article?.abstract || '' %></textarea>
+	</div>
 
-  <div class="form-group">
-    <label for="txtContent">Content</label>
-    <textarea id="txtContent" 
-              class="form-control" 
-              name="content" 
-              rows="5" 
-              placeholder="Write the content"><%= article?.content || '' %></textarea>
-  </div>
+	<div class="form-group">
+		<label for="txtContent">Content</label>
+		<textarea id="txtContent" class="form-control" name="content" rows="5" placeholder="Write the content"><%= article?.content || '' %></textarea>
+	</div>
 
-  <div class="form-group">
-    <label for="thumbnail">Select a thumbnail</label>
-    <input type="file" 
-           class="form-control" 
-           name="thumbnail" 
-           id="thumbnail" 
-           accept="image/*" />
-    
-    <% if (article && article.thumbnail) { %>
-      <p class="mt-2">Current Thumbnail:</p>
-      <img src="/img/<%= article.thumbnail %>" 
-           alt="Current Thumbnail" 
-           class="mt-2" 
-           style="max-width: 200px;">
-      <p class="text-muted">Upload a new image to replace the current thumbnail if you want</p>
-    <% } else { %>
-      <p class="text-muted">No thumbnail uploaded yet. You can add one now.</p>
-    <% } %>
-  </div>
-  
+	<div class="d-flex justify-content-between">
+		<div class="form-group mb-3">
+			<label for="thumbnail">Select a thumbnail</label>
+			<div class="custom-file">
+				<input type="file" class="custom-file-input" name="thumbnail" id="thumbnail" accept="image/*" />
+				<label class="custom-file-label" for="thumbnail">Choose file</label>
+			</div>
+		</div>
+		<div class="form-group w-25">
+			<label for="category">Select category</label>
+			<select name="category" id="category" class="form-control">
+				<% categories.forEach(category => { %>
+					<option value="<%= category.category_id %>" style="font-weight: bold" <%= article && article.category_id == category.category_id ? 'selected' : '' %>>
+						<%= category.category_name %>
+					</option>
+					<% category.subcategories.forEach(subcat => { %>
+						<option value="<%= subcat.category_id %>" <%= article && article.category_id == subcat.category_id ? 'selected' : '' %>>&nbsp;&nbsp;<%= subcat.category_name %></option>
+					<% }); %>
+				<% }); %>
+			</select>
+		</div>
+		<div class="form-group mb-3">
+			<label for="premium-toggle">Premium Article</label>
+			<div class="custom-control custom-switch">
+				<input type="checkbox" class="custom-control-input" id="premium-toggle" name="premium" <%= article && article.is_premium ? 'checked' : '' %> />
+				<label class="custom-control-label" for="premium-toggle">Mark as premium</label>
+			</div>
+		</div>
+	</div>
 
-  <label for="category">Select category</label>
-  <select name="category" id="category" class="form-control">
-    <option value="category-1" class="font-weight-bold" 
-            <%= article?.category_id === 'category-1' ? 'selected' : '' %>>Category 1</option>
-    <option value="category-1-1" 
-            <%= article?.category_id === 'category-1-1' ? 'selected' : '' %>>&nbsp;&nbsp;Category 1-1</option>
-    <option value="category-1-2"
-            <%= article?.category_id === 'category-1-2' ? 'selected' : '' %>>&nbsp;&nbsp;Category 1-2</option>
-    <option value="category-2" class="font-weight-bold"
-            <%= article?.category_id === 'category-2' ? 'selected' : '' %>>Category 2</option>
-    <option value="category-2-1"
-            <%= article?.category_id === 'category-2-1' ? 'selected' : '' %>>&nbsp;&nbsp;Category 2-1</option>
-  </select>
+	<div class="">
+		<% if (article && article.thumbnail) { %>
+		<p class="mt-2">Current Thumbnail:</p>
+		<img src="/img/<%= article.thumbnail %>" alt="Current Thumbnail" class="mt-2" style="max-width: 200px" />
+		<p class="text-muted">Upload a new image to replace the current thumbnail if you want</p>
+		<% } else { %>
+		<p class="text-muted">No thumbnail uploaded yet. You can add one now.</p>
+		<% } %>
+	</div>
 
-  <a href="/writer" role="button" class="btn btn-outline-danger mt-3">Cancel</a>
-  <button type="submit" class="btn btn-outline-success mt-3">
-    <%= article ? 'Update' : 'Create' %>
-  </button>
+	<div class="form-group">
+		<label for="tags-input">Select tags</label>
+ 		<input type="text" 
+			   class="form-control"
+			   id="tags-input"
+			   data-initial-tags='<%= tags ? JSON.stringify(tags) : "[]" %>'
+			   data-role="tagsinput"
+			   placeholder="Input tag..."
+		/>
+	</div>
+	<input type="hidden" name="tags" id="tags-hidden" />
+
+	<a href="/writer" role="button" class="btn btn-outline-danger mt-3">Cancel</a>
+	<button type="submit" class="btn btn-outline-success mt-3"><%= article ? 'Update' : 'Create' %></button>
 </form>
-
-
+<!-- tags input script and styling -->
+<link rel="stylesheet" href="/css/tagsinput.css">
+<script src="/js/tagsinput.js"></script>

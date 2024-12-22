@@ -16,40 +16,42 @@
 			<table class="table table-striped table-bordered align-middle">
 				<thead>
 					<tr>
-						<th style="width: 15%">Ảnh đại diện</th>
-						<th style="width: 30%">Tiêu đề</th>
-						<th style="width: 15%">Chuyên mục</th>
-						<th style="width: 15%">Nhãn dán</th>
-						<th style="width: 10%">Ngày đăng</th>
-						<th style="width: 20%">Người duyệt</th>
+						<th style="width: 15%" class="text-center">Ảnh đại diện</th>
+						<th style="width: 30%" class="text-center">Tiêu đề</th>
+						<th style="width: 15%" class="text-center">Chuyên mục</th>
+						<th style="width: 15%" class="text-center">Nhãn dán</th>
+						<th style="width: 10%" class="text-center">Ngày đăng</th>
+						<th style="width: 20%" class="text-center">Tác giả</th>
 					</tr>
 				</thead>
 				<tbody>
-					<% if (pendingArticles.length > 0) { %> <% pendingArticles.forEach(article => { %>
+					<% if (pendingArticles.length > 0) { %>
+					<% pendingArticles.forEach(article => { %>
 					<tr>
-						<td>
+						<td class="text-center align-middle">
 							<% if (article.thumbnail) { %>
-							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
+							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
 							<% } else { %>
-							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
+							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
 							<% } %>
 						</td>
 						<td>
-							<a href="#" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
 						</td>
-
-						<td><%= article.category_name || 'N/A' %></td>
-						<td><%= article.tags || 'Không có nhãn dán' %></td>
-						<td><%= article.published_date ? article.published_date : 'Chưa có' %></td>
-						<td style="width: 20%"><%= article.editor_name || '--' %></td>
+						<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
+						<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
+						<td class="text-center align-middle"><%= article.published_date ? article.published_date : 'Chưa có' %></td>
+						<td class="text-center align-middle"><%= article.writer_fullname || '--' %></td>
 					</tr>
-					<% }) %> <% } else { %>
+					<% }) %>
+					<% } else { %>
 					<tr>
-						<td colspan="6" class="text-center">Không có bài viết chờ duyệt.</td>
+						<td colspan="6" class="text-center align-middle">Không có bài viết chờ duyệt.</td>
 					</tr>
 					<% } %>
 				</tbody>
 			</table>
+			
 		</div>
 
 		<!-- Tab Content: Đã đăng -->
@@ -57,40 +59,42 @@
 			<table class="table table-striped table-bordered align-middle">
 				<thead>
 					<tr>
-						<th style="width: 15%">Ảnh đại diện</th>
-						<th style="width: 30%">Tiêu đề</th>
-						<th style="width: 15%">Chuyên mục</th>
-						<th style="width: 15%">Nhãn dán</th>
-						<th style="width: 10%">Ngày đăng</th>
-						<th style="width: 20%">Người duyệt</th>
+						<th style="width: 15%" class="text-center">Ảnh đại diện</th>
+						<th style="width: 30%" class="text-center">Tiêu đề</th>
+						<th style="width: 15%" class="text-center">Chuyên mục</th>
+						<th style="width: 15%" class="text-center">Nhãn dán</th>
+						<th style="width: 10%" class="text-center">Ngày đăng</th>
+						<th style="width: 20%" class="text-center">Người duyệt</th>
 					</tr>
 				</thead>
 				<tbody>
-					<% if (publishedArticles.length > 0) { %> <% publishedArticles.forEach(article => { %>
+					<% if (publishedArticles.length > 0) { %>
+					<% publishedArticles.forEach(article => { %>
 					<tr>
-						<td>
+						<td class="text-center align-middle">
 							<% if (article.thumbnail) { %>
-							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
+							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
 							<% } else { %>
-							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
+							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
 							<% } %>
 						</td>
 						<td>
-							<a href="#" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
 						</td>
-
-						<td><%= article.category_name || 'N/A' %></td>
-						<td><%= article.tags || 'Không có nhãn dán' %></td>
-						<td><%= article.published_date ? new Date(article.published_date).toISOString().split('T')[0] : 'Chưa có' %></td>
-						<td style="width: 20%"><%= article.editor_name || '--' %></td>
+						<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
+						<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
+						<td class="text-center align-middle"><%= article.published_date ? new Date(article.published_date).toISOString().split('T')[0] : 'Chưa có' %></td>
+						<td class="text-center align-middle"><%= article.editor_fullname || '--' %></td>
 					</tr>
-					<% }) %> <% } else { %>
+					<% }) %>
+					<% } else { %>
 					<tr>
-						<td colspan="6" class="text-center">Không có bài viết chờ duyệt.</td>
+						<td colspan="6" class="text-center align-middle">Không có bài viết chờ duyệt.</td>
 					</tr>
 					<% } %>
 				</tbody>
 			</table>
+			
 		</div>
 	</div>
 </div>

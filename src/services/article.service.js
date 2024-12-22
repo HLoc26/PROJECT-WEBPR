@@ -26,13 +26,26 @@ export default {
 	// Lấy các articles by category cho sections cụ thể, bao gồm subcategories
 	findArticlesByCategoryIncludingSubcategories(categoryId) {
 		return db("articles")
-			.select("articles.*", "users.user_id as editor_id", "users.username as editor_name")
-			.leftJoin("users", "articles.editor_id", "users.user_id")
+			.select(
+				"articles.*",
+				"categories.*",
+				// Editor
+				"editor.user_id as editor_id",
+				"editor.username as editor_username",
+				"editor.full_name as editor_fullname",
+				// Writer
+				"writer.user_id as writer_id",
+				"writer.username as writer_username",
+				"writer.full_name as writer_fullname"
+			)
+			.leftJoin("users as editor", "articles.editor_id", "editor.user_id")
+			.leftJoin("users as writer", "articles.writer_id", "writer.user_id")
 			.where(function () {
 				this.where("articles.category_id", categoryId).orWhereIn("articles.category_id", function () {
 					this.select("category_id").from("categories").where("belong_to", categoryId);
 				});
 			})
+			.join("categories", "articles.category_id", "categories.category_id")
 			.orderBy("published_date", "desc");
 	},
 
@@ -96,12 +109,23 @@ export default {
 			.leftJoin("categories", "articles.category_id", "categories.category_id")
 			.leftJoin("users as writers", "articles.writer_id", "writers.user_id")
 			.leftJoin("users as editors", "articles.editor_id", "editors.user_id")
-			.select("articles.*", "categories.category_name", "writers.full_name as writer_name", "editors.full_name as editor_name");
+			.select("articles.*", "categories.category_name", "writers.full_name as writer_name", "editors.full_name as editor_name")
+			.orderBy("articles.article_id", "desc");
 	},
 
 	// Thêm article (entity: { title, content, abstract, thumbnail, category_id, writer_id, editor_id, status, is_premium, published_date })
 	addArticle(entity) {
-		return db("articles").insert(entity);
+		return db("articles")
+			.insert(entity)
+			.then(([id]) => {
+				// 'id' represents the newly inserted article ID
+				return id;
+			})
+			.catch((error) => {
+				// Handle any errors that occur during the insert operation
+				console.error("Error inserting article:", error);
+				throw error;
+			});
 	},
 
 	// Xóa article by ID
@@ -220,4 +244,8 @@ export default {
 
 		return relatedByCategoryAndTags;
 	},
+
+	addComment(commentData) {
+		return db('comments').insert(commentData);
+	}
 };

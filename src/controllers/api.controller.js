@@ -1,5 +1,5 @@
 import CategoryService from "../services/category.service.js";
-
+import tagService from "../services/tag.service.js";
 export default {
 	async imgUpload(req, res) {
 		// console.log("api upload: ", req.file);
@@ -12,30 +12,42 @@ export default {
 
 	async getCategories(req, res) {
 		try {
-			// Lấy danh sách tất cả các chuyên mục cấp 1 (parent)
 			const parentCategories = await CategoryService.findAllCategories().where("belong_to", null);
 
-			// Thêm các chuyên mục con (subcategories) vào từng chuyên mục cha
 			const categoriesWithSubcategories = await Promise.all(
-				parentCategories.map(async function (category) {
-					const subcategories = await CategoryService.findSubcategories(category.category_id);
-					return {
-						...category,
-						subcategories,
-					};
-				})
+				parentCategories.map(async (category) => ({
+					...category,
+					subcategories: await CategoryService.findSubcategories(category.category_id),
+				}))
 			);
 
-			// Trả về JSON chứa danh sách chuyên mục
 			res.json({
 				success: true,
 				data: categoriesWithSubcategories,
 			});
 		} catch (error) {
-			console.error(error);
+			console.error("Error in getCategories:", error);
 			res.status(500).json({
 				success: false,
 				message: "Failed to fetch categories",
+				data: [], // Ensure consistent empty response
+			});
+		}
+	},
+	async getTags(req, res) {
+		try {
+			const tags = await tagService.findAllTags();
+
+			res.json({
+				success: true,
+				data: tags,
+			});
+		} catch (error) {
+			console.error("Error in getTags:", error);
+			res.status(500).json({
+				success: false,
+				message: "Failed to fetch tags",
+				data: [], // Ensure consistent empty response
 			});
 		}
 	},
