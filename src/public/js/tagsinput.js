@@ -5,6 +5,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const wrapper = document.createElement("div");
 	wrapper.className = "tags-input-wrapper";
 
+	const initialTags = JSON.parse(originalInput.dataset.initialTags || "[]");
+
+	// console.log(initialTags);
+
 	const input = document.createElement("input");
 	input.type = "text";
 	input.className = "tags-input";
@@ -83,7 +87,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 	function addTagToDOM(tagText) {
 		const tag = createTag(tagText);
 		wrapper.insertBefore(tag, input);
+		tags.push(tagText);
+		updateHiddenInput();
 	}
+
+	// Initialize with existing tags
+	initialTags.forEach((tag) => {
+		if (tag.trim()) {
+			addTagToDOM(tag.trim());
+		}
+	});
 
 	function updateSuggestions(value) {
 		if (!value.trim()) {
