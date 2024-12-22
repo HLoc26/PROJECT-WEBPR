@@ -2,6 +2,7 @@ import express from "express";
 import session from "express-session";
 import "dotenv/config";
 
+import adminRoutes from "./routes/admin.routes.js";
 import apiRoutes from "./routes/api.routes.js";
 import articleRoutes from "./routes/article.routes.js";
 import defaultRoute from "./routes/default.routes.js";
@@ -48,6 +49,7 @@ app.use(setUser);
 
 // Public routes
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
+app.use("/admin", adminRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/homepage", homepageRoute);
 

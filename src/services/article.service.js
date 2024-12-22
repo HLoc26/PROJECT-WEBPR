@@ -244,6 +244,7 @@ export default {
 
 		return relatedByCategoryAndTags;
 	},
+  
 	findByStatus(status) {
 		return db("articles")
 			.where("status", status)
@@ -253,4 +254,8 @@ export default {
 			.select("articles.*", "categories.category_name", "writers.full_name as writer_name", "editors.full_name as editor_name")
 			.orderBy("articles.published_date", "desc");
 	},
+
+	addComment(commentData) {
+		return db('comments').insert(commentData);
+	}
 };
