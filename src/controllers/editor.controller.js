@@ -2,6 +2,7 @@ import ArticleService from "../services/article.service.js";
 import categoryService from "../services/category.service.js";
 import tagService from "../services/tag.service.js";
 import TagService from "../services/tag.service.js";
+import notiService from "../services/noti.service.js";
 export default {
 	async getEditorHome(req, res) {
 		try {
@@ -93,6 +94,41 @@ export default {
 			});
 		} catch (error) {
 			console.error("Error fetching article:", error);
+			res.status(500).redirect("/500");
+		}
+	},
+	async postReject(req, res) {
+		try {
+			// Extract form data from the request body
+			const { articleId, reason } = req.body;
+			const editorId = req.session.user.user_id; // Editor's user ID from session
+
+			// Fetch article details
+			const article = await ArticleService.findArticleById(articleId);
+
+			if (!article) {
+				return res.status(404).json({ error: "Article not found." });
+			}
+
+			// Check if the current editor has permission to reject the article
+			if (article.editor_id !== editorId) {
+				return res.status(403).json({ error: "Unauthorized to reject this article." });
+			}
+
+			// Update article status to "need changes"
+			await ArticleService.updateArticleStatus(articleId, "need changes");
+
+			// Create a notification for the writer
+			await notiService.createNotification(
+				editorId, // sender_id
+				article.writer_id, // receiver_id
+				reason // note_content
+			);
+
+			// Redirect back with success message
+			res.redirect(`/editor/home`);
+		} catch (error) {
+			console.error("Error rejecting article:", error);
 			res.status(500).redirect("/500");
 		}
 	},
