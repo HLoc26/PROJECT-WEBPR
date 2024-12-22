@@ -244,7 +244,7 @@ export default {
 
 		return relatedByCategoryAndTags;
 	},
-  
+
 	findByStatus(status) {
 		return db("articles")
 			.where("status", status)
@@ -256,6 +256,27 @@ export default {
 	},
 
 	addComment(commentData) {
-		return db('comments').insert(commentData);
-	}
+		return db("comments").insert(commentData);
+	},
+
+	search(query, is_premium = false) {
+		// search article by title, abstract, content, if is_premium, include premium articles, else not
+		return db("articles")
+			.where((builder) => {
+				builder
+					.where("title", "like", `%${query}%`) // search by title
+					.orWhere("abstract", "like", `%${query}%`) // search by abstract
+					.orWhere("content", "like", `%${query}%`); // search by content
+			})
+			.andWhere((builder) => {
+				if (!is_premium) {
+					builder.where("is_premium", false);
+				}
+			})
+			.select("articles.*")
+			.orderBy([
+				{ column: "is_premium", order: "desc" }, // Premium articles first
+				{ column: "published_date", order: "desc" }, // Newest articles second
+			]);
+	},
 };
