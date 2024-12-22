@@ -13,7 +13,18 @@
 	integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
 	crossorigin="anonymous"
 ></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
+
 <script>
+	document.addEventListener("DOMContentLoaded", function () {
+		flatpickr("#datetimepicker", {
+			enableTime: true,
+			dateFormat: "d-m-Y H:i",
+			time_24hr: true, // Optional: Enable 24-hour format
+		});
+	});
+
 	tinymce.init({
 		selector: "textarea",
 		width: "100%",
@@ -56,17 +67,24 @@
 		<!-- Dynamic abstract -->
 	</div>
 	<div class="mb-4">
-		<p class="fst-italic"><%= article.content %></p>
+		<p class="fst-italic"><%- article.content %></p>
 		<!-- Dynamic abstract -->
 	</div>
 
 	<!-- Tags -->
-	<!-- Need to meet with be to fix - Sang-->
 	<div class="mb-4">
-		<% if (article.tags) { %> <% article.tags.split(",").forEach(tag => { %>
+		<% if (tags) { %> <% tags.forEach(tag => { %>
 		<!-- Assuming tags are stored as a comma-separated string -->
-		<span class="badge bg-secondary me-1"><%= tag.trim() %></span>
+		<span class="badge bg-secondary me-1 p-2 text-white"><%= tag.tag_name.trim() %></span>
 		<% }) %> <% } %>
+	</div>
+
+	<!-- Is premium -->
+	<div class="mb-4">
+		<div class="custom-control custom-switch">
+			<input type="checkbox" class="custom-control-input" id="customSwitch2" <%= article.is_premium ? '' : 'disabled' %> />
+			<label class="custom-control-label" for="customSwitch2">Is Premium</label>
+		</div>
 	</div>
 
 	<!-- Modal -->
@@ -83,7 +101,8 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form id="rejectedForm">
+				<form id="rejectedForm" action="/editor/reject" method="POST">
+					<input type="hidden" name="articleId" value="<%= article.article_id %>">
 					<div class="modal-body">
 						<!-- Reason for Rejection -->
 						<div class="form-group">
@@ -96,6 +115,7 @@
 						<button type="submit" class="btn btn-primary">Gửi</button>
 					</div>
 				</form>
+				
 			</div>
 		</div>
 	</div>
@@ -112,22 +132,17 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form id="approveForm">
+				<form id="approveForm" method="POST" action="/editor/approve?id=<%= article.article_id %>">
 					<div class="modal-body">
 						<!-- Comment Section -->
 						<div class="form-group">
 							<label for="approvalComment">Bình luận:</label>
 							<textarea id="approvalComment" class="form-control" name="comment" rows="3" placeholder="Nhập bình luận cho bài viết..."></textarea>
 						</div>
-						<!-- Tags Section -->
+						<!-- Publish Section -->
 						<div class="form-group">
-							<label for="tagsInput">Thêm Tags:</label>
-							<div class="tag-input border p-2 rounded">
-								<ul id="approvedTagList" class="tag-list list-inline mb-2">
-									<!-- Tags will appear here -->
-								</ul>
-								<input type="text" id="tagsInput" class="form-control border-0" name="tagsInput" placeholder="Nhập tag và nhấn Space hoặc Enter để thêm" />
-							</div>
+							<label for="datetimepicker">Select Date and Time</label>
+							<input type="text" class="form-control" id="datetimepicker" name="publish_date" placeholder="Select date and time" />
 						</div>
 					</div>
 					<div class="modal-footer">

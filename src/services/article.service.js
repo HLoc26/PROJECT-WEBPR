@@ -244,6 +244,16 @@ export default {
 
 		return relatedByCategoryAndTags;
 	},
+  
+	findByStatus(status) {
+		return db("articles")
+			.where("status", status)
+			.leftJoin("categories", "articles.category_id", "categories.category_id")
+			.leftJoin("users as writers", "articles.writer_id", "writers.user_id")
+			.leftJoin("users as editors", "articles.editor_id", "editors.user_id")
+			.select("articles.*", "categories.category_name", "writers.full_name as writer_name", "editors.full_name as editor_name")
+			.orderBy("articles.published_date", "desc");
+	},
 
 	addComment(commentData) {
 		return db('comments').insert(commentData);
