@@ -1,7 +1,8 @@
-import ArticleService from "../services/article.service.js";
+import articleService from "../services/article.service.js";
 import categoryService from "../services/category.service.js";
 import tagService from "../services/tag.service.js";
 import TagService from "../services/tag.service.js";
+import { parse, format } from "date-fns";
 export default {
 	async getEditorHome(req, res) {
 		try {
@@ -13,7 +14,7 @@ export default {
 			const user = req.session.user;
 			// console.log(user); // Debug
 			// Fetch articles by category (including subcategories) using ArticleService
-			const articles = await ArticleService.findArticlesByCategoryIncludingSubcategories(categoryId);
+			const articles = await articleService.findArticlesByCategoryIncludingSubcategories(categoryId);
 
 			// Separate articles into pending and published based on status
 			const pendingArticles = [];
@@ -71,7 +72,7 @@ export default {
 			}
 			const category_ids = categories.map((cat) => cat.category_id);
 
-			const article = await ArticleService.findArticleById(id);
+			const article = await articleService.findArticleById(id);
 			if (!article) {
 				// Send a 404 response if the article is not found
 				return res.status(404).redirect("/404");
@@ -93,6 +94,31 @@ export default {
 			});
 		} catch (error) {
 			console.error("Error fetching article:", error);
+			res.status(500).redirect("/500");
+		}
+	},
+
+	async postApprove(req, res) {
+		try {
+			const article_id = req.query.id;
+			const editor_id = req.session.user.user_id;
+			const { comment, publish_date } = req.body;
+			console.log(publish_date);
+
+			const parsedDate = parse(publish_date, "dd-MM-yyyy HH:mm", new Date());
+			const formattedDate = format(parsedDate, "yyyy-MM-dd HH:mm:ss");
+
+			await articleService.approveArticle(article_id, "archived", comment, editor_id);
+
+			// Update article status to "published" and set publish date
+			const newArticle = {
+				status: "archived",
+				published_date: formattedDate,
+			};
+			await articleService.updateArticle(article_id, newArticle);
+			res.redirect("/editor/home");
+		} catch (error) {
+			console.error("Error approving article:", error);
 			res.status(500).redirect("/500");
 		}
 	},
