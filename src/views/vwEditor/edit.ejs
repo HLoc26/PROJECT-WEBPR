@@ -13,7 +13,18 @@
 	integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
 	crossorigin="anonymous"
 ></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
+
 <script>
+	document.addEventListener("DOMContentLoaded", function () {
+		flatpickr("#datetimepicker", {
+			enableTime: true,
+			dateFormat: "d-m-Y H:i",
+			time_24hr: true, // Optional: Enable 24-hour format
+		});
+	});
+
 	tinymce.init({
 		selector: "textarea",
 		width: "100%",
@@ -126,15 +137,10 @@
 							<label for="approvalComment">Bình luận:</label>
 							<textarea id="approvalComment" class="form-control" name="comment" rows="3" placeholder="Nhập bình luận cho bài viết..."></textarea>
 						</div>
-						<!-- Tags Section -->
+						<!-- Publish Section -->
 						<div class="form-group">
-							<label for="tagsInput">Thêm Tags:</label>
-							<div class="tag-input border p-2 rounded">
-								<ul id="approvedTagList" class="tag-list list-inline mb-2">
-									<!-- Tags will appear here -->
-								</ul>
-								<input type="text" id="tagsInput" class="form-control border-0" name="tagsInput" placeholder="Nhập tag và nhấn Space hoặc Enter để thêm" />
-							</div>
+							<label for="datetimepicker">Select Date and Time</label>
+							<input type="text" class="form-control" id="datetimepicker" placeholder="Select date and time" />
 						</div>
 					</div>
 					<div class="modal-footer">
