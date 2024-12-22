@@ -1,5 +1,6 @@
 import ArticleService from "../services/article.service.js";
 import CategoryService from "../services/category.service.js";
+const ITEMS_PER_PAGE = 10; // Số bài viết trên mỗi trang
 
 export default {
 	async GetHomepage(req, res) {
@@ -39,6 +40,41 @@ export default {
 			res.status(500).json({
 				message: "An error occurred while fetching homepage data",
 			});
+		}
+	},
+	async getCategoryArticles(req, res) {
+		try {
+			const categoryId = req.query.id;
+			const page = parseInt(req.query.page) || 1;
+
+			if (!categoryId) {
+				return res.redirect("/404");
+			}
+
+			const category = await CategoryService.findCategoryById(categoryId);
+
+			if (!category) {
+				return res.redirect("/404");
+			}
+
+			const result = await CategoryService.findCategoryWithArticles(categoryId, page, ITEMS_PER_PAGE);
+
+			if (!result) {
+				return res.redirect("/404");
+			}
+
+			const { articles, totalPages } = result;
+
+			res.render("../views/vwHomepage/List", {
+				category,
+				articles,
+				currentPage: page,
+				totalPages,
+				categoryId,
+			});
+		} catch (err) {
+			console.error(err);
+			res.redirect("/500");
 		}
 	},
 };

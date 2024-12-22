@@ -96,4 +96,21 @@ export default {
 			res.status(500).redirect("/500");
 		}
 	},
+	async getLogout(req, res) {
+		try {
+			// console.log("User logging out: ", req.session.user.user_id); // debug
+
+			req.session.destroy(function (err) {
+				if (err) {
+					console.log("Error destroying session", err);
+					return res.status(500).redirect("/500");
+				}
+				res.locals.user = null;
+				res.redirect("/login");
+			});
+		} catch (error) {
+			console.error("Logout error:", error);
+			res.status(500).redirect("/500");
+		}
+	},
 };
