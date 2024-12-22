@@ -79,9 +79,10 @@
             />
           </div>
           <div class="col-md-6">
-            <label for="managedCategory" class="form-label">Chuyên mục quản lý:</label>
+            <label for="managedCategory" class="form-label fw-bold">Chuyên mục quản lý:</label>
             <select id="managedCategory" name="category" class="form-select">
               <% categories.forEach(category => { %>
+                <!-- Main Category -->
                 <option 
                   value="<%= category.category_id %>" 
                   style="font-weight: bold;" 
@@ -89,18 +90,21 @@
                 >
                   <%= category.category_name %>
                 </option>
+                
+                <!-- Subcategories -->
                 <% (category.subcategories || []).forEach(subcat => { %>
                   <option 
                     value="<%= subcat.category_id %>" 
+                    style="padding-left: 1.5em;" 
                     <%= editor.managed_category_id === subcat.category_id ? "selected" : "" %>
                   >
-                    &nbsp;&nbsp;<%= subcat.category_name %>
+                    <%= subcat.category_name %>
                   </option>
                 <% }); %>
               <% }); %>
             </select>
           </div>
-        </div>
+          
 
         <!-- Buttons -->
         <div class="d-flex justify-content-end">
