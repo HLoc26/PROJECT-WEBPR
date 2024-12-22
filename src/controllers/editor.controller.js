@@ -93,7 +93,6 @@ export default {
 			});
 		} catch (error) {
 			console.error("Error fetching article:", error);
-			res.status(500).redirect("/error/500"); // Handle errors
 			res.status(500).redirect("/500");
 		}
 	},
