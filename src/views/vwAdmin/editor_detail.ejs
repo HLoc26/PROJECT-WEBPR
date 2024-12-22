@@ -1,120 +1,144 @@
 <div class="container mt-4">
-  <h3 class="mb-4">Thông tin cá nhân</h3>
-  <form action="/admin/editors/<%= editor.user_id %>/submit" method="post">
-      <!-- Full Name -->
-      <div class="row mb-3">
-          <label class="col-sm-2 col-form-label">Họ và tên:</label>
-          <div class="col-sm-10">
-              <input type="text" class="form-control" value="<%= editor.full_name %>" readonly>
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Thông tin cá nhân</h4>
+    </div>
+    <div class="card-body">
+      <form action="/admin/editors/<%= editor.user_id %>/submit" method="post">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="fullName" class="form-label">Họ và tên:</label>
+            <input
+              type="text"
+              id="fullName"
+              class="form-control"
+              value="<%= editor.full_name %>"
+              readonly
+            />
           </div>
-      </div>
-
-      <!-- Role -->
-      <div class="row mb-3">
-          <label class="col-sm-2 col-form-label">Chức vụ:</label>
-          <div class="col-sm-10">
-              <select name="role" class="form-select">
-                  <% roles.forEach(role => { %>
-                      <option value="<%= role.user_role %>" <%= editor.user_role === role.user_role ? 'selected' : '' %>>
-                          <%= role.user_role %>
-                      </option>
-                  <% }); %>
-              </select>
+          <div class="col-md-6">
+            <label for="role" class="form-label">Chức vụ:</label>
+            <select id="role" class="form-select">
+              <option selected><%= editor.user_role %></option>
+            </select>
           </div>
-      </div>
+        </div>
 
-      <!-- Date of Birth -->
-      <div class="row mb-3">
-          <label class="col-sm-2 col-form-label">Ngày sinh:</label>
-          <div class="col-sm-10">
-              <input type="text" class="form-control" value="<%= new Date(editor.dob).toISOString().split('T')[0] %>" readonly>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="dob" class="form-label">Ngày sinh:</label>
+            <input
+              type="text"
+              id="dob"
+              class="form-control"
+              value="<%= new Date(editor.dob).toISOString().split('T')[0] %>"
+              readonly
+            />
           </div>
-      </div>
-
-      <!-- Is Active -->
-      <div class="row mb-3">
-          <label class="col-sm-2 col-form-label">Còn hoạt động:</label>
-          <div class="col-sm-10">
-              <input type="text" class="form-control" value="<%= editor.is_active === 1 ? 'Có' : 'Không' %>" readonly>
+          <div class="col-md-6">
+            <label for="activeStatus" class="form-label">Còn hoạt động:</label>
+            <input
+              type="text"
+              id="activeStatus"
+              class="form-control"
+              value="<%= editor.is_active === 1 ? 'Có' : 'Không' %>"
+              readonly
+            />
           </div>
-      </div>
+        </div>
 
-      <!-- Email -->
-      <div class="row mb-3">
-          <label class="col-sm-2 col-form-label">Email:</label>
-          <div class="col-sm-10">
-              <input type="email" class="form-control" value="<%= editor.email %>" readonly>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email:</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              value="<%= editor.email %>"
+              readonly
+            />
           </div>
-      </div>
+          <div class="col-md-6">
+            <label for="managedCategory" class="form-label">Chuyên mục quản lý:</label>
+            <select id="managedCategory" name="category" class="form-select">
+              <% categories.forEach(category => { %>
+                <!-- Main Category -->
+                <option
+                  value="<%= category.category_id %>"
+                  style="font-weight: bold;"
+                  <%= editor.managed_category_id === category.category_id ? "selected" : "" %>
+                >
+                  <%= category.category_name %>
+                </option>
 
-      <!-- Category Managing -->
-      <div class="row mb-3">
-          <label class="col-sm-2 col-form-label">Chuyên mục quản lý:</label>
-          <div class="col-sm-10">
-              <select name="category" class="form-select">
-                  <% categories.forEach(category => { %>
-                      <!-- Main Category -->
-                      <option value="<%= category.category_id %>" style="font-weight: bold;" 
-                          <%= editor.managed_category_id === category.category_id ? 'selected' : '' %>>
-                          <%= category.category_name %>
-                      </option>
-                      <!-- Subcategories -->
-                      <% (category.subcategories || []).forEach(subcat => { %>
-                          <option value="<%= subcat.category_id %>" 
-                              <%= editor.managed_category_id === subcat.category_id ? 'selected' : '' %>>
-                              &nbsp;&nbsp;<%= subcat.category_name %>
-                          </option>
-                      <% }); %>
-                  <% }); %>
-              </select>
+                <!-- Subcategories -->
+                <% (category.subcategories || []).forEach(subcat => { %>
+                  <option
+                    value="<%= subcat.category_id %>"
+                    <%= editor.managed_category_id === subcat.category_id ? "selected" : "" %>
+                  >
+                    &nbsp;&nbsp;<%= subcat.category_name %>
+                  </option>
+                <% }); %>
+              <% }); %>
+            </select>
           </div>
-      </div>
+        </div>
+        <div class="d-flex justify-content-end">
+          <a href="/admin/editors" class="btn btn-secondary me-2">Quay lại</a>
+          <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-      <!-- Articles Managed -->
-      <h4 class="mt-4">Những bài báo đang quản lí</h4>
-      <div class="tab-pane fade show active" id="published" role="tabpanel" aria-labelledby="published-tab">
-          <table class="table table-striped table-bordered align-middle">
-              <thead>
-                  <tr>
-                      <th style="width: 15%">Ảnh đại diện</th>
-                      <th style="width: 30%">Tiêu đề</th>
-                      <th style="width: 15%">Chuyên mục</th>
-                      <th style="width: 15%">Nhãn dán</th>
-                      <th style="width: 10%">Ngày đăng</th>
-                      <th style="width: 20%">Người duyệt</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <% if (articles.length > 0) { %>
-                      <% articles.forEach(article => { %>
-                          <tr>
-                              <td>
-                                  <% if (article.thumbnail) { %>
-                                      <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
-                                  <% } else { %>
-                                      <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
-                                  <% } %>
-                              </td>
-                              <td><%= article.title %></td>
-                              <td><%= article.category_name || 'N/A' %></td>
-                              <td><%= article.tags || 'Không có nhãn dán' %></td>
-                              <td><%= article.published_date ? new Date(article.published_date).toISOString().split('T')[0] : 'Chưa có' %></td>
-                              <td><%= article.editor_fullname || '--' %></td>
-                          </tr>
-                      <% }) %>
-                  <% } else { %>
-                      <tr>
-                          <td colspan="6" class="text-center">Không có bài viết.</td>
-                      </tr>
-                  <% } %>
-              </tbody>
-          </table>
-      </div>
-
-      <!-- Submit Section -->
-      <div class="mt-4 d-flex justify-content-between">
-          <a href="/admin/editors" class="btn btn-secondary">Back</a>
-          <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-  </form>
+<!-- Articles Managed Section -->
+<div class="container mt-4">
+  <h4>Những bài báo đang quản lí</h4>
+  <div class="tab-pane fade show active" id="published" role="tabpanel" aria-labelledby="published-tab">
+    <table class="table table-striped table-bordered align-middle">
+      <thead>
+        <tr>
+          <th style="width: 15%">Ảnh đại diện</th>
+          <th style="width: 30%">Tiêu đề</th>
+          <th style="width: 15%">Chuyên mục</th>
+          <th style="width: 15%">Nhãn dán</th>
+          <th style="width: 10%">Ngày đăng</th>
+          <th style="width: 20%">Người duyệt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (articles.length > 0) { %>
+          <% articles.forEach(article => { %>
+            <tr>
+              <td>
+                <% if (article.thumbnail) { %>
+                  <img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
+                <% } else { %>
+                  <img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-fluid rounded" style="width: 100px; height: auto" />
+                <% } %>
+              </td>
+              <td><%= article.title %></td>
+              <td><%= article.category_name || 'N/A' %></td>
+              <td>
+                <% const articleTags = tags[article.article_id] || []; %>
+                <% if (articleTags.length > 0) { %>
+                  <%= articleTags.map(tag => tag.tag_name).join(", ") %>
+                <% } else { %>
+                  Không có nhãn dán
+                <% } %>
+              </td>
+              <td><%= article.published_date ? new Date(article.published_date).toISOString().split('T')[0] : 'Chưa có' %></td>
+              <td><%= article.editor_fullname || '--' %></td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="6" class="text-center">Không có bài viết.</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
 </div>
