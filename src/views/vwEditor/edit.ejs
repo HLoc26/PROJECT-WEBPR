@@ -82,7 +82,7 @@
 	<!-- Is premium -->
 	<div class="mb-4">
 		<div class="custom-control custom-switch">
-			<input type="checkbox" class="custom-control-input" id="customSwitch2" <%= article.is_preium ? '' : 'disabled' %> />
+			<input type="checkbox" class="custom-control-input" id="customSwitch2" <%= article.is_premium ? '' : 'disabled' %> />
 			<label class="custom-control-label" for="customSwitch2">Is Premium</label>
 		</div>
 	</div>
@@ -101,7 +101,8 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form id="rejectedForm">
+				<form id="rejectedForm" action="/editor/reject" method="POST">
+					<input type="hidden" name="articleId" value="<%= article.article_id %>">
 					<div class="modal-body">
 						<!-- Reason for Rejection -->
 						<div class="form-group">
@@ -114,6 +115,7 @@
 						<button type="submit" class="btn btn-primary">Gửi</button>
 					</div>
 				</form>
+				
 			</div>
 		</div>
 	</div>
