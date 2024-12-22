@@ -1,4 +1,6 @@
 import ArticleService from "../services/article.service.js";
+import categoryService from "../services/category.service.js";
+import tagService from "../services/tag.service.js";
 import TagService from "../services/tag.service.js";
 export default {
 	async getEditorHome(req, res) {
@@ -60,14 +62,32 @@ export default {
 	async getEdit(req, res) {
 		try {
 			const id = req.query.id; //query moi ca tay
+			const user = req.session.user;
+			const categories = await categoryService.findEditorCategory(user.user_id);
+			if (categories[0]?.belong_to == null) {
+				const subCate = await categoryService.findSubcategories(user.managed_category_id);
+				// Extend category by subCate
+				categories.push(...subCate);
+			}
+			const category_ids = categories.map((cat) => cat.category_id);
+
 			const article = await ArticleService.findArticleById(id);
 			if (!article) {
 				// Send a 404 response if the article is not found
 				return res.status(404).redirect("/404");
 			}
 
+			if (!category_ids.includes(article.category_id)) {
+				return res.redirect("/404"); // This should be 403
+			}
+
+			// console.log(category); // Debug
+
+			const tags = await tagService.findTagsByArticleId(id);
+
 			res.render("vwEditor/edit", {
 				layout: "layouts/admin.main.ejs",
+				tags: tags,
 				api_key: process.env.TINY_API_KEY, // Pass TinyMCE API key
 				article: article, // Pass the article object to the template
 			});
