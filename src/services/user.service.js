@@ -124,5 +124,7 @@ export default {
 	findAllRoles() {
 		return db("users").distinct("user_role").select("user_role");
 	},
-	deleteUser() {},
+	deleteUser(userId) {
+		return db("users").where("user_id", userId).update({ is_active: 0 });
+	},
 };
