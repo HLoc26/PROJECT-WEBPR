@@ -90,4 +90,40 @@ export default {
 			return res.status(500).redirect("/500");
 		}
 	},
+	async deleteUser(req, res) {
+		const { user_id } = req.params;
+
+		try {
+			await userService.deleteUser(user_id);
+			res.redirect("/admin/editor?message=User deleted successfully");
+		} catch (error) {
+			console.error("Error deleting user:", error);
+			res.status(500).send("Error deleting user");
+		}
+	},
+	async updateProfile(req, res) {
+		try {
+			const { user_id } = req.params;
+			const { role, category } = req.body; // Extract selected role and category from the form submission
+
+			if (!user_id || !role || !category) {
+				return res.status(400).send("User ID, role, and category are required.");
+			}
+
+			// Construct the entity to update
+			const entity = {
+				user_role: role, // Map the selected role to the user_role field
+				managed_category_id: parseInt(category, 10), // Ensure the category is stored as an integer
+			};
+
+			// Call the service to update the user's profile
+			await userService.adminUpdateProfile(user_id, entity);
+
+			// Redirect back to the editor detail page with a success message
+			res.redirect(`/admin/editor`);
+		} catch (error) {
+			console.error("Error updating user profile:", error);
+			res.status(500).redirect("/500");
+		}
+	},
 };
