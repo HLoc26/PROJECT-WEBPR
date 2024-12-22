@@ -260,7 +260,6 @@ export default {
 	},
 
 	search(query, is_premium = false) {
-		// search article by title, abstract, content, if is_premium, include premium articles, else not
 		return db("articles")
 			.where((builder) => {
 				builder
@@ -270,9 +269,10 @@ export default {
 			})
 			.andWhere((builder) => {
 				if (!is_premium) {
-					builder.where("is_premium", false);
+					builder.where("is_premium", false); // Filter non-premium articles if is_premium is false
 				}
 			})
+			.andWhere("status", "published") // Only get articles with status "published"
 			.select("articles.*")
 			.orderBy([
 				{ column: "is_premium", order: "desc" }, // Premium articles first

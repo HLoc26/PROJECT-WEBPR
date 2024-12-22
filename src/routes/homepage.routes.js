@@ -26,4 +26,21 @@ router.get("/tag", tagController.getArticlesByTag);
 
 router.get("/cate", homeController.getCategoryArticles);
 
+router.get("/search", async function (req, res) {
+	const query = req.query.q;
+
+	// console.log(query); // Debug
+
+	const is_premium = req.session.user ? req.session.user.is_premium : false;
+
+	const results = await articleService.search(query, is_premium);
+
+	// console.log(results); // Debug
+
+	res.render("vwHomepage/Search", {
+		query: query,
+		results: results,
+	});
+});
+
 export default router;
