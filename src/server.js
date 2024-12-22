@@ -2,7 +2,7 @@ import express from "express";
 import session from "express-session";
 import "dotenv/config";
 
-import adminRoutes from "./routes/admin.routes.js";
+import adminRoutes from "./routes/admin.routes.js"
 import apiRoutes from "./routes/api.routes.js";
 import articleRoutes from "./routes/article.routes.js";
 import defaultRoute from "./routes/default.routes.js";
@@ -10,7 +10,7 @@ import writerRoute from "./routes/writer.routes.js";
 import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
 import profileRoute from "./routes/profile.routes.js";
-
+// Note: categoryRoutes are handled through apiRoutes
 
 import configViewEngine from "./config/viewEngine.js";
 import { setLocalCategories } from "./middlewares/category.mdw.js";
@@ -52,9 +52,6 @@ app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
 app.use("/admin", adminRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/homepage", homepageRoute);
-
-app.use("/list", homepageRoute);
-app.use("/admin", adminRoute) //cần xác minh admin mới đăng nhạpa
 
 // Protected routes with role-specific middleware
 app.use("/editor", isAuth, isEditor, editorRoute);
