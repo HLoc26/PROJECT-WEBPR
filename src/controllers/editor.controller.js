@@ -130,7 +130,7 @@ export default {
 			const editorId = req.session.user.user_id; // Editor's user ID from session
 
 			// Fetch article details
-			const article = await ArticleService.findArticleById(articleId);
+			const article = await articleService.findArticleById(articleId);
 
 			if (!article) {
 				return res.status(404).json({ error: "Article not found." });
@@ -142,7 +142,7 @@ export default {
 			}
 
 			// Update article status to "need changes"
-			await ArticleService.updateArticleStatus(articleId, "need changes");
+			await articleService.updateArticleStatus(articleId, "need changes");
 
 			// Create a notification for the writer
 			await notiService.createNotification(
