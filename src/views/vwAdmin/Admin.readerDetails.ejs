@@ -42,7 +42,7 @@
                         <div class="mb-3">
                             <label class="fw-bold">Premium Status:</label>
                             <p>
-                                <% if (user.is_premium) { %>
+                                <% if (user.premium) { %>
                                     <span class="badge bg-warning">Premium</span>
                                     <br>
                                     <small class="text-muted">
@@ -57,14 +57,14 @@
                 </div>
             </div>
 
-            <!-- Premium Registration Card -->
+            <!-- Premium Management Card -->
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title mb-0">Premium Registration</h3>
+                        <h3 class="card-title mb-0">Premium Management</h3>
                     </div>
                     <div class="card-body">
-                        <form action="/admin/readers/<%= user.user_id %>/register-premium" method="POST">
+                        <form action="/admin/readers/<%= user.user_id %>/register-premium" method="POST" class="mb-3">
                             <div class="mb-3">
                                 <label for="subscriptionExpiredDate" class="form-label">
                                     Subscription Expiry Date
@@ -76,15 +76,41 @@
                                        min="<%= new Date().toISOString().split('T')[0] %>"
                                        required>
                             </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-star-fill"></i> 
-                                Register Premium
-                            </button>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-star-fill"></i> 
+                                    Register Premium
+                                </button>
+                                
+                                <% if (user.premium) { %>
+                                    <button type="button" 
+                                            class="btn btn-danger" 
+                                            onclick="confirmUnsubscribe()">
+                                        <i class="bi bi-x-circle"></i>
+                                        Unsubscribe Premium
+                                    </button>
+                                <% } %>
+                            </div>
+                        </form>
+
+                        <!-- Hidden unsubscribe form -->
+                        <form id="unsubscribeForm" 
+                              action="/admin/readers/<%= user.user_id %>/unsubscribe-premium" 
+                              method="POST" 
+                              style="display: none;">
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmUnsubscribe() {
+            if (confirm('Are you sure you want to unsubscribe this user from premium? This action cannot be undone.')) {
+                document.getElementById('unsubscribeForm').submit();
+            }
+        }
+    </script>
 </body>
 </html>
