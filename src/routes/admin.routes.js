@@ -8,6 +8,9 @@ router.get('/', (req, res) => {
     adminController.showArticlesPage(req, res);
 });
 
+router.get("/writers", adminController.getWriters)
+router.get('/writers/detail', adminController.getWriterDetails);
+
 router.get("/editor", adminControllerSang.getEditors);
 router.get("/editor/detail", adminControllerSang.getEditorDetails);
 router.post("/editor/:user_id/delete", adminControllerSang.deleteUser);

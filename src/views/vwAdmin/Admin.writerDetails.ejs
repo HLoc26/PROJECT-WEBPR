@@ -1,0 +1,212 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+		<script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+		<script type="text/javascript">
+			window.tailwind.config = {
+				darkMode: ['class'],
+				theme: {
+					extend: {
+						colors: {
+							border: 'hsl(var(--border))',
+							input: 'hsl(var(--input))',
+							ring: 'hsl(var(--ring))',
+							background: 'hsl(var(--background))',
+							foreground: 'hsl(var(--foreground))',
+							primary: {
+								DEFAULT: 'hsl(var(--primary))',
+								foreground: 'hsl(var(--primary-foreground))'
+							},
+							secondary: {
+								DEFAULT: 'hsl(var(--secondary))',
+								foreground: 'hsl(var(--secondary-foreground))'
+							},
+							destructive: {
+								DEFAULT: 'hsl(var(--destructive))',
+								foreground: 'hsl(var(--destructive-foreground))'
+							},
+							muted: {
+								DEFAULT: 'hsl(var(--muted))',
+								foreground: 'hsl(var(--muted-foreground))'
+							},
+							accent: {
+								DEFAULT: 'hsl(var(--accent))',
+								foreground: 'hsl(var(--accent-foreground))'
+							},
+							popover: {
+								DEFAULT: 'hsl(var(--popover))',
+								foreground: 'hsl(var(--popover-foreground))'
+							},
+							card: {
+								DEFAULT: 'hsl(var(--card))',
+								foreground: 'hsl(var(--card-foreground))'
+							},
+						},
+					}
+				}
+			}
+		</script>
+		<style type="text/tailwindcss">
+			@layer base {
+				:root {
+					--background: 0 0% 100%;
+					--foreground: 240 10% 3.9%;
+					--card: 0 0% 100%;
+					--card-foreground: 240 10% 3.9%;
+					--popover: 0 0% 100%;
+					--popover-foreground: 240 10% 3.9%;
+					--primary: 240 5.9% 10%;
+					--primary-foreground: 0 0% 98%;
+					--secondary: 240 4.8% 95.9%;
+					--secondary-foreground: 240 5.9% 10%;
+					--muted: 240 4.8% 95.9%;
+					--muted-foreground: 240 3.8% 46.1%;
+					--accent: 240 4.8% 95.9%;
+					--accent-foreground: 240 5.9% 10%;
+					--destructive: 0 84.2% 60.2%;
+					--destructive-foreground: 0 0% 98%;
+					--border: 240 5.9% 90%;
+					--input: 240 5.9% 90%;
+					--ring: 240 5.9% 10%;
+					--radius: 0.5rem;
+				}
+				.dark {
+					--background: 240 10% 3.9%;
+					--foreground: 0 0% 98%;
+					--card: 240 10% 3.9%;
+					--card-foreground: 0 0% 98%;
+					--popover: 240 10% 3.9%;
+					--popover-foreground: 0 0% 98%;
+					--primary: 0 0% 98%;
+					--primary-foreground: 240 5.9% 10%;
+					--secondary: 240 3.7% 15.9%;
+					--secondary-foreground: 0 0% 98%;
+					--muted: 240 3.7% 15.9%;
+					--muted-foreground: 240 5% 64.9%;
+					--accent: 240 3.7% 15.9%;
+					--accent-foreground: 0 0% 98%;
+					--destructive: 0 62.8% 30.6%;
+					--destructive-foreground: 0 0% 98%;
+					--border: 240 3.7% 15.9%;
+					--input: 240 3.7% 15.9%;
+					--ring: 240 4.9% 83.9%;
+				}
+			}
+		</style>
+  </head>
+  <body>
+    <div class="container my-4">
+        <!-- Writer Information Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Writer Information</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Full Name:</strong> <%= writer.full_name %></p>
+                        <p><strong>Email:</strong> <%= writer.email %></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Date of Birth:</strong> <%= new Date(writer.dob).toISOString().split('T')[0] %></p>
+                        <p><strong>ID:</strong> <%= writer.user_id %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Published Articles Section -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Published Articles</h4>
+                <span class="badge bg-primary">Total: <%= articles.length %></span>
+            </div>
+            <div class="card-body p-0">
+                <!-- Set height to approximately show 10 rows -->
+                <div style="height: 430px; overflow-y: auto;">
+                    <table class="table table-striped table-bordered mb-0">
+                        <thead class="sticky-top bg-white">
+                            <tr>
+                                <th style="width: 5%;">No.</th>
+                                <th style="width: 45%;">Title</th>
+                                <th style="width: 20%;">Category</th>
+                                <th style="width: 15%;">Published Date</th>
+                                <!-- <th style="width: 15%;">Actions</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (articles && articles.length > 0) { %>
+                                <% articles.forEach((article, index) => { %>
+                                    <tr>
+                                        <td><%= index + 1 %></td>
+                                        <td><%= article.title %></td>
+                                        <td><%= article.category_name %></td>
+                                        <td><%= new Date(article.published_date).toLocaleDateString() %></td>
+                                        <!-- <td>
+                                            <div class="btn-group">
+                                                <a href="/articles/<%= article.article_id %>" 
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   title="View Article">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="/admin/articles/edit/<%= article.article_id %>" 
+                                                   class="btn btn-sm btn-outline-secondary"
+                                                   title="Edit Article">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                            </div>
+                                        </td> -->
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5" class="text-center">No published articles found.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add this CSS -->
+    <style>
+        .sticky-top {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .table th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .card-header {
+            background-color: #f8f9fa;
+        }
+        
+        .badge {
+            font-size: 0.9rem;
+        }
+        
+        .table td {
+            vertical-align: middle;
+        }
+    
+        /* Set a consistent height for table rows */
+        .table td {
+            height: 43px;  /* This will make each row about 43px tall */
+            padding: 8px;  /* Consistent padding */
+        }
+    </style>
+  </body>
+</html>
