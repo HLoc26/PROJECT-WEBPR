@@ -31,7 +31,9 @@ router.get("/search", async function (req, res) {
 
 	// console.log(query); // Debug
 
-	const is_premium = req.session.user ? req.session.user.is_premium : false;
+	const is_premium = req.session.user ? req.session.user.premium : false;
+	console.log("Premium status:", is_premium);
+	console.log(req.session.user);
 
 	const results = await articleService.search(query, is_premium);
 
