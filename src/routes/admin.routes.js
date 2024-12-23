@@ -16,11 +16,11 @@ router.get("/editor/detail", adminControllerSang.getEditorDetails);
 router.post("/editor/:user_id/delete", adminControllerSang.deleteUser);
 router.post("/editor/:user_id/submit", adminControllerSang.updateProfile);
 
-// Category management
+// Category managementAdd routers to manage categories
 router.get("/categories", adminControllerHuy.getCategories);
 router.get("/categories/add", adminControllerHuy.getAddCategories);
 router.post("categories/add", adminControllerHuy.addCategories);
 router.get("/categories/edit", adminControllerHuy.getEditCategories);
-router.post("/categories/edit", adminControllerHuy.editCategories);
+router.post("/categories/patch", adminControllerHuy.editCategories);
 
 export default router;
