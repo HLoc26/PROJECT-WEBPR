@@ -50,7 +50,7 @@ export default {
 
 			// Find user by email or username with complete user information
 			const userByEmail = await userService.findByEmail(email);
-			const userByUsername = await userService.findByUsername(email);
+			const userByUsername = await userService.findUserByUsername(email);
 			const user = userByEmail || userByUsername;
 
 			if (!user) {
