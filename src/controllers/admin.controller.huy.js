@@ -3,9 +3,7 @@ import categoryService from "../services/category.service.js";
 export default {
 	async getCategories(req, res) {
 		try {
-			res.render("vwAdmin/category.list", {
-				categories: categories,
-			});
+			res.render("vwAdmin/category.list.ejs");
 		} catch (error) {
 			console.error("Error fetching categories:", error);
 			return res.status(500).redirect("/500");
