@@ -70,6 +70,8 @@
                 >
               </div>
 
+              <!-- Only show password change section for non-OAuth users -->
+              <% if (user.password !== null) { %>
               <div class="form-group">
                 <label for="password">Change Password</label>
                 
@@ -118,6 +120,7 @@
                   </div>
                 </div>
               </div>
+              <% } %>
 
               <% if (user.user_role === 'reader') { %>
               <div class="form-group">
