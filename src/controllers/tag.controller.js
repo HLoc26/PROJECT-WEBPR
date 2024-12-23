@@ -38,7 +38,7 @@ export default {
     async getAllTags(req, res) {
         try {
             const tags = await TagService.findAllTags();
-            res.render("../views/vwAdmin/Tags.ejs", { tags });
+            res.render("../views/vwTag/Tags.ejs", { tags, layout: "layouts/admin.main.ejs"});
         } catch (error) {
             console.error("Error in getAllTags:", error);
             res.status(500).render("vwError/500", { message: "Internal Server Error" });
@@ -53,7 +53,7 @@ export default {
             if (!tag) {
                 return res.status(404).render("vwError/404", { message: "Tag not found" });
             }
-            res.render("../views/vwAdmin/TagDetails.ejs", { tag });
+            res.render("../views/vwTag/TagDetails.ejs", { tag , layout: "layouts/admin.main.ejs"});
         } catch (error) {
             console.error("Error in getTagById:", error);
             res.status(500).render("vwError/500", { message: "Internal Server Error" });
