@@ -33,4 +33,17 @@ export default {
 			res.status(500).render("vwError/500", { message: "Internal Server Error" });
 		}
 	},
+
+	// Display all tags
+    async getAllTags(req, res) {
+        try {
+            const tags = await TagService.findAllTags();
+            res.render("../views/vwAdmin/Tags.ejs", { tags });
+        } catch (error) {
+            console.error("Error in getAllTags:", error);
+            res.status(500).render("vwError/500", { message: "Internal Server Error" });
+        }
+    },
+
+    
 };
