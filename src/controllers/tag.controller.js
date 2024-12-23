@@ -75,5 +75,24 @@ export default {
         }
     },
 
-    
+    // Update a tag
+    async updateTag(req, res) {
+        try {
+            const tagId = req.params.id;
+            const { tagName } = req.body;
+            if (!tagName) {
+                return res.status(400).render("vwError/400", { message: "Tag name is required" });
+            }
+            const tag = await TagService.findTagById(tagId);
+            if (!tag) {
+                return res.status(404).render("vwError/404", { message: "Tag not found" });
+            }
+            await TagService.updateTag(tagId, tagName);
+            res.redirect("/admin/tags");
+        } catch (error) {
+            console.error("Error in updateTag:", error);
+            res.status(500).render("vwError/500", { message: "Internal Server Error" });
+        }
+    },
+
 };
