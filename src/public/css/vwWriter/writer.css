@@ -34,3 +34,11 @@ img[alt="thumbnail"] {
 	color: #fff;
 	background-color: #dc3545;
 }
+
+body {
+	overflow: hidden;
+}
+.tab-pane {
+	overflow-y: scroll;
+	max-height: 500px;
+}
