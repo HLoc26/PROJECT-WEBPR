@@ -5,7 +5,7 @@ export default {
     async getReaderUsers(req, res) {
         try {
             const readers = await UserService.findAllUsers("reader");
-            res.render("../views/vwAdmin/Readers.ejs", { readers, layout: "layouts/admin.main.ejs"});
+            res.render("../views/vwAdmin/Admin.readers.ejs", { readers, layout: "layouts/admin.main.ejs"});
         } catch (error) {
             console.error("Error in getReaderUsers:", error);
             res.status(500).redirect("/500");
@@ -20,7 +20,7 @@ export default {
             if (!user) {
                 return res.status(404).redirect("/404");
             }
-            res.render("../views/vwAdmin/ReaderDetails.ejs", { user , layout: "layouts/admin.main.ejs"});
+            res.render("../views/vwAdmin/Admin.readerDetails.ejs", { user , layout: "layouts/admin.main.ejs"});
         } catch (error) {
             console.error("Error in getReaderDetails:", error);
             res.status(500).redirect("/500");
