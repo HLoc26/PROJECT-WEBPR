@@ -40,7 +40,7 @@
 			<p class="abstract-text"><%= article.abstract %></p>
 			<p class="mb-1"><%= new Date(article.published_date).toLocaleDateString('vi-VN') %></p>
 		</div>
-		<% if (typeof show_tags !== 'undefined' && show_tags) { %> <% article.tags.forEach(tag => { %>
+		<% if (typeof show_tags !== 'undefined' && show_tags) { %> <% tags.forEach(tag => { %>
 		<span class="badge badge-info"><%= tag.tag_name %></span>
 		<%}); %> <% } %>
 	</div>
