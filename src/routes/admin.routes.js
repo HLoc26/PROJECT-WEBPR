@@ -1,7 +1,7 @@
-
 import adminControllerSang from "../controllers/admin.controller.sang.js";
 import adminController from '../controllers/admin.controller.js'; 
 import express from "express";
+import adminControllerHuy from "../controllers/admin.controller.huy.js";
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -16,6 +16,11 @@ router.get("/editor/detail", adminControllerSang.getEditorDetails);
 router.post("/editor/:user_id/delete", adminControllerSang.deleteUser);
 router.post("/editor/:user_id/submit", adminControllerSang.updateProfile);
 
+// Category management
 router.get("/categories", adminControllerHuy.getCategories);
+router.get("/categories/add", adminControllerHuy.getAddCategories);
+router.post("categories/add", adminControllerHuy.addCategories);
+router.get("/categories/edit", adminControllerHuy.getEditCategories);
+router.post("/categories/edit", adminControllerHuy.editCategories);
 
 export default router;
