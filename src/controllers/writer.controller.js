@@ -117,8 +117,9 @@ export default {
 		const articleId = req.query.id;
 		const { title, summary, content, category, premium, tags } = req.body;
 		const is_premium = premium === "on" ? 1 : 0;
-		const thumbnail = req.file.filename;
+		const originalArticle = await articleService.findArticleById(articleId);
 
+		const thumbnail = req.file ? req.file.filename : originalArticle.thumbnail;
 		const entity = {
 			title: title,
 			content: content,
