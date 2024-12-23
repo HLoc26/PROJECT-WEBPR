@@ -70,10 +70,7 @@
                 <% Object.entries(categoryArticles).forEach(([categoryName, articles]) => { %>
                 <div class="card my-2">
                     <div class="card-header">
-                        <a href="/category/<%= articles[0]?.category_id %>" class="h5 text-decoration-none text-reset">
-                            <%= categoryName.toUpperCase() %>
-                        </a>
-                        <!-- You can add subcategories here if needed -->
+						<a href="/homepage/cate?id=<%= article.category_id %>" class="h5 text-decoration-none text-reset"> <%= article.category_name.toUpperCase() %> </a>
                     </div>
                     <div class="card-body">
                         <% if (articles[0]) { %>
