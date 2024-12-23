@@ -1,14 +1,28 @@
-<form action="" method="post">
-    <div class="card">
-        <div class="card-header">
-            Header
-        </div>
-        <div class="card-body">
-            <h4 class="card-title">Title</h4>
-            <p class="card-text">Text</p>
-        </div>
-        <div class="card-footer text-muted">
-            Footer
-        </div>
-    </div>
-</form>
+<div class="container mt-5">
+	<h1 class="mb-4 border-bottom">Tạo chuyên mục mới</h1>
+
+	<form action="/admin/categories/add" method="POST">
+		<div class="mb-3">
+			<label for="category_name" class="form-label"><strong>Tên chuyên mục</strong></label>
+			<input type="text" class="form-control" id="category_name" name="category_name" placeholder="Nhập tên chuyên mục" required />
+		</div>
+
+		<div class="mb-3">
+			<label for="description" class="form-label"><strong>Mô tả</strong></label>
+			<textarea class="form-control" id="description" name="description" rows="4" placeholder="Nhập mô tả chuyên mục"></textarea>
+		</div>
+
+		<div class="mb-3">
+			<label for="belong_to" class="form-label"><strong>Chọn chuyên mục cha (nếu có)</strong></label>
+			<select class="form-select" id="belong_to" name="belong_to">
+				<option value="" selected>Không có chuyên mục cha</option>
+				<% categories.forEach(category => { %>
+				<option value="<%= category.category_id %>"><%= category.category_name %></option>
+				<% }); %>
+			</select>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Thêm Chuyên Mục</button>
+		<a href="/admin/categories" class="btn btn-secondary">Hủy</a>
+	</form>
+</div>
