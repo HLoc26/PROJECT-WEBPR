@@ -5,10 +5,10 @@ export default {
     async getReaderUsers(req, res) {
         try {
             const readers = await UserService.findAllUsers("reader");
-            res.render("../views/vwAdmin/Readers.ejs", { readers });
+            res.render("../views/vwAdmin/Readers.ejs", { readers, layout: "layouts/admin.main.ejs"});
         } catch (error) {
             console.error("Error in getReaderUsers:", error);
-            res.status(500).render("vwError/500", { message: "Internal Server Error" });
+            res.status(500).redirect("/500");
         }
     },
 
@@ -18,12 +18,12 @@ export default {
             const userId = req.params.id;
             const user = await UserService.findUserById(userId);
             if (!user) {
-                return res.status(404).render("vwError/404", { message: "User not found" });
+                return res.status(404).redirect("/404");
             }
-            res.render("../views/vwAdmin/UserDetails.ejs", { user });
+            res.render("../views/vwAdmin/ReaderDetails.ejs", { user , layout: "layouts/admin.main.ejs"});
         } catch (error) {
-            console.error("Error in getUserDetails:", error);
-            res.status(500).render("vwError/500", { message: "Internal Server Error" });
+            console.error("Error in getReaderDetails:", error);
+            res.status(500).redirect("/500");
         }
     },
 
@@ -32,21 +32,21 @@ export default {
         try {
             const userId = req.params.id;
             const { subscriptionExpiredDate } = req.body;
-
+    
             if (!subscriptionExpiredDate) {
-                return res.status(400).render("vwError/400", { message: "Subscription expiration date is required" });
+                return res.status(400).redirect("/400");
             }
-
+    
             const user = await UserService.findUserById(userId, "reader");
             if (!user) {
-                return res.status(404).render("vwError/404", { message: "User not found or not a reader" });
+                return res.status(404).redirect("/404");
             }
-
+    
             await UserService.registerPremium(userId, subscriptionExpiredDate);
             res.redirect("/admin/readers");
         } catch (error) {
             console.error("Error in registerPremium:", error);
-            res.status(500).render("vwError/500", { message: "Internal Server Error" });
+            res.status(500).redirect("/500");
         }
     },
 
