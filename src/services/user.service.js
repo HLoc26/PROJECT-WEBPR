@@ -129,7 +129,12 @@ export default {
 			.first()
 			.select("user_id", "username", "password", "email", "full_name", "dob", "user_role", "is_active", "subscription_expired_date", "premium", "managed_category_id");
 	},
-
+	findByUsername(username) {
+		return db("users")
+			.where("username", username)
+			.first()
+			.select("user_id", "username", "password", "email", "full_name", "dob", "user_role", "is_active", "subscription_expired_date", "premium", "managed_category_id");
+	},
 	updateUserProfile(userId, updateData) {
 		const updates = {};
 		if (updateData.username) updates.username = updateData.username;
