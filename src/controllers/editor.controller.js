@@ -135,12 +135,6 @@ export default {
 			if (!article) {
 				return res.status(404).json({ error: "Article not found." });
 			}
-
-			// Check if the current editor has permission to reject the article
-			if (article.editor_id !== editorId) {
-				return res.status(403).json({ error: "Unauthorized to reject this article." });
-			}
-
 			// Update article status to "need changes"
 			await articleService.updateArticleStatus(articleId, "need changes");
 
