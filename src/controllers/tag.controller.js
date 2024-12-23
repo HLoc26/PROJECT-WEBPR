@@ -60,4 +60,20 @@ export default {
         }
     },
 
+    // Add a new tag
+    async addTag(req, res) {
+        try {
+            const { tagName } = req.body;
+            if (!tagName) {
+                return res.status(400).render("vwError/400", { message: "Tag name is required" });
+            }
+            await TagService.addTag(tagName);
+            res.redirect("/admin/tags");
+        } catch (error) {
+            console.error("Error in addTag:", error);
+            res.status(500).render("vwError/500", { message: "Internal Server Error" });
+        }
+    },
+
+    
 };
