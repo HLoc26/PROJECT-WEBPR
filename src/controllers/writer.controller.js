@@ -8,13 +8,22 @@ export default {
 		// login and register function is complete
 		const writer_id = req.session.user.user_id;
 
-		const articles = await articleService.findByWriterId(writer_id);
+		const draft = await articleService.findByWriterIdAndStatus(writer_id, "draft");
+		const waiting = await articleService.findByWriterIdAndStatus(writer_id, "waiting");
+		const request_changes = await articleService.findByWriterIdAndStatus(writer_id, "need changes");
+		const archived = await articleService.findByWriterIdAndStatus(writer_id, "archived");
+
+		const published = await articleService.findByWriterIdAndStatus(writer_id, "published");
 
 		// console.log(articles);
 
 		res.render("vwWriter/Writer", {
 			layout: "layouts/admin.main.ejs",
-			articles: articles,
+			draft: draft,
+			waiting: waiting,
+			request_changes: request_changes,
+			archived: archived,
+			published: published,
 		});
 	},
 	getNew(req, res) {
