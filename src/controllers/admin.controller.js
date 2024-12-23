@@ -28,7 +28,7 @@ export default {
             });
         } catch (error) {
             console.error('Error fetching articles:', error);
-            res.render('../views/vwError/500.ejs');
+            res.redirect('/500');
         }
     },
 
@@ -43,7 +43,7 @@ export default {
             });
         } catch (error) {
             console.error('Error fetching writers:', error);
-            res.render('../views/vwError/500.ejs');
+            res.redirect('/500');
         }
     },
 
@@ -57,7 +57,7 @@ export default {
             // Rest of your code remains the same
             const writerDetails = await userService.findUserById(writerId, 'writer');
             if (!writerDetails) {
-                return res.status(404).render('../views/vwError/404.ejs', { message: 'Writer not found' });
+                return res.status(404).redirect('/404', { message: 'Writer not found' });
             }
     
             const publishedArticles = await articleService.findByWriterId(writerId);
@@ -69,7 +69,7 @@ export default {
             });
         } catch (error) {
             console.error('Error fetching writer details:', error);
-            res.render('../views/vwError/500.ejs');
+            res.redirect('/500');
         }
     }
 
