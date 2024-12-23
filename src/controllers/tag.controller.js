@@ -95,4 +95,19 @@ export default {
         }
     },
 
+    // Delete a tag
+    async deleteTag(req, res) {
+        try {
+            const tagId = req.params.id;
+            const tag = await TagService.findTagById(tagId);
+            if (!tag) {
+                return res.status(404).render("vwError/404", { message: "Tag not found" });
+            }
+            await TagService.deleteTag(tagId);
+            res.redirect("/admin/tags");
+        } catch (error) {
+            console.error("Error in deleteTag:", error);
+            res.status(500).render("vwError/500", { message: "Internal Server Error" });
+        }
+    },
 };
