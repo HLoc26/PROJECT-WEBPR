@@ -37,9 +37,12 @@ router.post('/register/oauth', async (req, res) => {
     const { username, full_name, dob } = req.body;
     const user = req.user;
 
+    if (!user) {
+      return res.redirect('/login');
+    }
+
     // Update user profile
     await userService.updateUserProfile(user.user_id, {
-      username,
       full_name,
       dob: new Date(dob),
       is_active: 1
@@ -53,7 +56,7 @@ router.post('/register/oauth', async (req, res) => {
   } catch (error) {
     console.error('OAuth registration error:', error);
     res.render('vwLogin/RegisterOAuth', {
-      layout: 'layouts/login.main.ejs',
+      layout: false, // Remove layout since RegisterOAuth has its own
       user: req.user,
       error: 'Failed to complete registration'
     });
