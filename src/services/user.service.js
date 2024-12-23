@@ -109,6 +109,21 @@ export default {
 			managed_category_id: entity.managed_category_id || null,
 		});
 	},
+	
+	async addOAuthUser(entity) {
+		const [userId] = await db('users').insert({
+			username: entity.username,
+			email: entity.email,
+			full_name: entity.full_name,
+			user_role: entity.user_role,
+			is_active: entity.is_active,
+			oauth_provider: entity.oauth_provider,
+			oauth_id: entity.oauth_id,
+			password: null // Explicitly set NULL for OAuth users
+		});
+		return userId;
+	},
+
 	registerPremium(id, subscriptionExpiredDate) {
 		return db("users").where("users.user_id", id).andWhere("users.user_role", "reader").update({
 			premium: true,
