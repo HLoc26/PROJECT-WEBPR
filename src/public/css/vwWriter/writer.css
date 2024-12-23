@@ -38,7 +38,9 @@ img[alt="thumbnail"] {
 body {
 	overflow: hidden;
 }
-.tab-pane {
-	overflow-y: scroll;
-	max-height: 500px;
+.table-container {
+	overflow-y: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }

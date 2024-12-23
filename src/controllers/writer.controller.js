@@ -4,26 +4,65 @@ import "dotenv/config";
 
 export default {
 	async getHome(req, res) {
-		// Loc: This ID is just for test, will have to change after
+		const maxArticlePerPage = 5; // Maximum number of articles per page
+
+		// Get the tab and page number from the query string
+		const activeTab = req.query.tab || "draft";
+		const currentPage = +req.query.page || 1;
+
+		console.log("tab: ", activeTab);
+		console.log("page: ", currentPage);
+
+		const offset = (currentPage - 1) * maxArticlePerPage;
+
 		// login and register function is complete
 		const writer_id = req.session.user.user_id;
-
 		const draft = await articleService.findByWriterIdAndStatus(writer_id, "draft");
 		const waiting = await articleService.findByWriterIdAndStatus(writer_id, "waiting");
-		const request_changes = await articleService.findByWriterIdAndStatus(writer_id, "need changes");
+		const need_changes = await articleService.findByWriterIdAndStatus(writer_id, "need changes");
 		const archived = await articleService.findByWriterIdAndStatus(writer_id, "archived");
 
 		const published = await articleService.findByWriterIdAndStatus(writer_id, "published");
 
+		// console.log("draft: ", draft);
+		// console.log("waiting: ", waiting);
+		// console.log("need_changes: ", need_changes);
+		// console.log("archived: ", archived);
+		// console.log("published: ", published);
 		// console.log(articles);
+
+		let articles;
+		switch (activeTab) {
+			case "draft":
+				articles = draft;
+				break;
+			case "waiting":
+				articles = waiting;
+				break;
+			case "need-changes":
+				articles = need_changes;
+				break;
+			case "archived":
+				articles = archived;
+				break;
+			case "published":
+				articles = published;
+				break;
+			default:
+				articles = draft;
+				break;
+		}
+
+		// console.log(articles);
+		const totalPages = Math.ceil(articles.length / maxArticlePerPage);
+		console.log(totalPages);
 
 		res.render("vwWriter/Writer", {
 			layout: "layouts/admin.main.ejs",
-			draft: draft,
-			waiting: waiting,
-			request_changes: request_changes,
-			archived: archived,
-			published: published,
+			articles: articles.slice(offset, offset + maxArticlePerPage),
+			activeTab: activeTab,
+			currentPage: currentPage,
+			totalPages: totalPages,
 		});
 	},
 	getNew(req, res) {
