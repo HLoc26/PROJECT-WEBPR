@@ -47,4 +47,30 @@ export default {
         }
     },
 
+    //Xem thông tin của một editor và danh sách các bài viết đã được published thuộc về writer đó
+    async getWriterDetails(req, res) {
+        try {
+            const writerId = req.query.id; // Change this line
+            console.log('Query parameters:', req.query);
+            console.log('Writer ID:', writerId);
+    
+            // Rest of your code remains the same
+            const writerDetails = await userService.findUserById(writerId, 'writer');
+            if (!writerDetails) {
+                return res.status(404).render('../views/vwError/404.ejs', { message: 'Writer not found' });
+            }
+    
+            const publishedArticles = await articleService.findByWriterId(writerId);
+            const filteredArticles = publishedArticles.filter(article => article.status === 'published');
+    
+            res.render('../views/vwAdmin/Admin.writerDetails.ejs', {
+                writer: writerDetails,
+                articles: filteredArticles,
+            });
+        } catch (error) {
+            console.error('Error fetching writer details:', error);
+            res.render('../views/vwError/500.ejs');
+        }
+    }
+
 };
