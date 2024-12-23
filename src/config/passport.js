@@ -30,18 +30,18 @@ export default function configurePassport(app) {
       let user = await userService.findByEmail(profile.emails[0].value);
       
       if (!user) {
-        // Create new user
         const newUser = {
           username: profile.displayName.replace(/\s/g, '').toLowerCase(),
           email: profile.emails[0].value,
           full_name: profile.displayName,
           user_role: 'reader',
-          is_active: 1,
+          is_active: 0, // Set to inactive until registration is complete
           password: null // OAuth users don't need password
         };
         
         await userService.addReader(newUser);
         user = await userService.findByEmail(profile.emails[0].value);
+        user.isNewUser = true; // Mark as new user
       }
       
       return done(null, user);
@@ -66,12 +66,13 @@ export default function configurePassport(app) {
           email: profile.emails[0].value,
           full_name: `${profile.name.givenName} ${profile.name.familyName}`,
           user_role: 'reader',
-          is_active: 1,
+          is_active: 0, // Set to inactive until registration is complete
           password: null
         };
         
         await userService.addReader(newUser);
         user = await userService.findByEmail(profile.emails[0].value);
+        user.isNewUser = true; // Mark as new user
       }
       
       return done(null, user);
