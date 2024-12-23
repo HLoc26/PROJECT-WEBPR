@@ -27,4 +27,27 @@ export default {
         }
     },
 
+    // Admin register premium for a user
+    async registerPremium(req, res) {
+        try {
+            const userId = req.params.id;
+            const { subscriptionExpiredDate } = req.body;
+
+            if (!subscriptionExpiredDate) {
+                return res.status(400).render("vwError/400", { message: "Subscription expiration date is required" });
+            }
+
+            const user = await UserService.findUserById(userId, "reader");
+            if (!user) {
+                return res.status(404).render("vwError/404", { message: "User not found or not a reader" });
+            }
+
+            await UserService.registerPremium(userId, subscriptionExpiredDate);
+            res.redirect("/admin/readers");
+        } catch (error) {
+            console.error("Error in registerPremium:", error);
+            res.status(500).render("vwError/500", { message: "Internal Server Error" });
+        }
+    },
+
 };
