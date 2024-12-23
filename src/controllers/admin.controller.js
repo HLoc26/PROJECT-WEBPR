@@ -22,7 +22,8 @@ export default {
             // console.log('Approved Articles:', approvedArticles);
             // console.log('Pending Articles:', pendingArticles);
     
-            res.render('../views/vwAdmin/Admin.showarticles.ejs', {
+            res.render('../views/vwAdmin/Admin.dashboard.ejs', {
+                layout: "layouts/admin.main.ejs",
                 approvedArticles: approvedArticles,
                 pendingArticles: pendingArticles,
             });
