@@ -22,19 +22,19 @@
 
 <ul class="nav nav-underline">
 	<li class="nav-item">
-		<a class="nav-link <%= activeTab == 'draft' ? 'active' : ''%>" href="/writer?page=1&tab=draft">Nháp</a>
+		<a class="nav-link <%= activeTab == 'draft' ? 'active' : ''%>" href="/writer?tab=draft&page=1">Nháp</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link <%= activeTab == 'waiting' ? 'active' : ''%>" href="/writer?page=1&tab=waiting">Chờ duyệt</a>
+		<a class="nav-link <%= activeTab == 'waiting' ? 'active' : ''%>" href="/writer?tab=waiting&page=1">Chờ duyệt</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link <%= activeTab == 'need-changes' ? 'active' : ''%>" href="/writer?page=1&tab=need-changes">Cần chỉnh sửa</a>
+		<a class="nav-link <%= activeTab == 'need-changes' ? 'active' : ''%>" href="/writer?tab=need-changes&page=1">Cần chỉnh sửa</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link <%= activeTab == 'archived' ? 'active' : ''%>" href="/writer?page=1&tab=archived">Đã lên lịch</a>
+		<a class="nav-link <%= activeTab == 'archived' ? 'active' : ''%>" href="/writer?tab=archived&page=1">Đã lên lịch</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link <%= activeTab == 'published' ? 'active' : ''%>" href="/writer?page=1&tab=published">Đã xuất bản</a>
+		<a class="nav-link <%= activeTab == 'published' ? 'active' : ''%>" href="/writer?tab=published&page=1">Đã xuất bản</a>
 	</li>
 </ul>
 
@@ -69,7 +69,7 @@
 					<% } %>
 				</td>
 				<td>
-					<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+					<a href="/writer/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
 				</td>
 				<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
 				<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
@@ -93,17 +93,17 @@
 	<nav aria-label="Page navigation example">
 		<ul class="pagination">
 			<li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-				<a class="page-link" href="/writer?page=<%= currentPage - 1 %>&tab=<%= activeTab %>" aria-label="Previous">
+				<a class="page-link" href="/writer?tab=<%= activeTab %>&page=<%= currentPage - 1 %>" aria-label="Previous">
 					<span aria-hidden="true">&laquo;</span>
 				</a>
 			</li>
 			<% for (let i = 1; i <= totalPages; i++) { %>
 			<li class="page-item <%= currentPage === i ? 'active' : '' %>">
-				<a class="page-link" href="/writer?page=<%= i %>&tab=<%= activeTab %>"><%= i %></a>
+				<a class="page-link" href="/writer?tab=<%= activeTab %>&page=<%= i %>"><%= i %></a>
 			</li>
 			<% } %>
 			<li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-				<a class="page-link" href="/writer?page=<%= currentPage + 1 %>&tab=<%= activeTab %>" aria-label="Next">
+				<a class="page-link" href="/writer?tab=<%= activeTab %>&page=<%= currentPage + 1 %>" aria-label="Next">
 					<span aria-hidden="true">&raquo;</span>
 				</a>
 			</li>
