@@ -3,7 +3,7 @@ import categoryService from "../services/category.service.js";
 export default {
 	async getCategories(req, res) {
 		try {
-			res.render("vwAdmin/category", {
+			res.render("vwAdmin/category.list", {
 				categories: categories,
 			});
 		} catch (error) {
