@@ -45,5 +45,19 @@ export default {
         }
     },
 
-    
+    // Display tag details by ID
+    async getTagById(req, res) {
+        try {
+            const tagId = req.params.id;
+            const tag = await TagService.findTagById(tagId);
+            if (!tag) {
+                return res.status(404).render("vwError/404", { message: "Tag not found" });
+            }
+            res.render("../views/vwAdmin/TagDetails.ejs", { tag });
+        } catch (error) {
+            console.error("Error in getTagById:", error);
+            res.status(500).render("vwError/500", { message: "Internal Server Error" });
+        }
+    },
+
 };
