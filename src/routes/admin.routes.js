@@ -16,4 +16,6 @@ router.get("/editor/detail", adminControllerSang.getEditorDetails);
 router.post("/editor/:user_id/delete", adminControllerSang.deleteUser);
 router.post("/editor/:user_id/submit", adminControllerSang.updateProfile);
 
+router.get("/categories", adminControllerHuy.getCategories);
+
 export default router;
