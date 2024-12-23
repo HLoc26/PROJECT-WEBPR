@@ -12,7 +12,7 @@ export default {
 
 	async getAddCategories(req, res) {
 		try {
-			res.render("vwAdmin/category.add");
+			res.render("vwAdmin/category.add.ejs");
 		} catch (error) {
 			console.error("Error from getAddCategories:", error);
 			return res.status(500).redirect("/500");
@@ -20,15 +20,14 @@ export default {
 	},
 
 	async addCategories(req, res) {
+		const category = {
+			category_name: req.body.category_name,
+			description: req.body.description,
+			belong_to: req.body.belong_to || null,
+		};
 		try {
-			const category = {
-				category_name: req.body.CatName,
-				description: req.body.Description,
-				belong_to: req.body.BelongTo,
-			};
 			const ret = await categoryService.addCategory(category);
-
-			res.render("vwAdmin/category.add");
+			res.render("vwAdmin/category.add.ejs");
 		} catch (error) {
 			console.error("Error from addCategories:", error);
 			return res.status(500).redirect("/500");
@@ -43,7 +42,7 @@ export default {
 				return res.redirect("/admin/categories");
 			}
 
-			res.render("vwAdmin/category.edit", {
+			res.render("vwAdmin/category.edit.ejs", {
 				category: data,
 			});
 		} catch (error) {
