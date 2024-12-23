@@ -9,225 +9,216 @@
 <link rel="stylesheet" href="/css/vwWriter/writer.css" />
 
 <!-- Tabs Navigation -->
-	<ul class="nav nav-tabs" id="editorTabs" role="tablist">
-		<li class="nav-item">
-			<button class="nav-link active" id="draft-tab" data-bs-toggle="tab" data-bs-target="#draft" type="button" role="tab" aria-controls="draft" aria-selected="true">Nháp</button>
-		</li>
-		<li class="nav-item">
-			<button class="nav-link" id="waiting-tab" data-bs-toggle="tab" data-bs-target="#waiting" type="button" role="tab" aria-controls="waiting" aria-selected="false">Chờ duyệt</button>
-		</li>
-		<li class="nav-item">
-			<button class="nav-link" id="request-changes-tab" data-bs-toggle="tab" data-bs-target="#request-changes" type="button" role="tab" aria-controls="request-changes" aria-selected="false">Cần chỉnh sửa</button>
-		</li>
-		<li class="nav-item">
-			<button class="nav-link" id="archived-tab" data-bs-toggle="tab" data-bs-target="#archived" type="button" role="tab" aria-controls="archived" aria-selected="false">Đã lên lịch</button>
-		</li>
-		<li class="nav-item">
-			<button class="nav-link" id="published-tab" data-bs-toggle="tab" data-bs-target="#published" type="button" role="tab" aria-controls="published" aria-selected="false">Đã xuất bản</button>
-		</li>
-	</ul>
+<ul class="nav nav-tabs" id="editorTabs" role="tablist">
+	<li class="nav-item">
+		<button class="nav-link active" id="draft-tab" data-bs-toggle="tab" data-bs-target="#draft" type="button" role="tab" aria-controls="draft" aria-selected="true">Nháp</button>
+	</li>
+	<li class="nav-item">
+		<button class="nav-link" id="waiting-tab" data-bs-toggle="tab" data-bs-target="#waiting" type="button" role="tab" aria-controls="waiting" aria-selected="false">Chờ duyệt</button>
+	</li>
+	<li class="nav-item">
+		<button class="nav-link" id="request-changes-tab" data-bs-toggle="tab" data-bs-target="#request-changes" type="button" role="tab" aria-controls="request-changes" aria-selected="false">
+			Cần chỉnh sửa
+		</button>
+	</li>
+	<li class="nav-item">
+		<button class="nav-link" id="archived-tab" data-bs-toggle="tab" data-bs-target="#archived" type="button" role="tab" aria-controls="archived" aria-selected="false">Đã lên lịch</button>
+	</li>
+	<li class="nav-item">
+		<button class="nav-link" id="published-tab" data-bs-toggle="tab" data-bs-target="#published" type="button" role="tab" aria-controls="published" aria-selected="false">Đã xuất bản</button>
+	</li>
+</ul>
 
-	<!-- Tab Content -->
-	<div class="tab-content mt-3">
-		<!-- Tab Content: Nháp -->
-		<div class="tab-pane fade show active" id="draft" role="tabpanel" aria-labelledby="draft-tab">
-			<table class="table table-striped table-bordered align-middle">
-				<thead>
-					<tr>
-						<th style="width: 15%" class="text-center">Ảnh đại diện</th>
-						<th style="width: 30%" class="text-center">Tiêu đề</th>
-						<th style="width: 15%" class="text-center">Chuyên mục</th>
-						<th style="width: 15%" class="text-center">Nhãn dán</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% if (draft.length > 0) { %>
-					<% draft.forEach(article => { %>
-					<tr>
-						<td class="text-center align-middle">
-							<% if (article.thumbnail) { %>
-							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
-							<% } else { %>
-							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
-							<% } %>
-						</td>
-						<td>
-							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
-						</td>
-						<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
-						<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
-					</tr>
-					<% }) %>
-					<% } else { %>
-					<tr>
-						<td colspan="6" class="text-center align-middle">Không có bài viết nháp.</td>
-					</tr>
-					<% } %>
-				</tbody>
-			</table>
-		</div>
-		<!-- Tab Content: Chờ duyệt -->
-		<div class="tab-pane fade fade" id="waiting" role="tabpanel" aria-labelledby="waiting-tab">
-			<table class="table table-striped table-bordered align-middle">
-				<thead>
-					<tr>
-						<th style="width: 15%" class="text-center">Ảnh đại diện</th>
-						<th style="width: 30%" class="text-center">Tiêu đề</th>
-						<th style="width: 15%" class="text-center">Chuyên mục</th>
-						<th style="width: 15%" class="text-center">Nhãn dán</th>
-						<th style="width: 20%" class="text-center">Tác giả</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% if (waiting.length > 0) { %>
-					<% waiting.forEach(article => { %>
-					<tr>
-						<td class="text-center align-middle">
-							<% if (article.thumbnail) { %>
-							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
-							<% } else { %>
-							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
-							<% } %>
-						</td>
-						<td>
-							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
-						</td>
-						<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
-						<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
-						<td class="text-center align-middle"><%= article.writer_fullname || '--' %></td>
-					</tr>
-					<% }) %>
-					<% } else { %>
-					<tr>
-						<td colspan="6" class="text-center align-middle">Không có bài viết chờ duyệt.</td>
-					</tr>
-					<% } %>
-				</tbody>
-			</table>
-		</div>
-		<!-- Tab Content: Cần chỉnh sửa -->
-		<div class="tab-pane fade fade" id="request-changes" role="tabpanel" aria-labelledby="request-changes-tab">
-			<table class="table table-striped table-bordered align-middle">
-				<thead>
-					<tr>
-						<th style="width: 15%" class="text-center">Ảnh đại diện</th>
-						<th style="width: 30%" class="text-center">Tiêu đề</th>
-						<th style="width: 15%" class="text-center">Chuyên mục</th>
-						<th style="width: 15%" class="text-center">Nhãn dán</th>
-						<th style="width: 10%" class="text-center">Tác giả</th>
-						<th style="width: 20%" class="text-center">Biên tập viên</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% if (request_changes.length > 0) { %>
-					<% request_changes.forEach(article => { %>
-					<tr>
-						<td class="text-center align-middle">
-							<% if (article.thumbnail) { %>
-							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
-							<% } else { %>
-							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
-							<% } %>
-						</td>
-						<td>
-							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
-						</td>
-						<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
-						<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
-						<td class="text-center align-middle"><%= article.writer_fullname || '--' %></td>
-						<td class="text-center align-middle"><%= article.editor_fullname || '--' %></td>
-					</tr>
-					<% }) %>
-					<% } else { %>
-					<tr>
-						<td colspan="6" class="text-center align-middle">Không có bài viết cần chỉnh sửa.</td>
-					</tr>
-					<% } %>
-				</tbody>
-			</table>
-		</div>
-		<!-- Tab Content: Đã lên lịch -->
-		<div class="tab-pane fade fade" id="archived" role="tabpanel" aria-labelledby="archived-tab">
-			<table class="table table-striped table-bordered align-middle">
-				<thead>
-					<tr>
-						<th style="width: 15%" class="text-center">Ảnh đại diện</th>
-						<th style="width: 30%" class="text-center">Tiêu đề</th>
-						<th style="width: 15%" class="text-center">Chuyên mục</th>
-						<th style="width: 15%" class="text-center">Nhãn dán</th>
-						<th style="width: 10%" class="text-center">Ngày đăng</th>
-						<th style="width: 20%" class="text-center">Biên tập viên</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% if (archived.length > 0) { %>
-					<% archived.forEach(article => { %>
-					<tr>
-						<td class="text-center align-middle">
-							<% if (article.thumbnail) { %>
-							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
-							<% } else { %>
-							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
-							<% } %>
-						</td>
-						<td>
-							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
-						</td>
-						<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
-						<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
-						<td class="text-center align-middle"><%= article.published_date ? new Date(article.published_date).toLocaleDateString("vi-VN") : "Chưa có" %></td>
-						<td class="text-center align-middle"><%= article.editor_fullname || '--' %></td>
-					</tr>
-					<% }) %>
-					<% } else { %>
-					<tr>
-						<td colspan="6" class="text-center align-middle">Không có bài viết đã lên lịch.</td>
-					</tr>
-					<% } %>
-				</tbody>
-			</table>
-		</div>
-		<!-- Tab Content: Đã xuất bản -->
-		<div class="tab-pane fade fade" id="published" role="tabpanel" aria-labelledby="published-tab">
-			<table class="table table-striped table-bordered align-middle">
-				<thead>
-					<tr>
-						<th style="width: 15%" class="text-center">Ảnh đại diện</th>
-						<th style="width: 30%" class="text-center">Tiêu đề</th>
-						<th style="width: 15%" class="text-center">Chuyên mục</th>
-						<th style="width: 15%" class="text-center">Nhãn dán</th>
-						<th style="width: 10%" class="text-center">Ngày đăng</th>
-						<th style="width: 20%" class="text-center">Biên tập viên</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% if (published.length > 0) { %>
-					<% published.forEach(article => { %>
-					<tr>
-						<td class="text-center align-middle">
-							<% if (article.thumbnail) { %>
-							<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
-							<% } else { %>
-							<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto;" />
-							<% } %>
-						</td>
-						<td>
-							<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
-						</td>
-						<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
-						<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
-						<td class="text-center align-middle"><%= article.published_date ? new Date(article.published_date).toLocaleDateString("vi-VN") : "Chưa có" %></td>
-						<td class="text-center align-middle"><%= article.editor_fullname || '--' %></td>
-					</tr>
-					<% }) %>
-					<% } else { %>
-					<tr>
-						<td colspan="6" class="text-center align-middle">Không có bài viết đã xuất bản.</td>
-					</tr>
-					<% } %>
-				</tbody>
-			</table>
-		</div>
+<!-- Tab Content -->
+<div class="tab-content mt-3">
+	<!-- Tab Content: Nháp -->
+	<div class="tab-pane fade show active" id="draft" role="tabpanel" aria-labelledby="draft-tab">
+		<table class="table table-striped table-bordered align-middle">
+			<thead>
+				<tr>
+					<th style="width: 15%" class="text-center">Ảnh đại diện</th>
+					<th style="width: 30%" class="text-center">Tiêu đề</th>
+					<th style="width: 15%" class="text-center">Chuyên mục</th>
+					<th style="width: 15%" class="text-center">Nhãn dán</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if (draft.length > 0) { %> <% draft.forEach(article => { %>
+				<tr>
+					<td class="text-center align-middle">
+						<% if (article.thumbnail) { %>
+						<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto" />
+						<% } else { %>
+						<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto" />
+						<% } %>
+					</td>
+					<td>
+						<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+					</td>
+					<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
+					<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
+				</tr>
+				<% }) %> <% } else { %>
+				<tr>
+					<td colspan="6" class="text-center align-middle">Không có bài viết nháp.</td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+	<!-- Tab Content: Chờ duyệt -->
+	<div class="tab-pane fade fade" id="waiting" role="tabpanel" aria-labelledby="waiting-tab">
+		<table class="table table-striped table-bordered align-middle">
+			<thead>
+				<tr>
+					<th style="width: 15%" class="text-center">Ảnh đại diện</th>
+					<th style="width: 30%" class="text-center">Tiêu đề</th>
+					<th style="width: 15%" class="text-center">Chuyên mục</th>
+					<th style="width: 15%" class="text-center">Nhãn dán</th>
+					<th style="width: 20%" class="text-center">Tác giả</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if (waiting.length > 0) { %> <% waiting.forEach(article => { %>
+				<tr>
+					<td class="text-center align-middle">
+						<% if (article.thumbnail) { %>
+						<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto" />
+						<% } else { %>
+						<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto" />
+						<% } %>
+					</td>
+					<td>
+						<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+					</td>
+					<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
+					<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
+					<td class="text-center align-middle"><%= article.writer_fullname || '--' %></td>
+				</tr>
+				<% }) %> <% } else { %>
+				<tr>
+					<td colspan="6" class="text-center align-middle">Không có bài viết chờ duyệt.</td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+	<!-- Tab Content: Cần chỉnh sửa -->
+	<div class="tab-pane fade fade" id="request-changes" role="tabpanel" aria-labelledby="request-changes-tab">
+		<table class="table table-striped table-bordered align-middle">
+			<thead>
+				<tr>
+					<th style="width: 15%" class="text-center">Ảnh đại diện</th>
+					<th style="width: 30%" class="text-center">Tiêu đề</th>
+					<th style="width: 15%" class="text-center">Chuyên mục</th>
+					<th style="width: 15%" class="text-center">Nhãn dán</th>
+					<th style="width: 10%" class="text-center">Tác giả</th>
+					<th style="width: 20%" class="text-center">Biên tập viên</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if (request_changes.length > 0) { %> <% request_changes.forEach(article => { %>
+				<tr>
+					<td class="text-center align-middle">
+						<% if (article.thumbnail) { %>
+						<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto" />
+						<% } else { %>
+						<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto" />
+						<% } %>
+					</td>
+					<td>
+						<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+					</td>
+					<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
+					<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
+					<td class="text-center align-middle"><%= article.writer_fullname || '--' %></td>
+					<td class="text-center align-middle"><%= article.editor_fullname || '--' %></td>
+				</tr>
+				<% }) %> <% } else { %>
+				<tr>
+					<td colspan="6" class="text-center align-middle">Không có bài viết cần chỉnh sửa.</td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+	<!-- Tab Content: Đã lên lịch -->
+	<div class="tab-pane fade fade" id="archived" role="tabpanel" aria-labelledby="archived-tab">
+		<table class="table table-striped table-bordered align-middle">
+			<thead>
+				<tr>
+					<th style="width: 15%" class="text-center">Ảnh đại diện</th>
+					<th style="width: 30%" class="text-center">Tiêu đề</th>
+					<th style="width: 15%" class="text-center">Chuyên mục</th>
+					<th style="width: 15%" class="text-center">Nhãn dán</th>
+					<th style="width: 10%" class="text-center">Ngày đăng</th>
+					<th style="width: 20%" class="text-center">Biên tập viên</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if (archived.length > 0) { %> <% archived.forEach(article => { %>
+				<tr>
+					<td class="text-center align-middle">
+						<% if (article.thumbnail) { %>
+						<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto" />
+						<% } else { %>
+						<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto" />
+						<% } %>
+					</td>
+					<td>
+						<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+					</td>
+					<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
+					<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
+					<td class="text-center align-middle"><%= article.published_date ? new Date(article.published_date).toLocaleDateString("vi-VN") : "Chưa có" %></td>
+					<td class="text-center align-middle"><%= article.editor_fullname || '--' %></td>
+				</tr>
+				<% }) %> <% } else { %>
+				<tr>
+					<td colspan="6" class="text-center align-middle">Không có bài viết đã lên lịch.</td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+	<!-- Tab Content: Đã xuất bản -->
+	<div class="tab-pane fade fade" id="published" role="tabpanel" aria-labelledby="published-tab">
+		<table class="table table-striped table-bordered align-middle">
+			<thead>
+				<tr>
+					<th style="width: 15%" class="text-center">Ảnh đại diện</th>
+					<th style="width: 30%" class="text-center">Tiêu đề</th>
+					<th style="width: 15%" class="text-center">Chuyên mục</th>
+					<th style="width: 15%" class="text-center">Nhãn dán</th>
+					<th style="width: 10%" class="text-center">Ngày đăng</th>
+					<th style="width: 20%" class="text-center">Biên tập viên</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if (published.length > 0) { %> <% published.forEach(article => { %>
+				<tr>
+					<td class="text-center align-middle">
+						<% if (article.thumbnail) { %>
+						<img src="/img/<%= article.thumbnail %>" alt="Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto" />
+						<% } else { %>
+						<img src="/img/default-thumbnail.png" alt="Default Thumbnail" class="img-thumbnail d-block mx-auto" style="width: 100px; height: auto" />
+						<% } %>
+					</td>
+					<td>
+						<a href="/editor/edit?id=<%= article.article_id %>" class="text-decoration-none text-primary" title="<%= article.title %>"> <%= article.title %> </a>
+					</td>
+					<td class="text-center align-middle"><%= article.category_name || 'N/A' %></td>
+					<td class="text-center align-middle"><%= article.tags || 'Không có nhãn dán' %></td>
+					<td class="text-center align-middle"><%= article.published_date ? new Date(article.published_date).toLocaleDateString("vi-VN") : "Chưa có" %></td>
+					<td class="text-center align-middle"><%= article.editor_fullname || '--' %></td>
+				</tr>
+				<% }) %> <% } else { %>
+				<tr>
+					<td colspan="6" class="text-center align-middle">Không có bài viết đã xuất bản.</td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
 	</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
