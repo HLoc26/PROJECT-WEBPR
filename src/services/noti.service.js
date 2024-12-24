@@ -16,4 +16,11 @@ export default {
 			created_at: new Date(),
 		});
 	},
+	getApprovalHistory(writerId) {
+		return db("approvalhistories")
+			.join("articles", "approvalhistories.article_id", "articles.article_id")
+			.where("articles.writer_id", writerId) // Filter by the writer's articles
+			.select("approvalhistories.note_content", "approvalhistories.approval_date", "approvalhistories.editor_id", "approvalhistories.article_id")
+			.orderBy("approvalhistories.approval_date", "desc");
+	},
 };
