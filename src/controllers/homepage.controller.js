@@ -1,39 +1,57 @@
 import ArticleService from "../services/article.service.js";
 import CategoryService from "../services/category.service.js";
+import TagsService from "../services/tag.service.js";
 const ITEMS_PER_PAGE = 10; // Số bài viết trên mỗi trang
 
 export default {
 	async GetHomepage(req, res) {
 		try {
-			// Get all categories first
-			const categories = await CategoryService.findAllCategories();
+			const topCate = await CategoryService.getTop10Views();
 
-			// Initialize object to store results
-			const categoryArticles = {};
-
-			// For each category, get top 5 newest articles
-			await Promise.all(
-				categories.map(async (category) => {
+			// For each top category, get the top 1 newest article along with its tags
+			const top10Category = await Promise.all(
+				topCate.map(async (category) => {
 					const articles = await ArticleService.findArticlesByCategoryIncludingSubcategories(category.category_id);
-
 					const filtered = articles.filter((article) => article.status === "published");
-
-					// Take only the first 5 articles (they're already ordered by published_date desc)
-					categoryArticles[category.category_name] = filtered.slice(0, 5);
+					if (filtered.length > 0) {
+						const article = filtered[0];
+						const tags = await TagsService.findTagsByArticleId(article.article_id);
+						return { ...article, tags };
+					}
+					return null; // Return null if no published articles are found for the category
 				})
 			);
 
+			// Remove any null entries (if any categories didn't have published articles)
+			const validTop10Category = top10Category.filter((article) => article !== null);
+
+			// console.log(top10Category);
+
 			// Get overall newest articles across all categories
 			const newestArticles = await ArticleService.findByStatus("published");
-			const top10Newest = newestArticles.slice(0, 10);
+			const top10Newest = await Promise.all(
+				newestArticles.slice(0, 10).map(async (article) => {
+					const tags = await TagsService.findTagsByArticleId(article.article_id);
+					return { ...article, tags };
+				})
+			);
 
+			console.log(top10Newest);
 			// Get most viewed articles
 			const mostViewedArticles = await ArticleService.findByStatus("published");
-			const top10MostViewed = mostViewedArticles.sort((a, b) => b.views - a.views).slice(0, 10);
+			const top10MostViewed = await Promise.all(
+				mostViewedArticles
+					.sort((a, b) => b.views - a.views)
+					.slice(0, 10)
+					.map(async (article) => {
+						const tags = await TagsService.findTagsByArticleId(article.article_id);
+						return { ...article, tags };
+					})
+			);
 
 			// Render the homepage with all required data
 			res.render("vwHomepage/Homepage", {
-				categoryArticles: categoryArticles,
+				categoryArticles: validTop10Category,
 				newestArticles: top10Newest,
 				mostViewedArticles: top10MostViewed,
 			});
@@ -44,6 +62,7 @@ export default {
 			});
 		}
 	},
+
 	async getCategoryArticles(req, res) {
 		try {
 			const categoryId = req.query.id;
