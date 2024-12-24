@@ -2,6 +2,8 @@ import express from "express";
 import homeController from "../controllers/homepage.controller.js";
 import articleService from "../services/article.service.js";
 import tagController from "../controllers/tag.controller.js";
+import articleController from "../controllers/article.controller.js";
+
 const router = express.Router();
 
 router.get("/", homeController.GetHomepage);
@@ -25,5 +27,7 @@ router.get("/art-card", async (req, res) => {
 router.get("/tag", tagController.getArticlesByTag);
 
 router.get("/cate", homeController.getCategoryArticles);
+
+router.get("/search", articleController.search);
 
 export default router;
