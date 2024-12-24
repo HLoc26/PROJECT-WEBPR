@@ -1,16 +1,14 @@
-
 import adminControllerSang from "../controllers/admin.controller.sang.js";
 import adminController from '../controllers/admin.controller.js'; 
-import adminTagsController from "../controllers/tag.controller.js";
 import adminUsersController from "../controllers/reader.controller.js";
 import express from "express";
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    adminController.showArticlesPage(req, res);
+router.get("/", (req, res) => {
+	adminController.showArticlesPage(req, res);
 });
 
-router.get("/writers", adminController.getWriters)                                                                  
+router.get("/writers", adminController.getWriters);
 router.get("/writers/detail", adminController.getWriterDetails);
 
 router.get("/readers", adminUsersController.getReaderUsers);
@@ -18,11 +16,11 @@ router.get("/readers/:id", adminUsersController.getUserDetails);
 router.post("/readers/:id/register-premium", adminUsersController.registerPremium);
 router.post("/readers/:id/unsubscribe-premium", adminUsersController.unsubscribePremium);
 
-router.get("/tags", adminTagsController.getAllTags);
-router.get("/tags/:id", adminTagsController.getTagById);
-router.post("/tags/add", adminTagsController.addTag);
-router.post("/tags/:id/edit", adminTagsController.updateTag);                         
-router.post("/tags/:id/delete", adminTagsController.deleteTag);
+router.get("/tags", adminController.getAllTags);
+router.get("/tags/:id", adminController.getTagById);
+router.post("/tags/add", adminController.addTag);
+router.post("/tags/:id/edit", adminController.updateTag);
+router.post("/tags/:id/delete", adminController.deleteTag);
 
 router.get("/editor", adminControllerSang.getEditors);
 router.get("/editor/detail", adminControllerSang.getEditorDetails);
