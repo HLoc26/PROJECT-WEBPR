@@ -69,7 +69,7 @@
 					<% }) %>
 				</ul>
 				<% } %>
-				<form action="" method="POST" autocomplete="on">
+				<form action="/register" method="POST" autocomplete="on">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
 							<label class="input-group-text" for="username"><i class="bi bi-person-fill"></i></label>
@@ -114,7 +114,7 @@
 
 					<div class="form-group mb-3">
 						<div class="g-recaptcha" 
-							data-sitekey="<%= process.env.RECAPTCHA_SITE_KEY %>"
+							data-sitekey="<%= process.env.GOOGLE_RECAPTCHA_SITE_KEY %>"
 							data-callback="enableSubmit"
 							data-expired-callback="disableSubmit">
 						</div>
