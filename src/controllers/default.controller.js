@@ -8,7 +8,6 @@ import articleService from "../services/article.service.js";
 export default {
     async postRegister(req, res) {
         try {
-            // Verify captcha first
             const recaptchaResponse = req.body['g-recaptcha-response'];
             
             if (!recaptchaResponse) {
@@ -18,18 +17,17 @@ export default {
                 });
             }
 
-            // Verify with Google
-            const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
-            const verifyRes = await axios.post(verifyUrl, null, {
+            const verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+            const verifyResult = await axios.post(verifyUrl, null, {
                 params: {
-                    secret: process.env.RECAPTCHA_SECRET_KEY,
+                    secret: process.env.GOOGLE_RECAPTCHA_SECRET_KEY,
                     response: recaptchaResponse
                 }
             });
 
-            if (!verifyRes.data.success) {
+            if (!verifyResult.data.success) {
                 return res.status(400).render("vwLogin/Register", {
-                    layout: "layouts/login.main.ejs", 
+                    layout: "layouts/login.main.ejs",
                     errors: [{ msg: "Captcha verification failed" }]
                 });
             }
