@@ -3,7 +3,7 @@ import categoryService from "../services/category.service.js";
 export default {
 	async getCategories(req, res) {
 		try {
-			res.render("vwAdmin/category.list.ejs");
+			res.render("vwAdmin/category.list.ejs", { layout: "layouts/admin.main.ejs" });
 		} catch (error) {
 			console.error("Error fetching categories:", error);
 			return res.status(500).redirect("/500");
@@ -12,7 +12,7 @@ export default {
 
 	async getAddCategories(req, res) {
 		try {
-			res.render("vwAdmin/category.add.ejs");
+			res.render("vwAdmin/category.add.ejs", { layout: "layouts/admin.main.ejs" });
 		} catch (error) {
 			console.error("Error from getAddCategories:", error);
 			return res.status(500).redirect("/500");
@@ -27,7 +27,7 @@ export default {
 		};
 		try {
 			const ret = await categoryService.addCategory(category);
-			res.render("vwAdmin/category.add.ejs");
+			return res.redirect("/admin/categories");
 		} catch (error) {
 			console.error("Error from addCategories:", error);
 			return res.status(500).redirect("/500");
@@ -44,6 +44,7 @@ export default {
 
 			res.render("vwAdmin/category.edit.ejs", {
 				category: data,
+				layout: "layouts/admin.main.ejs",
 			});
 		} catch (error) {
 			console.error("Error from getEditCategories:", error);
