@@ -7,7 +7,46 @@
 <!-- 5. Người duyệt -->
 <!-- Link đến trang edit bài viết -->
 <link rel="stylesheet" href="/css/vwWriter/writer.css" />
-<div class="container">
+<!-- Approval Notifications Dropdown -->
+
+<div class="dropdown nav-item">
+    <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="approvalNotificationsDropdown"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+    >
+        Approval Notifications
+    </button>
+    <div class="dropdown-menu dropdown-menu-right slide-in" aria-labelledby="approvalNotificationsDropdown">
+        <% if (approvalHistory.length > 0) { %>
+            <% approvalHistory.forEach(notification => { %>
+                <a class="dropdown-item" href="/writer/edit?id=<%= notification.article_id %>">
+                    <% if (notification.article_status === 'need changes') { %>
+                        <strong>You have an article review from <%= notification.editor_name %>:</strong> <br>
+						<small class="text-muted">
+							Review on: <%= new Date(notification.approval_date).toLocaleString() %>
+						</small>
+                    <% } else if (['published', 'waiting'].includes(notification.article_status)) { %>
+                        <strong>Congratulations! Your article has been approved by <%= notification.editor_name %>:</strong> <br>
+						<small class="text-muted">
+							Approved on: <%= new Date(notification.approval_date).toLocaleString() %>
+						</small>
+                    <% } else { %>
+                        <strong>Status update from <%= notification.editor_name %>:</strong> <br>
+						<small class="text-muted">
+							Review on: <%= new Date(notification.approval_date).toLocaleString() %>
+						</small>
+                    <% } %>
+                </a>
+            <% }); %>
+        <% } else { %>
+            <p class="dropdown-item text-center text-muted">No notifications</p>
+        <% } %>
+    </div>
+</div>	
 	<h1 class="text-capitalize text-center">Your articles</h1>
 	<table class="table table-hover article-table">
 		<thead>
