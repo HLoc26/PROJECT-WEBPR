@@ -63,11 +63,11 @@ export default {
                 premium: false,
                 subscription_expired_date: null,
             });
-
+            
             res.redirect("/admin/readers");
         } catch (error) {
             console.error("Error in unsubscribePremium:", error);
-            res.status(500).render("vwError/500", { message: "Internal Server Error" });
+            res.status(500).redirect("/500");
         }
     },
 
