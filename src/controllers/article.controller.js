@@ -83,7 +83,7 @@ export default {
 			}
 
 			// Check if the user is premium
-			const userIsPremium = req.session.user ? req.session.user.is_premium : false;
+			const userIsPremium = req.session.user ? req.session.user.premium : false;
 
 			// Fetch search results
 			const results = await ArticleService.search(query.trim(), userIsPremium);
