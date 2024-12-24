@@ -25,6 +25,7 @@ export default {
 				"approvalhistories.note_content",
 				"approvalhistories.approval_date",
 				"approvalhistories.article_id",
+				"articles.status as article_status",
 				"articles.title as article_title", // Fetch article title
 				"editors.full_name as editor_name" // Fetch editor's name
 			)
