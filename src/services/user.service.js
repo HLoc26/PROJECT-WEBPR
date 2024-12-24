@@ -156,6 +156,12 @@ export default {
 		if (updateData.email) updates.email = updateData.email;
 		if (updateData.full_name) updates.full_name = updateData.full_name;
 		if (updateData.dob) updates.dob = new Date(updateData.dob);
+		if (updateData.premium !== undefined) updates.premium = updateData.premium;
+		if (updateData.subscription_expired_date !== undefined) {
+			updates.subscription_expired_date = updateData.subscription_expired_date ? 
+				new Date(updateData.subscription_expired_date) : 
+				null;
+			}
 		// Hash password if provided using process.env.PASSWORD_ROUND
 		if (updateData.password) {
 			updates.password = bcrypt.hashSync(updateData.password, +process.env.PASSWORD_ROUND);

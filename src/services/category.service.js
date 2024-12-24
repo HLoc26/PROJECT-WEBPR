@@ -34,4 +34,20 @@ export default {
 	findEditorCategory(editor_id) {
 		return db("categories").join("users", "users.managed_category_id", "categories.category_id").where("users.user_id", editor_id).select("categories.*");
 	},
+
+	addCategory(entity) {
+		return db("categories")
+			.insert(entity)
+			.then(([id]) => {
+				return id;
+			})
+			.catch((error) => {
+				console.error("Error inserting category:", error);
+				throw error;
+			});
+	},
+
+	patchCategory(id, entity) {
+		return db("categories").where("category_id", id).update(entity);
+	},
 };

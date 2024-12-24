@@ -1,0 +1,21 @@
+<div class="card w-100">
+	<h4 class="card-header">Chỉnh sửa chuyên mục</h4>
+	<div class="card-body">
+		<form action="/admin/categories/edit" method="POST">
+			<input type="hidden" name="category_id" value="<%= category.category_id %>" />
+
+			<div class="mb-3">
+				<label for="category_name" class="form-label">Tên chuyên mục</label>
+				<input type="text" class="form-control" id="category_name" name="category_name" value="<%= category.category_name %>" required />
+			</div>
+
+			<div class="mb-3">
+				<label for="description" class="form-label">Mô tả</label>
+				<textarea class="form-control" id="description" name="description" rows="3" required><%= category.description %></textarea>
+			</div>
+
+			<button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+			<a href="/admin/categories" class="btn btn-secondary">Hủy</a>
+		</form>
+	</div>
+</div>

@@ -3,7 +3,7 @@ import session from "express-session";
 import "dotenv/config";
 import configurePassport from './config/passport.js';
 
-import adminRoutes from "./routes/admin.routes.js"
+import adminRoutes from "./routes/admin.routes.js";
 import apiRoutes from "./routes/api.routes.js";
 import articleRoutes from "./routes/article.routes.js";
 import defaultRoute from "./routes/default.routes.js";
@@ -17,7 +17,7 @@ import authRoutes from "./routes/auth.routes.js";
 import configViewEngine from "./config/viewEngine.js";
 import { setLocalCategories } from "./middlewares/category.mdw.js";
 import { setUser } from "./middlewares/user.mdw.js";
-import { isAuth, isEditor, isWriter } from "./middlewares/auth.mdw.js";
+import { isAuth, isEditor, isWriter, isAdmin } from "./middlewares/auth.mdw.js";
 
 // Initialize express app
 const app = express();
@@ -53,7 +53,6 @@ app.use(setUser);
 
 // Public routes
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
-app.use("/admin", adminRoutes);
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/homepage", homepageRoute);
 app.use("/auth", authRoutes);
@@ -61,6 +60,7 @@ app.use("/auth", authRoutes);
 // Protected routes with role-specific middleware
 app.use("/editor", isAuth, isEditor, editorRoute);
 app.use("/writer", isAuth, isWriter, writerRoute);
+app.use("/admin", isAuth, isAdmin, adminRoutes);
 
 // Protected routes - no specific role required
 app.use("/profile", isAuth, profileRoute);

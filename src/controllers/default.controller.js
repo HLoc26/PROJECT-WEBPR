@@ -93,10 +93,7 @@ export default {
 					res.redirect(`/editor/home`);
 					break;
 				case "admin":
-					res.render("vwAdmin/Dashboard", {
-						layout: "layouts/admin.main.ejs",
-						user: req.session.user,
-					});
+					res.redirect("/admin");
 					break;
 				default:
 					res.redirect("/homepage");

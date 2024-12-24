@@ -27,6 +27,7 @@ export default {
 			// Render the vwAdmin/editor view with the processed editors
 			res.render("vwAdmin/editor", {
 				editors: processedEditors,
+				layout: "layouts/admin.main.ejs",
 			});
 		} catch (error) {
 			console.error("Error fetching editors:", error);
@@ -80,6 +81,7 @@ export default {
 					...editorDetails,
 					managedCategory: editorDetails.managed_category_name || "Chưa có",
 				},
+				layout: "layouts/admin.main.ejs",
 				articles: articles || [],
 				categories: organizedCategories,
 				roles: filteredRoles,
