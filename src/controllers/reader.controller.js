@@ -4,7 +4,7 @@ export default {
     // Get a list of reader users
     async getReaderUsers(req, res) {
         try {
-            const readers = await UserService.findAllUsers("reader");
+            const readers = await UserService.findUsersByRole("reader");
             res.render("../views/vwAdmin/Admin.readers.ejs", { readers, layout: "layouts/admin.main.ejs"});
         } catch (error) {
             console.error("Error in getReaderUsers:", error);
