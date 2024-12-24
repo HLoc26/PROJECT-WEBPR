@@ -67,7 +67,7 @@
 				<% notifications.forEach(notification => { %>
 					<li class="list-group-item">
 						<strong>Editor:</strong> <%= notification.editor_name %><br />
-						<strong>Date:</strong> <%= new Date(notification.approval_date).toLocaleDateString("vi-VN") %><br />
+						<strong>Date:</strong> <%= new Date(notification.approval_date)%><br />
 						<strong>Note:</strong> <%- notification.note_content %>
 					</li>
 				<% }) %>
