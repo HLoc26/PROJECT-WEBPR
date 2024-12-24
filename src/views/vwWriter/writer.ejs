@@ -25,15 +25,14 @@
             <% approvalHistory.forEach(notification => { %>
                 <a class="dropdown-item" href="/writer/edit?id=<%= notification.article_id %>">
                     <% if (notification.article_status === 'need changes') { %>
-                        <strong>You have an article review:</strong> <br>
+                        <strong>You have an article review from <%= notification.editor_name %>:</strong> <br>
                     <% } else if (['published', 'waiting'].includes(notification.article_status)) { %>
-                        <strong>Congratulations! Your article has been approved:</strong> <br>
+                        <strong>Congratulations! Your article has been approved by <%= notification.editor_name %>:</strong> <br>
                     <% } else { %>
-                        <strong>Status update:</strong> <br>
+                        <strong>Status update from <%= notification.editor_name %>:</strong> <br>
                     <% } %>
-                    <strong>Note:</strong> <%= notification.note_content %> <br>
                     <small class="text-muted">
-                        Approved on: <%= new Date(notification.approval_date).toLocaleString() %>
+                        Review on: <%= new Date(notification.approval_date).toLocaleString() %>
                     </small>
                 </a>
             <% }); %>
@@ -41,10 +40,7 @@
             <p class="dropdown-item text-center text-muted">No notifications</p>
         <% } %>
     </div>
-</div>
-
-
-	
+</div>	
 	<h1 class="text-capitalize text-center">Your articles</h1>
 	<table class="table table-hover article-table">
 		<thead>
