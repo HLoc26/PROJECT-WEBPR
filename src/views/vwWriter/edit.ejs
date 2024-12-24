@@ -59,27 +59,24 @@
 </script>
 <!-- Hidden input to store content (for fallback or other JS access) -->
 <input type="hidden" id="hiddenContent" value="<%= article?.content || '' %>" />
-<!-- Notification Section -->
-<!-- Notification Section -->
-<div class="form-group">
-	<label>Approval History</label>
-	<div class="notification-box border p-3 rounded">
-		<% if (notifications && notifications.length > 0) { %>
+	<!-- Notifications Section (Only for Edit) -->
+	<% if (article && notifications && notifications.length > 0) { %>
+		<div class="notification-box mt-3">
+			<h5>Approval History</h5>
 			<ul class="list-group">
 				<% notifications.forEach(notification => { %>
 					<li class="list-group-item">
 						<strong>Editor:</strong> <%= notification.editor_name %><br />
 						<strong>Date:</strong> <%= new Date(notification.approval_date).toLocaleDateString("vi-VN") %><br />
-						<strong>Note:</strong> 
-						<div><%- notification.note_content || 'No comment provided' %></div>
+						<strong>Note:</strong> <%- notification.note_content %>
 					</li>
-				<% }); %>
+				<% }) %>
 			</ul>
-		<% } else { %>
-			<p class="text-muted">No approval history available for this article.</p>
-		<% } %>
-	</div>
-</div>
+		</div>
+	<% } else if (article) { %>
+		<p class="text-muted mt-3">No approval history available for this article.</p>
+	<% } %>
+
 
 <form action="<%= article ? `/writer/edit?id=${article.article_id}` : '/writer/new' %>" method="post" class="p-3" enctype="multipart/form-data">
 	<div class="form-group">
