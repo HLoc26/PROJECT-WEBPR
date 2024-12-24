@@ -291,20 +291,25 @@ export default {
 	addComment(commentData) {
 		return db("comments").insert(commentData);
 	},
-
+	
 	search(query, is_premium = false) {
 		return db("articles")
-			.whereRaw("MATCH (title, abstract, content) AGAINST (? IN NATURAL LANGUAGE MODE)", [query]) // Full-Text Search
+			.where((builder) => {
+				builder
+					.where("title", "like", `%${query}%`) // search by title
+					.orWhere("abstract", "like", `%${query}%`) // search by abstract
+					.orWhere("content", "like", `%${query}%`); // search by content
+			})
 			.andWhere((builder) => {
 				if (!is_premium) {
-					builder.where("is_premium", false);
+					builder.where("is_premium", false); // Filter non-premium articles if is_premium is false
 				}
 			})
-			.andWhere("status", "published")
+			.andWhere("status", "published") // Only get articles with status "published"
 			.select("articles.*")
 			.orderBy([
-				{ column: "is_premium", order: "desc" },
-				{ column: "published_date", order: "desc" },
+				{ column: "is_premium", order: "desc" }, // Premium articles first
+				{ column: "published_date", order: "desc" }, // Newest articles second
 			]);
-	}
+	},
 };
