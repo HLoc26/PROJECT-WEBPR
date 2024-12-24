@@ -10,7 +10,7 @@ export default {
 		const writer_id = req.session.user.user_id;
 
 		const articles = await articleService.findByWriterId(writer_id);
-		const approvalHistory = await articleService.getApprovalHistory(writer_id);
+		const approvalHistory = await notiService.getApprovalHistory(writer_id);
 		// console.log(articles);
 
 		res.render("vwWriter/Writer", {
