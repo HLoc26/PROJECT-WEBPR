@@ -1,5 +1,6 @@
 import articleService from "../services/article.service.js";
 import tagService from "../services/tag.service.js";
+import notiService from "../services/noti.service.js";
 import "dotenv/config";
 
 export default {
@@ -9,12 +10,13 @@ export default {
 		const writer_id = req.session.user.user_id;
 
 		const articles = await articleService.findByWriterId(writer_id);
-
+		const approvalHistory = await articleService.getApprovalHistory(writer_id);
 		// console.log(articles);
 
 		res.render("vwWriter/Writer", {
 			layout: "layouts/admin.main.ejs",
 			articles: articles,
+			approvalHistory: approvalHistory,
 		});
 	},
 	getNew(req, res) {
