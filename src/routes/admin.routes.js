@@ -1,5 +1,6 @@
 import adminControllerSang from "../controllers/admin.controller.sang.js";
-import adminController from "../controllers/admin.controller.js";
+import adminController from '../controllers/admin.controller.js'; 
+import adminUsersController from "../controllers/reader.controller.js";
 import express from "express";
 const router = express.Router();
 
@@ -9,6 +10,11 @@ router.get("/", (req, res) => {
 
 router.get("/writers", adminController.getWriters);
 router.get("/writers/detail", adminController.getWriterDetails);
+
+router.get("/readers", adminUsersController.getReaderUsers);
+router.get("/readers/:id", adminUsersController.getUserDetails);                                 
+router.post("/readers/:id/register-premium", adminUsersController.registerPremium);
+router.post("/readers/:id/unsubscribe-premium", adminUsersController.unsubscribePremium);
 
 router.get("/tags", adminController.getAllTags);
 router.get("/tags/:id", adminController.getTagById);
