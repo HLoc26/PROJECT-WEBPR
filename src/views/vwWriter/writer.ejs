@@ -7,6 +7,35 @@
 <!-- 5. Người duyệt -->
 <!-- Link đến trang edit bài viết -->
 <link rel="stylesheet" href="/css/vwWriter/writer.css" />
+<!-- Approval Notifications Dropdown -->
+<li class="nav-item dropdown">
+	<a
+		class="nav-link dropdown-toggle"
+		href="#"
+		id="approvalNotificationsDropdown"
+		role="button"
+		data-toggle="dropdown"
+		aria-haspopup="true"
+		aria-expanded="false"
+	>
+		Approval Notifications
+	</a>
+	<div class="dropdown-menu dropdown-menu-right" aria-labelledby="approvalNotificationsDropdown">
+		<% if (approvalHistory.length > 0) { %>
+			<% approvalHistory.forEach(notification => { %>
+				<a class="dropdown-item" href="/writer/edit?id=<%= notification.article_id %>">
+					<strong>Note:</strong> <%= notification.note_content %> <br>
+					<small class="text-muted">
+						Approved on: <%= new Date(notification.approval_date).toLocaleString() %>
+					</small>
+				</a>
+			<% }); %>
+		<% } else { %>
+			<p class="dropdown-item text-center text-muted">No notifications</p>
+		<% } %>
+	</div>
+</li>
+
 <div class="container">
 	<h1 class="text-capitalize text-center">Your articles</h1>
 	<table class="table table-hover article-table">
