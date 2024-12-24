@@ -16,6 +16,7 @@ router.get("/writers/detail", adminController.getWriterDetails);
 router.get("/readers", adminUsersController.getReaderUsers);
 router.get("/readers/:id", adminUsersController.getUserDetails);                                 
 router.post("/readers/:id/register-premium", adminUsersController.registerPremium);
+router.post("/readers/:id/unsubscribe-premium", adminUsersController.unsubscribePremium);
 
 router.get("/tags", adminTagsController.getAllTags);
 router.get("/tags/:id", adminTagsController.getTagById);
