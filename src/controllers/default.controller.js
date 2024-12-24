@@ -1,48 +1,91 @@
 import bcrypt from "bcrypt";
+import axios from "axios";
 import userService from "../services/user.service.js";
 import { validationResult } from "express-validator";
 import "dotenv/config";
 import articleService from "../services/article.service.js";
 
 export default {
-	async postRegister(req, res) {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).render("vwLogin/register", { layout: "layouts/login.main.ejs", errors: errors.array() });
-		}
-		// console.log(req.body); // Debug
-		// Assume that password and password2 is the same
-		const { username, email, password, password2, fullname, dob } = req.body;
-		const pwd = await bcrypt.hash(password, +process.env.PASSWORD_ROUND);
+    async postRegister(req, res) {
+        try {
+            // Verify captcha first
+            const recaptchaResponse = req.body['g-recaptcha-response'];
+            
+            if (!recaptchaResponse) {
+                return res.status(400).render("vwLogin/Register", {
+                    layout: "layouts/login.main.ejs",
+                    errors: [{ msg: "Please complete the captcha verification" }]
+                });
+            }
 
-		// Check xem username và email có tồn tại không
-		const usedUsername = false; // Placeholder
-		const usedEmail = false; // Placeholder
+            // Verify with Google
+            const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
+            const verifyRes = await axios.post(verifyUrl, null, {
+                params: {
+                    secret: process.env.RECAPTCHA_SECRET_KEY,
+                    response: recaptchaResponse
+                }
+            });
 
-		if (usedUsername) {
-			return res.status(400).render("vwLogin/register", { layout: "layouts/login.main.ejs", errors: [{ msg: "Username is used" }] });
-		}
-		if (usedEmail) {
-			return res.status(400).render("vwLogin/register", { layout: "layouts/login.main.ejs", errors: [{ msg: "Email is used" }] });
-		}
+            if (!verifyRes.data.success) {
+                return res.status(400).render("vwLogin/Register", {
+                    layout: "layouts/login.main.ejs", 
+                    errors: [{ msg: "Captcha verification failed" }]
+                });
+            }
 
-		const entity = {
-			username: username,
-			password: pwd,
-			email: email,
-			full_name: fullname,
-			dob: dob,
-			user_role: "reader",
-			is_active: 1,
-			subscription_expired_date: null,
-			premium: 0,
-			managed_category_id: null,
-		};
-		console.log(entity);
-		await userService.addReader(entity);
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).render("vwLogin/Register", {
+                    layout: "layouts/login.main.ejs",
+                    errors: errors.array()
+                });
+            }
 
-		res.redirect("/login");
-	},
+            const { username, email, password, password2, fullname, dob } = req.body;
+            const pwd = await bcrypt.hash(password, +process.env.PASSWORD_ROUND);
+
+            // Check xem username và email có tồn tại không
+            const usedUsername = false; // Placeholder
+            const usedEmail = false; // Placeholder
+
+            if (usedUsername) {
+                return res.status(400).render("vwLogin/Register", {
+                    layout: "layouts/login.main.ejs",
+                    errors: [{ msg: "Username is used" }]
+                });
+            }
+            if (usedEmail) {
+                return res.status(400).render("vwLogin/Register", {
+                    layout: "layouts/login.main.ejs",
+                    errors: [{ msg: "Email is used" }]
+                });
+            }
+
+            const entity = {
+                username: username,
+                password: pwd,
+                email: email,
+                full_name: fullname,
+                dob: dob,
+                user_role: "reader",
+                is_active: 1,
+                subscription_expired_date: null,
+                premium: 0,
+                managed_category_id: null,
+            };
+
+            await userService.addReader(entity);
+            res.redirect("/login");
+            
+        } catch (error) {
+            console.error('Registration error:', error);
+            res.status(500).render("vwLogin/Register", {
+                layout: "layouts/login.main.ejs",
+                errors: [{ msg: "Registration failed. Please try again." }]
+            });
+        }
+    },
 
 	async postLogin(req, res) {
 		try {
