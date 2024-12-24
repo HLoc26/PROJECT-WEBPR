@@ -1,0 +1,8 @@
+<div class="card w-100">
+	<div class="card-header">
+		<h1>Kết quả tìm kiếm cho "<%= query %>"</h1>
+	</div>
+	<div class="card-body d-flex flex-row" style="gap: 1rem">
+		<% results.forEach(result => { %> <%- include('../partials/article_m.ejs', { article: result, width: 300, show_cat: true }) %> <% }); %>
+	</div>
+</div>
