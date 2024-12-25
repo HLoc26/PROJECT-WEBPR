@@ -57,21 +57,7 @@ export default {
 			query = query.andWhere("user_role", role);
 		}
 
-		return query
-			.first()
-			.select(
-				"user_id",
-				"username",
-				"email",
-				"full_name",
-				"dob",
-				"subscription_expired_date",
-				"premium",
-				"is_active",
-				"user_role",
-				"managed_category_id",
-				"categories.category_name as managed_category_name"
-			);
+		return query.first().select("users.*", "categories.category_name as managed_category_name");
 	},
 
 	findUsersByRole(role) {
