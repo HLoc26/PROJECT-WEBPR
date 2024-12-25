@@ -1,6 +1,7 @@
 import express from "express";
 import session from "express-session";
 import "dotenv/config";
+import configurePassport from './config/passport.js';
 
 import adminRoutes from "./routes/admin.routes.js";
 import apiRoutes from "./routes/api.routes.js";
@@ -10,6 +11,7 @@ import writerRoute from "./routes/writer.routes.js";
 import homepageRoute from "./routes/homepage.routes.js";
 import editorRoute from "./routes/editor.routes.js";
 import profileRoute from "./routes/profile.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 // Note: categoryRoutes are handled through apiRoutes
 
 import configViewEngine from "./config/viewEngine.js";
@@ -45,12 +47,15 @@ app.use(
 	})
 );
 
+configurePassport(app);
+
 app.use(setUser);
 
 // Public routes
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
 app.use("/article", articleRoutes); // Lộc: Thêm route còn thiếu
 app.use("/homepage", homepageRoute);
+app.use("/auth", authRoutes);
 
 // Protected routes with role-specific middleware
 app.use("/editor", isAuth, isEditor, editorRoute);

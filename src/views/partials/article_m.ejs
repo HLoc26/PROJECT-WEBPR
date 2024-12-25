@@ -25,10 +25,10 @@
 	}
 </style>
 
-<div class="card card-m border-0" style="width: <%= width %>px">
+<div class="card card-m border-0" style="width: <%= width %>">
 	<img src="/img/<%= article.thumbnail %>" class="card-img-top mb-2 thumbnail" alt="<%= article.title %>" />
 	<div class="card-body p-sm-1">
-		<% if (show_cat) { %>
+		<% if (typeof show_cat !== 'undefined' && show_cat) { %>
 		<div class="category-text">
 			<a href="/category/<%= article.category_id %>" class="text-decoration-none text-reset"> <%= article.category_name %> </a>
 		</div>
@@ -40,5 +40,8 @@
 			<p class="abstract-text"><%= article.abstract %></p>
 			<p><%= new Date(article.published_date).toLocaleDateString('vi-VN') %></p>
 		</div>
+		<% if (typeof show_tags !== 'undefined' && show_tags) { %> <% tags.forEach(tag => { %>
+		<span class="badge badge-info"><%= tag.tag_name %></span>
+		<%}); %> <% } %>
 	</div>
 </div>
