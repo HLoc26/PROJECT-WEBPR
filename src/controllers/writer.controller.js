@@ -1,5 +1,6 @@
 import articleService from "../services/article.service.js";
 import tagService from "../services/tag.service.js";
+import notiService from "../services/noti.service.js";
 import "dotenv/config";
 
 export default {
@@ -9,12 +10,13 @@ export default {
 		const writer_id = req.session.user.user_id;
 
 		const articles = await articleService.findByWriterId(writer_id);
-
+		const approvalHistory = await notiService.getApprovalHistory(writer_id);
 		// console.log(articles);
 
 		res.render("vwWriter/Writer", {
 			layout: "layouts/admin.main.ejs",
 			articles: articles,
+			approvalHistory: approvalHistory,
 		});
 	},
 	getNew(req, res) {
@@ -26,29 +28,43 @@ export default {
 	},
 	async getEdit(req, res) {
 		const id = req.query.id; // Fetch article ID from the query string
+		const writer_id = req.session.user.user_id; // Get writer ID from session
+
+		const is_approved = req.query.approved ? true : false;
+		console.log(is_approved);
+
 		try {
+			// Fetch the article by ID
 			const article = await articleService.findArticleById(id);
 			if (!article) {
-				// Send a 404 response if the article is not found
-				return res.status(404).redirect("/404");
+				return res.status(404).redirect("/404"); // Article not found
 			}
 
+			// Fetch tags associated with the article
 			const tagObj = await tagService.findTagsByArticleId(id);
 			const tagName = tagObj.map((tag) => tag.tag_name);
 
-			// console.log("article tags: ", tagName);
+			// Fetch approval history (used for notifications)
+			const notifications = await notiService.getApprovalHistory(writer_id);
 
+			// Filter notifications by the specific article ID
+			const filteredNotifications = notifications.filter((n) => n.article_id == id);
+
+			// Render the edit page
 			res.render("vwWriter/edit", {
 				layout: "layouts/admin.main.ejs",
-				api_key: process.env.TINY_API_KEY, // Pass TinyMCE API key
-				article: article, // Pass the article object to the template
-				tags: tagName,
+				api_key: process.env.TINY_API_KEY, // TinyMCE API key
+				article: article, // Article object
+				tags: tagName, // Tags array
+				approved: is_approved, // Whether the article is approved
+				notifications: filteredNotifications, // Notifications specific to this article
 			});
 		} catch (error) {
-			console.error("Error fetching article:", error);
+			console.error("Error fetching article or notifications:", error);
 			res.status(500).redirect("/500");
 		}
 	},
+
 	async postNew(req, res) {
 		try {
 			// console.log(req.body);

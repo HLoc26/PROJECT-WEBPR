@@ -139,10 +139,11 @@ export default {
 			await articleService.updateArticleStatus(articleId, "need changes");
 
 			// Create a notification for the writer
-			await notiService.createNotification(
-				editorId, // sender_id
-				article.writer_id, // receiver_id
-				reason // note_content
+			await articleService.approveArticle(
+				articleId,
+				"need changes",
+				reason, // note_content
+				editorId // sender_id
 			);
 
 			// Redirect back with success message

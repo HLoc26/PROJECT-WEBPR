@@ -16,4 +16,19 @@ export default {
 			created_at: new Date(),
 		});
 	},
+	getApprovalHistory(writerId) {
+		return db("approvalhistories")
+			.join("articles", "approvalhistories.article_id", "articles.article_id")
+			.join("users as editors", "approvalhistories.editor_id", "editors.user_id")
+			.where("articles.writer_id", writerId) // Filter by writer's articles
+			.select(
+				"approvalhistories.note_content",
+				"approvalhistories.approval_date",
+				"approvalhistories.article_id",
+				"articles.status as article_status",
+				"articles.title as article_title", // Fetch article title
+				"editors.full_name as editor_name" // Fetch editor's name
+			)
+			.orderBy("approvalhistories.approval_date", "desc");
+	},
 };
