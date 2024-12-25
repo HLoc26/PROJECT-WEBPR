@@ -71,7 +71,6 @@
 							<div>
 								<% if (user.premium == 1) { %>
 								<span class="badge badge-success">Premium until: <%= new Date(user.subscription_expired_date).toLocaleString("vi-VN") %></span>
-								<a href="/profile/extend" role="button" class="btn btn-sm btn-warning ml-2">Extend Premium</a>
 								<% } else if(user.premium == -1) { %>
 								<span class="badge badge-danger">Waiting for acceptance</span>
 								<% } else {%>
