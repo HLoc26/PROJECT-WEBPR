@@ -1,20 +1,87 @@
 import articleService from "../services/article.service.js";
 import tagService from "../services/tag.service.js";
+import notiService from "../services/noti.service.js";
 import "dotenv/config";
 
 export default {
 	async getHome(req, res) {
-		// Loc: This ID is just for test, will have to change after
+		const maxArticlePerPage = 5; // Maximum number of articles per page
+
+		// Get the tab and page number from the query string
+		const activeTab = req.query.tab || "draft";
+		const currentPage = +req.query.page || 1;
+
+		// console.log("tab: ", activeTab);
+		// console.log("page: ", currentPage);
+
+		const offset = (currentPage - 1) * maxArticlePerPage;
+
 		// login and register function is complete
 		const writer_id = req.session.user.user_id;
+		const draft = await articleService.findByWriterIdAndStatus(writer_id, "draft");
+		const waiting = await articleService.findByWriterIdAndStatus(writer_id, "waiting");
+		const need_changes = await articleService.findByWriterIdAndStatus(writer_id, "need changes");
+		const archived = await articleService.findByWriterIdAndStatus(writer_id, "archived");
 
-		const articles = await articleService.findByWriterId(writer_id);
+		const published = await articleService.findByWriterIdAndStatus(writer_id, "published");
 
+		// console.log("draft: ", draft);
+		// console.log("waiting: ", waiting);
+		// console.log("need_changes: ", need_changes);
+		// console.log("archived: ", archived);
+		// console.log("published: ", published);
 		// console.log(articles);
+		let articles;
+		switch (activeTab) {
+			case "draft":
+				articles = draft;
+				break;
+			case "waiting":
+				articles = waiting;
+				break;
+			case "need-changes":
+				articles = need_changes;
+				break;
+			case "archived":
+				articles = archived;
+				break;
+			case "published":
+				articles = published;
+				break;
+			default:
+				articles = draft;
+				break;
+		}
+		const approvalHistory = await notiService.getApprovalHistory(writer_id);
+		// console.log(articles);
+		const totalPages = Math.ceil(articles.length / maxArticlePerPage);
+		// console.log(totalPages);
+
+		// find all tags of each article, then append to each article
+		const allTags = await tagService.findAllTagsForArticles();
+
+		const tagsByArticles = {};
+		allTags.forEach((tag) => {
+			if (!tagsByArticles[tag.article_id]) {
+				tagsByArticles[tag.article_id] = [];
+			}
+			tagsByArticles[tag.article_id].push(tag.tag_name);
+		});
+
+		// console.log(tagsByArticles);
+
+		for (let i = 0; i < articles.length; i++) {
+			articles[i].tags = tagsByArticles[articles[i].article_id] || [];
+			console.log(articles[i]);
+		}
 
 		res.render("vwWriter/Writer", {
 			layout: "layouts/admin.main.ejs",
-			articles: articles,
+			articles: articles.slice(offset, offset + maxArticlePerPage),
+			activeTab: activeTab,
+			currentPage: currentPage,
+			totalPages: totalPages,
+			approvalHistory: approvalHistory,
 		});
 	},
 	getNew(req, res) {
@@ -26,30 +93,39 @@ export default {
 	},
 	async getEdit(req, res) {
 		const id = req.query.id; // Fetch article ID from the query string
+		const writer_id = req.session.user.user_id; // Get writer ID from session
+
 		try {
+			// Fetch the article by ID
 			const article = await articleService.findArticleById(id);
 			if (!article) {
-				// Send a 404 response if the article is not found
-				return res.status(404).redirect("/404");
+				return res.status(404).redirect("/404"); // Article not found
 			}
 
+			// Fetch tags associated with the article
 			const tagObj = await tagService.findTagsByArticleId(id);
 			const tagName = tagObj.map((tag) => tag.tag_name);
 
-			// console.log("article tags: ", tagName);
+			// Fetch approval history (used for notifications)
+			const notifications = await notiService.getApprovalHistory(writer_id);
 
+			// Filter notifications by the specific article ID
+			const filteredNotifications = notifications.filter((n) => n.article_id == id);
+
+			// Render the edit page
 			res.render("vwWriter/edit", {
 				layout: "layouts/admin.main.ejs",
-				api_key: process.env.TINY_API_KEY, // Pass TinyMCE API key
-				article: article, // Pass the article object to the template
-				tags: tagName,
+				api_key: process.env.TINY_API_KEY, // TinyMCE API key
+				article: article, // Article object
+				tags: tagName, // Tags array
+				notifications: filteredNotifications, // Notifications specific to this article
 			});
 		} catch (error) {
-			console.error("Error fetching article:", error);
-			res.status(500).redirect("/error/500"); // Handle errors
+			console.error("Error fetching article or notifications:", error);
 			res.status(500).redirect("/500");
 		}
 	},
+
 	async postNew(req, res) {
 		try {
 			// console.log(req.body);
@@ -118,8 +194,9 @@ export default {
 		const articleId = req.query.id;
 		const { title, summary, content, category, premium, tags } = req.body;
 		const is_premium = premium === "on" ? 1 : 0;
-		const thumbnail = req.file.filename;
+		const originalArticle = await articleService.findArticleById(articleId);
 
+		const thumbnail = req.file ? req.file.filename : originalArticle.thumbnail;
 		const entity = {
 			title: title,
 			content: content,

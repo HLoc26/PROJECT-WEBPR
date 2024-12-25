@@ -15,8 +15,9 @@
 	</head>
 	<body>
 		<header>
-			<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow mb-5">
-				<a class="navbar-brand" href="#">L O G O</a>
+			<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow">
+				<a class="navbar-brand" href="#">
+					<img src="/img/logo/logo.png" alt="News Logo" height="40">
 				<button
 					class="navbar-toggler"
 					type="button"
@@ -55,14 +56,99 @@
 					</li>
 				</ul>
 			</nav>
+			<% if(user.user_role === 'admin') { %>
+			<button id="sidebarOpen" class="btn btn-dark m-3">
+				<i class="bi bi-list"></i>
+			</button>
+			<% } %>
 		</header>
+		<% if (user.user_role == 'admin') { %>
+		<main class="w-100 pl-xl-5 pr-xl-5">
+			<!-- Main content -->
+			<style>
+				#sidebar {
+					width: 250px;
+					height: 100vh;
+					position: fixed;
+					top: 0;
+					left: -250px;
+					transition: left 0.3s ease;
+					z-index: 1050;
+				}
+
+				#sidebar.active {
+					left: 0;
+				}
+
+				#sidebar .nav-link:hover {
+					background-color: #d1d1d1;
+				}
+
+				#content {
+					margin-left: 0;
+					transition: margin-left 0.3s ease;
+				}
+
+				#sidebar.active ~ #content {
+					margin-left: 250px;
+				}
+			</style>
+
+			<!-- Sidebar -->
+			<div id="sidebar" class="bg-light shadow">
+				<button id="sidebarClose" class="btn btn-dark m-3">
+					<i class="bi bi-arrow-left-square"></i>
+				</button>
+				<div class="p-3">
+					<h4 class="text-center">Admin Panel</h4>
+					<hr />
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a href="/admin" class="nav-link"> <i class="bi bi-newspaper"></i> Articles </a>
+						</li>
+						<li class="nav-item">
+							<a href="/admin/tags" class="nav-link"> <i class="bi bi-tags me-2"></i> Tags </a>
+						</li>
+						<li class="nav-item">
+							<a href="/admin/categories" class="nav-link"> <i class="bi bi-grid me-2"></i> Categories </a>
+						</li>
+						<li class="nav-item">
+							<a href="/admin/writers" class="nav-link"> <i class="bi bi-pencil me-2"></i> Writers </a>
+						</li>
+						<li class="nav-item">
+							<a href="/admin/editor" class="nav-link"> <i class="bi bi-person-badge me-2"></i> Editors </a>
+						</li>
+						<li class="nav-item">
+							<a href="/admin/readers" class="nav-link"> <i class="bi bi-people me-2"></i> Readers </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<script>
+				document.addEventListener("DOMContentLoaded", function () {
+					const sidebarOpen = document.getElementById("sidebarOpen");
+					const sidebar = document.getElementById("sidebar");
+
+					sidebarOpen.addEventListener("click", function () {
+						sidebar.classList.toggle("active");
+					});
+					const sidebarClose = document.getElementById("sidebarClose");
+
+					sidebarClose.addEventListener("click", function () {
+						sidebar.classList.toggle("active");
+					});
+				});
+			</script>
+			<!-- Main Content -->
+			<%- body %>
+		</main>
+		<% } else { %>
 		<main class="container">
 			<!-- Main content -->
 			<%- body %>
 		</main>
-		<footer class="footer">
-			<h1>Đây là Footer</h1>
-		</footer>
+		<% } %>
 		<!-- jQuery -->
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 		<!-- Popper.js -->

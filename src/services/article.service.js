@@ -103,30 +103,10 @@ export default {
 			.select("articles.*", "categories.category_name", "writers.full_name as writer_name", "editors.full_name as editor_name");
 	},
 
-	findByWriterId(writer_id) {
-		return db("articles")
-			.where("writers.user_id", writer_id)
-			.leftJoin("categories", "articles.category_id", "categories.category_id")
-			.leftJoin("users as writers", "articles.writer_id", "writers.user_id")
-			.leftJoin("users as editors", "articles.editor_id", "editors.user_id")
-			.select("articles.*", "categories.category_name", "writers.full_name as writer_name", "editors.full_name as editor_name")
-			.orderBy("articles.article_id", "desc");
-	},
-
-	// Thêm article (entity: { title, content, abstract, thumbnail, category_id, writer_id, editor_id, status, is_premium, published_date })
-	addArticle(entity) {
-		return db("articles")
-			.insert(entity)
-			.then(([id]) => {
-				// 'id' represents the newly inserted article ID
-				return id;
-			})
-			.catch((error) => {
-				// Handle any errors that occur during the insert operation
-				console.error("Error inserting article:", error);
-				throw error;
-			});
-	},
+	// // Tăng 1 view khi thực hiện truy vấn, cần xem lại vì user có thể hack view, nên xử lý trong backend.
+	// incrementArticleViews(id) {
+	//   return db('articles').where('article_id', id).increment('views', 1);
+	// }
 
 	// Xóa article by ID
 	deleteArticle(id) {
@@ -189,6 +169,7 @@ export default {
 			});
 		});
 	},
+
 	async findRelatedArticles(articleId, categoryId, limit = 5) {
 		// First get all tags for the current article
 		const articleTags = await db("articletags").where("article_id", articleId).pluck("tag_id");
@@ -244,7 +225,59 @@ export default {
 
 		return relatedByCategoryAndTags;
 	},
-  
+
+	getArticlesByStatus(editorId, status) {
+		return db("articles")
+			.leftJoin("categories", "articles.category_id", "categories.category_id")
+			.leftJoin("users as editors", "articles.editor_id", "editors.user_id")
+			.leftJoin("users as writers", "articles.writer_id", "writers.user_id")
+			.where("articles.status", status)
+			.andWhere("editors.user_id", editorId)
+			.select(
+				"articles.article_id",
+
+				"articles.title",
+				"articles.abstract",
+				"articles.thumbnail",
+				"articles.views",
+				"articles.status",
+				"articles.published_date",
+				"articles.is_premium",
+				"articles.category_id",
+				"categories.category_name",
+				"writers.full_name as writer_name",
+				"writers.user_id as writer_id",
+				"editors.full_name as editor_name",
+				"editors.user_id as editor_id"
+			)
+			.orderBy("articles.published_date", "desc");
+	},
+
+	findByWriterId(writer_id) {
+		return db("articles")
+			.where("writers.user_id", writer_id)
+			.leftJoin("categories", "articles.category_id", "categories.category_id")
+			.leftJoin("users as writers", "articles.writer_id", "writers.user_id")
+			.leftJoin("users as editors", "articles.editor_id", "editors.user_id")
+			.select("articles.*", "categories.category_name", "writers.full_name as writer_name", "editors.full_name as editor_name")
+			.orderBy("articles.article_id", "desc");
+	},
+
+	// Thêm article (entity: { title, content, abstract, thumbnail, category_id, writer_id, editor_id, status, is_premium, published_date })
+	addArticle(entity) {
+		return db("articles")
+			.insert(entity)
+			.then(([id]) => {
+				// 'id' represents the newly inserted article ID
+				return id;
+			})
+			.catch((error) => {
+				// Handle any errors that occur during the insert operation
+				console.error("Error inserting article:", error);
+				throw error;
+			});
+	},
+
 	findByStatus(status) {
 		return db("articles")
 			.where("status", status)
@@ -256,6 +289,51 @@ export default {
 	},
 
 	addComment(commentData) {
-		return db('comments').insert(commentData);
+		return db("comments").insert(commentData);
+  },
+
+	findByWriterIdAndStatus(writer_id, status) {
+		return db("articles")
+			.where("writers.user_id", writer_id)
+			.andWhere("articles.status", status)
+			.leftJoin("categories", "articles.category_id", "categories.category_id")
+			.leftJoin("users as writers", "articles.writer_id", "writers.user_id")
+			.leftJoin("users as editors", "articles.editor_id", "editors.user_id")
+			.select("articles.*", "categories.category_name", "writers.full_name as writer_fullname", "editors.full_name as editor_fullname")
+			.orderBy("articles.published_date", "desc");
+  },
+  
+	search(query, is_premium = false) {
+		return db("articles")
+			.where((builder) => {
+				builder
+					.where("title", "like", `%${query}%`) // search by title
+					.orWhere("abstract", "like", `%${query}%`) // search by abstract
+					.orWhere("content", "like", `%${query}%`); // search by content
+			})
+			.andWhere((builder) => {
+				if (!is_premium) {
+					builder.where("is_premium", false); // Filter non-premium articles if is_premium is false
+				}
+			})
+			.andWhere("status", "published") // Only get articles with status "published"
+			.select("articles.*")
+			.orderBy([
+				{ column: "is_premium", order: "desc" }, // Premium articles first
+				{ column: "published_date", order: "desc" }, // Newest articles second
+			]);
+	},
+
+	publishArticle(articleId) {
+		const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+		console.log('Executing query to publish article:', articleId, currentDate);		
+		return db("articles")
+			.where("article_id", articleId)
+			.update({
+				status: "published",
+				published_date: currentDate,
+			})
+			.then(() => true);
 	}
+	
 };

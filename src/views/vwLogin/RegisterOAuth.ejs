@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Hoàn tất đăng ký</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    </head>
+    <body>
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh">
+            <div class="col-md-6 col-lg-6 shadow p-4 rounded">
+                <div class="text-center mb-4">
+                    <img src="/img/logo/logo.png" alt="News Logo" height="60" class="mb-3">
+                    <h5 class="font-weight-bold">Đăng ký tài khoản</h5>
+                </div>
+
+                <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                <ul class="text-danger">
+                    <% errors.forEach(error => { %>
+                    <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+                <% } %>
+
+                <form action="/auth/register/oauth" method="POST" autocomplete="on">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text"><i class="bi bi-person-fill"></i></label>
+                        </div>
+                        <input type="text" class="form-control" name="username" value="<%= user.username %>" readonly />
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text"><i class="bi bi-envelope-fill"></i></label>
+                        </div>
+                        <input type="email" class="form-control" name="email" value="<%= user.email %>" readonly />
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text"><i class="bi bi-alphabet"></i></label>
+                        </div>
+                        <input type="text" class="form-control" name="full_name" value="<%= user.full_name %>" required />
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text"><i class="bi bi-calendar-event"></i></label>
+                        </div>
+                        <input type="date" name="dob" class="form-control" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary btn-block font-weight-bold">HOÀN TẤT ĐĂNG KÝ</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

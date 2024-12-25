@@ -59,6 +59,24 @@
 </script>
 <!-- Hidden input to store content (for fallback or other JS access) -->
 <input type="hidden" id="hiddenContent" value="<%= article?.content || '' %>" />
+	<!-- Notifications Section (Only for Edit) -->
+	<% if (article && notifications && notifications.length > 0) { %>
+		<div class="notification-box mt-3">
+			<h5>Approval History</h5>
+			<ul class="list-group">
+				<% notifications.forEach(notification => { %>
+					<li class="list-group-item">
+						<strong>Editor:</strong> <%= notification.editor_name %><br />
+						<strong>Date:</strong> <%= new Date(notification.approval_date)%><br />
+						<strong>Note:</strong> <%- notification.note_content %>
+					</li>
+				<% }) %>
+			</ul>
+		</div>
+	<% } else if (article) { %>
+		<p class="text-muted mt-3">No approval history available for this article.</p>
+	<% } %>
+
 
 <form action="<%= article ? `/writer/edit?id=${article.article_id}` : '/writer/new' %>" method="post" class="p-3" enctype="multipart/form-data">
 	<div class="form-group">
@@ -129,13 +147,13 @@
 			   data-initial-tags='<%= typeof tags !== 'undefined' ? JSON.stringify(tags) : "[]" %>'
 			   data-role="tagsinput"
 			   placeholder="Input tag..."
+			   name="tags"
+			   value="<%= tags || '' %>"
 		/>
 	</div>
-	<input type="hidden" name="tags" id="tags-hidden" />
 
 	<a href="/writer" role="button" class="btn btn-outline-danger mt-3">Cancel</a>
 	<button type="submit" class="btn btn-outline-success mt-3"><%= article ? 'Update' : 'Create' %></button>
 </form>
 <!-- tags input script and styling -->
 <link rel="stylesheet" href="/css/tagsinput.css">
-<script src="/js/writer.tagsinput.js"></script>
