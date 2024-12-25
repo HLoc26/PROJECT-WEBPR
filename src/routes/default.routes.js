@@ -3,6 +3,10 @@ import defaultController from "../controllers/default.controller.js";
 import { registerValidation } from "../validators/register.validator.js";
 const router = express.Router();
 
+router.get("/", function (req, res) {
+	res.redirect("/homepage")
+});
+
 router.get("/register", function (req, res) {
 	res.render("vwLogin/Register", { layout: "layouts/login.main.ejs" });
 });
