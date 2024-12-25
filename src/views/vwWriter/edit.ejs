@@ -151,8 +151,10 @@
 	</div>
 	<input type="hidden" name="tags" id="tags-hidden" />
 
-	<a href="/writer" role="button" class="btn btn-outline-danger mt-3">Cancel</a>
+	<a href="/writer" role="button" class="btn btn-outline-danger mt-3"><%= approved ? 'Return' : 'Cancel' %></a>
+	<% if(!approved) {%>
 	<button type="submit" class="btn btn-outline-success mt-3"><%= article ? 'Update' : 'Create' %></button>
+	<% } %>
 </form>
 <!-- tags input script and styling -->
 <link rel="stylesheet" href="/css/tagsinput.css">

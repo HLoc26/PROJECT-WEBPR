@@ -30,6 +30,9 @@ export default {
 		const id = req.query.id; // Fetch article ID from the query string
 		const writer_id = req.session.user.user_id; // Get writer ID from session
 
+		const is_approved = req.query.approved ? true : false;
+		console.log(is_approved);
+
 		try {
 			// Fetch the article by ID
 			const article = await articleService.findArticleById(id);
@@ -53,6 +56,7 @@ export default {
 				api_key: process.env.TINY_API_KEY, // TinyMCE API key
 				article: article, // Article object
 				tags: tagName, // Tags array
+				approved: is_approved, // Whether the article is approved
 				notifications: filteredNotifications, // Notifications specific to this article
 			});
 		} catch (error) {

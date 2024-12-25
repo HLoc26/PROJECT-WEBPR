@@ -23,7 +23,7 @@
     <div class="dropdown-menu dropdown-menu-right slide-in" aria-labelledby="approvalNotificationsDropdown">
         <% if (approvalHistory.length > 0) { %>
             <% approvalHistory.forEach(notification => { %>
-                <a class="dropdown-item" href="/writer/edit?id=<%= notification.article_id %>">
+                <a class="dropdown-item" href="/writer/edit?id=<%= notification.article_id %>&approved=true">
                     <% if (notification.article_status === 'need changes') { %>
                         <strong>You have an article review from <%= notification.editor_name %>:</strong> <br>
 						<small class="text-muted">
