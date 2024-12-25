@@ -69,10 +69,12 @@
 						<div class="form-group">
 							<label>Premium Status</label>
 							<div>
-								<% if (user.premium) { %>
+								<% if (user.premium == 1) { %>
 								<span class="badge badge-success">Premium until: <%= user.subscription_expired_date %></span>
 								<a href="/profile/extend" role="button" class="btn btn-sm btn-warning ml-2">Extend Premium</a>
-								<% } else { %>
+								<% } else if(user.premium == -1) { %>
+								<span class="badge badge-danger">Waiting for acceptance</span>
+								<% } else {%>
 								<a href="/profile/upgrade" role="button" class="btn btn-sm btn-primary">Upgrade to Premium</a>
 								<% } %>
 							</div>
