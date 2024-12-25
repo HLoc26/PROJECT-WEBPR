@@ -312,4 +312,17 @@ export default {
 				{ column: "published_date", order: "desc" }, // Newest articles second
 			]);
 	},
+
+	publishArticle(articleId) {
+		const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+		console.log('Executing query to publish article:', articleId, currentDate);		
+		return db("articles")
+			.where("article_id", articleId)
+			.update({
+				status: "published",
+				published_date: currentDate,
+			})
+			.then(() => true);
+	}
+	
 };
