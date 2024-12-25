@@ -11,8 +11,8 @@ export default {
 		const activeTab = req.query.tab || "draft";
 		const currentPage = +req.query.page || 1;
 
-		console.log("tab: ", activeTab);
-		console.log("page: ", currentPage);
+		// console.log("tab: ", activeTab);
+		// console.log("page: ", currentPage);
 
 		const offset = (currentPage - 1) * maxArticlePerPage;
 
@@ -52,10 +52,28 @@ export default {
 				articles = draft;
 				break;
 		}
-    const approvalHistory = await notiService.getApprovalHistory(writer_id);
+		const approvalHistory = await notiService.getApprovalHistory(writer_id);
 		// console.log(articles);
 		const totalPages = Math.ceil(articles.length / maxArticlePerPage);
 		// console.log(totalPages);
+
+		// find all tags of each article, then append to each article
+		const allTags = await tagService.findAllTagsForArticles();
+
+		const tagsByArticles = {};
+		allTags.forEach((tag) => {
+			if (!tagsByArticles[tag.article_id]) {
+				tagsByArticles[tag.article_id] = [];
+			}
+			tagsByArticles[tag.article_id].push(tag.tag_name);
+		});
+
+		// console.log(tagsByArticles);
+
+		for (let i = 0; i < articles.length; i++) {
+			articles[i].tags = tagsByArticles[articles[i].article_id] || [];
+			console.log(articles[i]);
+		}
 
 		res.render("vwWriter/Writer", {
 			layout: "layouts/admin.main.ejs",
@@ -76,9 +94,6 @@ export default {
 	async getEdit(req, res) {
 		const id = req.query.id; // Fetch article ID from the query string
 		const writer_id = req.session.user.user_id; // Get writer ID from session
-
-		const is_approved = req.query.approved ? true : false;
-		console.log(is_approved);
 
 		try {
 			// Fetch the article by ID
@@ -103,7 +118,6 @@ export default {
 				api_key: process.env.TINY_API_KEY, // TinyMCE API key
 				article: article, // Article object
 				tags: tagName, // Tags array
-				approved: is_approved, // Whether the article is approved
 				notifications: filteredNotifications, // Notifications specific to this article
 			});
 		} catch (error) {
