@@ -1,5 +1,6 @@
 import ArticleService from "../services/article.service.js";
 import UserService from "../services/user.service.js";
+import tagService from "../services/tag.service.js";
 
 export default {
 	async getArticleDetail(req, res) {
@@ -28,6 +29,8 @@ export default {
 					//Chỗ này nên hiện wanning với nút bấm đăng ký premium rồi redirect to login.
 				}
 			}
+
+			article.tags = await tagService.findTagsByArticleId(articleId);
 
 			// Fetch comments and related articles in parallel
 			const [comments, relatedArticles] = await Promise.all([
@@ -107,37 +110,34 @@ export default {
 		try {
 			const articleId = req.params.id;
 			const user = req.session.user;
-	
+
 			if (!user) {
-				return res.redirect("/500")
+				return res.redirect("/500");
 			}
-	
-			const isPremiumUser = user.premium == 1 && 
-								user.subscription_expired_date && 
-								new Date(user.subscription_expired_date) > new Date();
-	
+
+			const isPremiumUser = user.premium == 1 && user.subscription_expired_date && new Date(user.subscription_expired_date) > new Date();
+
 			if (!isPremiumUser) {
-				return res.redirect("/500")
+				return res.redirect("/500");
 			}
-	
+
 			const article = await ArticleService.findArticleById(articleId);
 			if (!article) {
-				return res.status(404).redirect("/404")
+				return res.status(404).redirect("/404");
 			}
-	
-			res.json({ 
-				success: true, 
+
+			res.json({
+				success: true,
 				article: {
 					title: article.title,
 					content: article.content,
 					writer_name: article.writer_name,
-					published_date: article.published_date
-				}
+					published_date: article.published_date,
+				},
 			});
-	
 		} catch (error) {
-			console.error('Error in downloadPDF:', error);
+			console.error("Error in downloadPDF:", error);
 			res.status(500).redirect("/500");
 		}
-	}
+	},
 };

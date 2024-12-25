@@ -34,11 +34,9 @@
             <div class="card-footer d-flex flex-row flex-wrap justify-content-lg-start">
                 <% if (article.tags && article.tags.length > 0) { %>
                     <% article.tags.forEach(tag => { %>
-                    <span class="bg-secondary p-2 mr-1">
-                        <a href="/tag/<%= tag.tag_id %>" class="text-light text-decoration-none">
+                        <a href="/tag/<%= tag.tag_id %>" class="badge badge-info mr-2">
                             <%= tag.tag_name %>
                         </a>
-                    </span>
                     <% }) %>
                 <% } %>
             </div>
