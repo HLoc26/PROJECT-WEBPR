@@ -110,7 +110,7 @@
 				<% } %> <% if (activeTab === 'request-changes') { %>
 				<td class="text-center align-middle"><%= article.editor_fullname %></td>
 				<% } %> <% if (activeTab === 'archived' || activeTab === 'published') { %>
-				<td class="text-center align-middle"><%= article.publish_date %></td>
+				<td class="text-center align-middle"><%= new Date(article.published_date).toLocaleString("vi-VN") %></td>
 				<td class="text-center align-middle"><%= article.editor_fullname %></td>
 				<% } %>
 			</tr>
