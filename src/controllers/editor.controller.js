@@ -130,25 +130,20 @@ export default {
 			const editorId = req.session.user.user_id; // Editor's user ID from session
 
 			// Fetch article details
-			const article = await ArticleService.findArticleById(articleId);
+			const article = await articleService.findArticleById(articleId);
 
 			if (!article) {
 				return res.status(404).json({ error: "Article not found." });
 			}
-
-			// Check if the current editor has permission to reject the article
-			if (article.editor_id !== editorId) {
-				return res.status(403).json({ error: "Unauthorized to reject this article." });
-			}
-
 			// Update article status to "need changes"
-			await ArticleService.updateArticleStatus(articleId, "need changes");
+			await articleService.updateArticleStatus(articleId, "need changes");
 
 			// Create a notification for the writer
-			await notiService.createNotification(
-				editorId, // sender_id
-				article.writer_id, // receiver_id
-				reason // note_content
+			await articleService.approveArticle(
+				articleId,
+				"need changes",
+				reason, // note_content
+				editorId // sender_id
 			);
 
 			// Redirect back with success message

@@ -95,6 +95,21 @@ export default {
 			managed_category_id: entity.managed_category_id || null,
 		});
 	},
+	
+	async addOAuthUser(entity) {
+		const [userId] = await db('users').insert({
+			username: entity.username,
+			email: entity.email,
+			full_name: entity.full_name,
+			user_role: entity.user_role,
+			is_active: entity.is_active,
+			oauth_provider: entity.oauth_provider,
+			oauth_id: entity.oauth_id,
+			password: null // Explicitly set NULL for OAuth users
+		});
+		return userId;
+	},
+
 	registerPremium(id, subscriptionExpiredDate) {
 		return db("users").where("users.user_id", id).andWhere("users.user_role", "reader").update({
 			premium: true,
@@ -115,13 +130,24 @@ export default {
 			.first()
 			.select("user_id", "username", "password", "email", "full_name", "dob", "user_role", "is_active", "subscription_expired_date", "premium", "managed_category_id");
 	},
-
+	findByUsername(username) {
+		return db("users")
+			.where("username", username)
+			.first()
+			.select("user_id", "username", "password", "email", "full_name", "dob", "user_role", "is_active", "subscription_expired_date", "premium", "managed_category_id");
+	},
 	updateUserProfile(userId, updateData) {
 		const updates = {};
 		if (updateData.username) updates.username = updateData.username;
 		if (updateData.email) updates.email = updateData.email;
 		if (updateData.full_name) updates.full_name = updateData.full_name;
 		if (updateData.dob) updates.dob = new Date(updateData.dob);
+		if (updateData.premium !== undefined) updates.premium = updateData.premium;
+		if (updateData.subscription_expired_date !== undefined) {
+			updates.subscription_expired_date = updateData.subscription_expired_date ? 
+				new Date(updateData.subscription_expired_date) : 
+				null;
+			}
 		// Hash password if provided using process.env.PASSWORD_ROUND
 		if (updateData.password) {
 			updates.password = bcrypt.hashSync(updateData.password, +process.env.PASSWORD_ROUND);

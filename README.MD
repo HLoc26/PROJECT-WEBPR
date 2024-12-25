@@ -39,11 +39,27 @@ A full-stack web application for managing and publishing online news articles wi
 - MySQL (with Knex.js query builder)
 - Express Session for authentication
 
-### Key Libraries
-- `express-ejs-layouts` for template layouts
-- `multer` for file uploads
-- `bcrypt` for password hashing
-- `dotenv` for environment configuration
+### Core Dependencies
+- `express` - Web application framework
+- `express-session` - Session middleware
+- `express-validator` - Validation middleware 
+- `express-ejs-layouts` - Layout support for EJS templates
+- `ejs` - Template engine
+- `mysql2` - MySQL database driver
+- `knex` - SQL query builder
+- `bcrypt` - Password hashing
+- `multer` - File upload handling
+- `dotenv` - Environment variable management
+- `axios` - HTTP client
+- `date-fns` - Date utility library
+
+### Authentication
+- `passport` - Authentication middleware
+- `passport-google-oauth20` - Google OAuth2.0 strategy
+- `passport-facebook` - Facebook authentication strategy
+
+### Development Tools
+- `nodemon` - Development server with auto-reload
 
 ## Project Structure
 

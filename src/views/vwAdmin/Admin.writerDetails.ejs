@@ -1,0 +1,113 @@
+<div class="header">
+	<a href="/admin/writers" class="btn btn-outline-secondary"> <i class="bi bi-arrow-left"></i> Back to Writers </a>
+	<h1 class="text-center">Writer: <%= writer.full_name %></h1>
+</div>
+<div class="container my-4">
+	<!-- Writer Information Section -->
+	<div class="card mb-4">
+		<div class="card-header">
+			<h4>Writer Information</h4>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-6">
+					<p><strong>Full Name:</strong> <%= writer.full_name %></p>
+					<p><strong>Email:</strong> <%= writer.email %></p>
+				</div>
+				<div class="col-md-6">
+					<p><strong>Date of Birth:</strong> <%= new Date(writer.dob).toISOString().split('T')[0] %></p>
+					<p><strong>ID:</strong> <%= writer.user_id %></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Published Articles Section -->
+	<div class="card">
+		<div class="card-header d-flex justify-content-between align-items-center">
+			<h4 class="mb-0">Published Articles</h4>
+			<span class="badge bg-primary">Total: <%= articles.length %></span>
+		</div>
+		<div class="card-body p-0">
+			<!-- Set height to approximately show 10 rows -->
+			<div style="height: 430px; overflow-y: auto">
+				<table class="table table-striped table-bordered mb-0">
+					<thead class="sticky-top bg-white">
+						<tr>
+							<th style="width: 5%">No.</th>
+							<th style="width: 45%">Title</th>
+							<th style="width: 20%">Category</th>
+							<th style="width: 15%">Published Date</th>
+							<!-- <th style="width: 15%;">Actions</th> -->
+						</tr>
+					</thead>
+					<tbody>
+						<% if (articles && articles.length > 0) { %> <% articles.forEach((article, index) => { %>
+						<tr>
+							<td><%= index + 1 %></td>
+							<td><%= article.title %></td>
+							<td><%= article.category_name %></td>
+							<td><%= new Date(article.published_date).toLocaleDateString() %></td>
+							<!-- <td>
+                                            <div class="btn-group">
+                                                <a href="/articles/<%= article.article_id %>" 
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   title="View Article">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="/admin/articles/edit/<%= article.article_id %>" 
+                                                   class="btn btn-sm btn-outline-secondary"
+                                                   title="Edit Article">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                            </div>
+                                        </td> -->
+						</tr>
+						<% }) %> <% } else { %>
+						<tr>
+							<td colspan="5" class="text-center">No published articles found.</td>
+						</tr>
+						<% } %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Add this CSS -->
+<style>
+	.sticky-top {
+		position: sticky;
+		top: 0;
+		z-index: 1000;
+	}
+
+	.table th {
+		background-color: #f8f9fa;
+		border-bottom: 2px solid #dee2e6;
+	}
+
+	.btn-group {
+		display: flex;
+		gap: 0.25rem;
+	}
+
+	.card-header {
+		background-color: #f8f9fa;
+	}
+
+	.badge {
+		font-size: 0.9rem;
+	}
+
+	.table td {
+		vertical-align: middle;
+	}
+
+	/* Set a consistent height for table rows */
+	.table td {
+		height: 43px; /* This will make each row about 43px tall */
+		padding: 8px; /* Consistent padding */
+	}
+</style>
