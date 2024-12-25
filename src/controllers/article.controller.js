@@ -38,7 +38,7 @@ export default {
 				ArticleService.findRelatedArticles(parseInt(articleId), parseInt(article.category_id), 5),
 			]);
 
-			res.render("vwArticle/Detail", {
+			res.render("vwArticle/detail", {
 				article,
 				comments,
 				relatedArticles,
@@ -79,7 +79,7 @@ export default {
 
 			// Validate query input
 			if (!query || query.trim() === "") {
-				return res.render("vwHomepage/Search", {
+				return res.render("vwHomepage/search", {
 					query: "",
 					results: [],
 				});
@@ -92,7 +92,7 @@ export default {
 			const results = await ArticleService.search(query.trim(), userIsPremium);
 
 			// Render search results
-			res.render("vwHomepage/Search", {
+			res.render("vwHomepage/search", {
 				query: query.trim(),
 				results: results,
 			});
@@ -100,7 +100,7 @@ export default {
 			console.error("Error in search:", error);
 
 			// Render a user-friendly error message
-			res.status(500).render("vwHomepage/Error", {
+			res.status(500).render("vwHomepage/error", {
 				message: "Something went wrong. Please try again later.",
 			});
 		}
