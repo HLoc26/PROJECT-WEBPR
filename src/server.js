@@ -1,8 +1,8 @@
 import express from "express";
 import session from "express-session";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
-import configurePassport from './config/passport.js';
+import configurePassport from "./config/passport.js";
 
 import adminRoutes from "./routes/admin.routes.js";
 import apiRoutes from "./routes/api.routes.js";
@@ -19,6 +19,7 @@ import configViewEngine from "./config/viewEngine.js";
 import { setLocalCategories } from "./middlewares/category.mdw.js";
 import { setUser } from "./middlewares/user.mdw.js";
 import { isAuth, isEditor, isWriter, isAdmin } from "./middlewares/auth.mdw.js";
+import { publish } from "./middlewares/publish.js";
 
 // Initialize express app
 const app = express();
@@ -51,11 +52,12 @@ app.use(
 configurePassport(app);
 
 app.use(setUser);
+app.use(publish);
 
 // Add reCAPTCHA site key to locals
 app.use((req, res, next) => {
-    res.locals.GOOGLE_RECAPTCHA_SITE_KEY = process.env.GOOGLE_RECAPTCHA_SITE_KEY;
-    next();
+	res.locals.GOOGLE_RECAPTCHA_SITE_KEY = process.env.GOOGLE_RECAPTCHA_SITE_KEY;
+	next();
 });
 
 // Public routes
