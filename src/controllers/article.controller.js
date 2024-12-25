@@ -102,4 +102,42 @@ export default {
 			});
 		}
 	},
+
+	async downloadPDF(req, res) {
+		try {
+			const articleId = req.params.id;
+			const user = req.session.user;
+	
+			if (!user) {
+				return res.redirect("/500")
+			}
+	
+			const isPremiumUser = user.premium == 1 && 
+								user.subscription_expired_date && 
+								new Date(user.subscription_expired_date) > new Date();
+	
+			if (!isPremiumUser) {
+				return res.redirect("/500")
+			}
+	
+			const article = await ArticleService.findArticleById(articleId);
+			if (!article) {
+				return res.status(404).redirect("/404")
+			}
+	
+			res.json({ 
+				success: true, 
+				article: {
+					title: article.title,
+					content: article.content,
+					writer_name: article.writer_name,
+					published_date: article.published_date
+				}
+			});
+	
+		} catch (error) {
+			console.error('Error in downloadPDF:', error);
+			res.status(500).redirect("/500");
+		}
+	}
 };
