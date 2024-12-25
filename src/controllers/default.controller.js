@@ -10,6 +10,10 @@ export default {
 		res.render("vwLogin/login", { layout: "layouts/login.main.ejs" });
 	},
 
+	async getRegister(req, res) {
+		res.render("vwLogin/register", { layout: "layouts/login.main.ejs" });
+	},
+
 	async postRegister(req, res) {
 		try {
 			const recaptchaResponse = req.body["g-recaptcha-response"];

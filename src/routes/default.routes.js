@@ -7,9 +7,7 @@ router.get("/", function (req, res) {
 	res.redirect("/homepage")
 });
 
-router.get("/register", function (req, res) {
-	res.render("vwLogin/Register", { layout: "layouts/login.main.ejs" });
-});
+router.get("/register", defaultController.getRegister);
 
 router.post("/register", registerValidation, defaultController.postRegister);
 
