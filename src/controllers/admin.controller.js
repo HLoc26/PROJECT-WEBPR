@@ -32,16 +32,13 @@ export default {
 
 	async publishArticle(req, res) {
 		try {
-			const { articleId } = req.body;
-			console.log('Received request to publish article:', req.body);
+			const articleId = req.query.id;
 			await articleService.publishArticle(articleId);
-			res.json({ success: true });
+			// Redirect back to admin dashboard after publishing
+			res.redirect('/admin');
 		} catch (error) {
 			console.error("Error publishing article:", error);
-			res.status(500).json({ 
-				success: false, 
-				error: "Failed to publish article" 
-			});
+			res.redirect('/500');
 		}
 	},
 
