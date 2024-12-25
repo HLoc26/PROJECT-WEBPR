@@ -1,6 +1,7 @@
 import express from "express";
 import session from "express-session";
-import "dotenv/config";
+import dotenv from 'dotenv';
+dotenv.config();
 import configurePassport from './config/passport.js';
 
 import adminRoutes from "./routes/admin.routes.js";
@@ -50,6 +51,12 @@ app.use(
 configurePassport(app);
 
 app.use(setUser);
+
+// Add reCAPTCHA site key to locals
+app.use((req, res, next) => {
+    res.locals.GOOGLE_RECAPTCHA_SITE_KEY = process.env.GOOGLE_RECAPTCHA_SITE_KEY;
+    next();
+});
 
 // Public routes
 app.use("/", defaultRoute); // Lộc: Sửa route để khỏi trùng
