@@ -30,6 +30,18 @@ export default {
 		}
 	},
 
+	async publishArticle(req, res) {
+		try {
+			const articleId = req.query.id;
+			await articleService.publishArticle(articleId);
+			// Redirect back to admin dashboard after publishing
+			res.redirect('/admin');
+		} catch (error) {
+			console.error("Error publishing article:", error);
+			res.redirect('/500');
+		}
+	},
+
 	async getWriters(req, res) {
 		try {
 			// Lấy danh sách tất cả các writer

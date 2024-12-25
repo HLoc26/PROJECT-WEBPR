@@ -76,7 +76,12 @@
                 <td><%= article.writer_name %></td>
                 <td><%= article.editor_name %></td>
                 <td>
-                  <button class="btn btn-primary btn-sm">Publish Now</button>
+                  <a href="/admin/publish?id=<%= article.article_id %>" 
+                    class="btn btn-primary btn-sm" 
+                    role="button"
+                    onclick="return confirm('Are you sure you want to publish this article?')">
+                   Publish Now
+                 </a>
                 </td>
               </tr>
               <% }); %>
