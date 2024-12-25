@@ -30,6 +30,21 @@ export default {
 		}
 	},
 
+	async publishArticle(req, res) {
+		try {
+			const { articleId } = req.body;
+			console.log('Received request to publish article:', req.body);
+			await articleService.publishArticle(articleId);
+			res.json({ success: true });
+		} catch (error) {
+			console.error("Error publishing article:", error);
+			res.status(500).json({ 
+				success: false, 
+				error: "Failed to publish article" 
+			});
+		}
+	},
+
 	async getWriters(req, res) {
 		try {
 			// Lấy danh sách tất cả các writer
