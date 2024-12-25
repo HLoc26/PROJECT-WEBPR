@@ -8,6 +8,7 @@ const router = express.Router();
 router.get("/", (req, res) => {
 	adminController.showArticlesPage(req, res);
 });
+router.post('/',  express.json(), adminController.publishArticle);
 
 router.get("/writers", adminController.getWriters);
 router.get("/writers/detail", adminController.getWriterDetails);
