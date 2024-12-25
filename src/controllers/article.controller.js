@@ -21,7 +21,7 @@ export default {
 				}
 
 				// Validate premium status
-				const isPremiumUser = user.premium && user.subscription_expired_date && new Date(user.subscription_expired_date) > new Date();
+				const isPremiumUser = user.premium == 1 && user.subscription_expired_date && new Date(user.subscription_expired_date) > new Date();
 				// console.log(isPremiumUser);
 				if (!isPremiumUser) {
 					return res.status(403).redirect("/404");
@@ -83,7 +83,7 @@ export default {
 			}
 
 			// Check if the user is premium
-			const userIsPremium = req.session.user ? req.session.user.premium : false;
+			const userIsPremium = req.session.user ? req.session.user.premium == 1 : false;
 
 			// Fetch search results
 			const results = await ArticleService.search(query.trim(), userIsPremium);
