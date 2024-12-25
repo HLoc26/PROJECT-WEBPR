@@ -75,7 +75,7 @@ export default {
 			// console.log(articles[i]);
 		}
 
-		res.render("vwWriter/Writer", {
+		res.render("vwWriter/writer", {
 			layout: "layouts/admin.main.ejs",
 			articles: articles.slice(offset, offset + maxArticlePerPage),
 			activeTab: activeTab,
