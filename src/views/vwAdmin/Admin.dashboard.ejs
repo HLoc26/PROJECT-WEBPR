@@ -76,10 +76,47 @@
                 <td><%= article.writer_name %></td>
                 <td><%= article.editor_name %></td>
                 <td>
-                  <button class="btn btn-primary btn-sm">Publish Now</button>
+                    <button class="btn btn-primary btn-sm btn-publish" data-article-id="<%= article.article_id %>">
+                    Publish Now
+                  </button>
                 </td>
               </tr>
               <% }); %>
+                <script>
+                  async function publishArticle(articleId) {
+                    try {
+                        const response = await fetch('/admin', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ articleId })
+                        });
+                
+                        const data = await response.json();
+                        if (data.success) {
+                            // Reload the page to show updated tables
+                            window.location.reload();
+                        } else {
+                            alert('Failed to publish article. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error publishing article:', error);
+                        alert('An error occurred while publishing the article.');
+                    }
+                  }
+                  document.addEventListener('DOMContentLoaded', () => {
+                      const publishButtons = document.querySelectorAll('.btn-publish');
+                      publishButtons.forEach(button => {
+                        button.addEventListener('click', function () {
+                          const articleId = this.getAttribute('data-article-id');
+                          if (confirm('Are you sure you want to publish this article?')) {
+                            publishArticle(articleId);
+                          }
+                        });
+                      });
+                    });
+              </script>
             </tbody>
           </table>
         </div>
