@@ -34,3 +34,13 @@ img[alt="thumbnail"] {
 	color: #fff;
 	background-color: #dc3545;
 }
+
+body {
+	overflow: hidden;
+}
+.table-container {
+	overflow-y: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}

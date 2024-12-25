@@ -290,8 +290,19 @@ export default {
 
 	addComment(commentData) {
 		return db("comments").insert(commentData);
-	},
-	
+  },
+
+	findByWriterIdAndStatus(writer_id, status) {
+		return db("articles")
+			.where("writers.user_id", writer_id)
+			.andWhere("articles.status", status)
+			.leftJoin("categories", "articles.category_id", "categories.category_id")
+			.leftJoin("users as writers", "articles.writer_id", "writers.user_id")
+			.leftJoin("users as editors", "articles.editor_id", "editors.user_id")
+			.select("articles.*", "categories.category_name", "writers.full_name as writer_fullname", "editors.full_name as editor_fullname")
+			.orderBy("articles.published_date", "desc");
+  },
+  
 	search(query, is_premium = false) {
 		return db("articles")
 			.where((builder) => {
