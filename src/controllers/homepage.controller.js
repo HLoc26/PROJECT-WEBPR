@@ -36,7 +36,7 @@ export default {
 				})
 			);
 
-			console.log(top10Newest);
+			// console.log(top10Newest);
 			// Get most viewed articles
 			const mostViewedArticles = await ArticleService.findByStatus("published");
 			const top10MostViewed = await Promise.all(
