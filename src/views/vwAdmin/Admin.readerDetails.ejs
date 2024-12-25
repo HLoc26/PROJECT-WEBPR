@@ -40,10 +40,12 @@
 							<div class="mb-3">
 								<label class="fw-bold">Premium Status:</label>
 								<p>
-									<% if (user.premium) { %>
+									<% if (user.premium == 1) { %>
 									<span class="badge bg-warning">Premium</span>
 									<br />
 									<small class="text-muted"> Expires: <%= new Date(user.subscription_expired_date).toLocaleDateString() %> </small>
+									<% } else if(user.premium == -1) { %>
+									<span class="badge bg-danger">Pending</span>
 									<% } else { %>
 									<span class="badge bg-secondary">Standard</span>
 									<% } %>
