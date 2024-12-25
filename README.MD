@@ -183,6 +183,9 @@ npm start
 - **Editor**: Review and manage content
 - **Admin**: System administration
 
+### Current Category Management
+- "Kinh tế" category is managed by editor1
+
 ## Contributing
 
 1. Fork the repository
