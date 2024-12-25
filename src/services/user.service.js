@@ -95,9 +95,9 @@ export default {
 			managed_category_id: entity.managed_category_id || null,
 		});
 	},
-	
+
 	async addOAuthUser(entity) {
-		const [userId] = await db('users').insert({
+		const [userId] = await db("users").insert({
 			username: entity.username,
 			email: entity.email,
 			full_name: entity.full_name,
@@ -105,7 +105,7 @@ export default {
 			is_active: entity.is_active,
 			oauth_provider: entity.oauth_provider,
 			oauth_id: entity.oauth_id,
-			password: null // Explicitly set NULL for OAuth users
+			password: null, // Explicitly set NULL for OAuth users
 		});
 		return userId;
 	},
@@ -144,10 +144,8 @@ export default {
 		if (updateData.dob) updates.dob = new Date(updateData.dob);
 		if (updateData.premium !== undefined) updates.premium = updateData.premium;
 		if (updateData.subscription_expired_date !== undefined) {
-			updates.subscription_expired_date = updateData.subscription_expired_date ? 
-				new Date(updateData.subscription_expired_date) : 
-				null;
-			}
+			updates.subscription_expired_date = updateData.subscription_expired_date ? new Date(updateData.subscription_expired_date) : null;
+		}
 		// Hash password if provided using process.env.PASSWORD_ROUND
 		if (updateData.password) {
 			updates.password = bcrypt.hashSync(updateData.password, +process.env.PASSWORD_ROUND);
@@ -164,5 +162,9 @@ export default {
 
 	deleteUser(userId) {
 		return db("users").where("user_id", userId).update({ is_active: 0 });
+	},
+
+	requestPremium(userId) {
+		return db("users").where("user_id", userId).update({ premium: -1 });
 	},
 };
