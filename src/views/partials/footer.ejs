@@ -1,0 +1,56 @@
+<footer class="bg-dark text-light mt-5 py-4">
+    <div class="container">
+        <div class="row">
+            <!-- About Us Section -->
+            <div class="col-md-4 mb-4">
+                <h5 class="mb-3">Về Chúng Tôi</h5>
+                <p class="text-muted">
+                    22110052 - Đặng Hữu Lộc<br>
+                    22110065 - Nguyễn Nhật Quang<br>
+                    22110067 - Nguyễn Quang Sáng<br>
+                    22110020 - Hồ Thành Đạt<br>
+                    22110034 - Nguyễn Gia Huy
+                </p>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="col-md-4 mb-4">
+                <h5 class="mb-3">Liên kết nhanh</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="/homepage" class="text-muted text-decoration-none">Trang Chủ</a></li>
+                    <li class="mb-2"><a href="/homepage" class="text-muted text-decoration-none">Danh mục</a></li>
+                    <% if (!locals.user) { %>
+                        <li class="mb-2"><a href="/login" class="text-muted text-decoration-none">Đăng Nhập</a></li>
+                        <li class="mb-2"><a href="/register" class="text-muted text-decoration-none">Đăng Ký</a></li>
+                    <% } else { %>
+                        <li class="mb-2"><a href="/profile" class="text-muted text-decoration-none">Trang Cá Nhân</a></li>
+                        <% if (locals.user.user_role === 'reader') { %>
+                            <li class="mb-2"><a href="/vwProfile/premium" class="text-muted text-decoration-none">Premium</a></li>
+                        <% } %>
+                    <% } %>
+                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none" data-toggle="modal" data-target="#contactModal">Liên Hệ</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info Section -->
+            <div class="col-md-4 mb-4">
+                <h5 class="mb-3">Kết nối với chúng tôi ngay</h5>
+                <div class="d-flex gap-3 mb-3">
+                    <a href="https://github.com/HLoc26/PROJECT-WEBPR" class="text-light"><i class="bi bi-github fs-4"></i></a>
+                </div>
+                <p class="text-muted mb-1"><i class="bi bi-envelope-fill me-2"></i> cbl.nguyennhatquang2809@gmail.com</p>
+                <p class="text-muted mb-1"><i class="bi bi-telephone-fill me-2"></i> +84 972 947 081</p>
+            </div>
+        </div>
+
+        <!-- Copyright Section -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <hr class="bg-secondary">
+                <p class="text-center text-muted mb-0">
+                    © <%= new Date().getFullYear() %> DHLQS News - Cổng tin tức thế giới. All Right Reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
