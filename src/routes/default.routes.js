@@ -13,9 +13,7 @@ router.get("/register", function (req, res) {
 
 router.post("/register", registerValidation, defaultController.postRegister);
 
-router.get("/login", function (req, res) {
-	res.render("vwLogin/Login", { layout: "layouts/login.main.ejs" });
-});
+router.get("/login", defaultController.getLogin);
 
 router.post("/login", defaultController.postLogin);
 
