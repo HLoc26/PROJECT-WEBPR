@@ -80,4 +80,7 @@ export default {
 	updateTag(tagId, tagName) {
 		return db("tags").where("tag_id", tagId).update({ tag_name: tagName });
 	},
+	findAllTagsForArticles() {
+		return db("articletags").join("tags", "articletags.tag_id", "tags.tag_id").select("articletags.article_id", "tags.tag_name");
+	},
 };
