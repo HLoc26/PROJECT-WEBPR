@@ -11,7 +11,7 @@ export default {
             const recaptchaResponse = req.body['g-recaptcha-response'];
             
             if (!recaptchaResponse) {
-                return res.status(400).render("vwLogin/Register", {
+                return res.status(400).render("vwLogin/register", {
                     layout: "layouts/login.main.ejs",
                     errors: [{ msg: "Please complete the captcha verification" }]
                 });
@@ -26,7 +26,7 @@ export default {
             });
 
             if (!verifyResult.data.success) {
-                return res.status(400).render("vwLogin/Register", {
+                return res.status(400).render("vwLogin/register", {
                     layout: "layouts/login.main.ejs",
                     errors: [{ msg: "Captcha verification failed" }]
                 });
@@ -34,7 +34,7 @@ export default {
 
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).render("vwLogin/Register", {
+                return res.status(400).render("vwLogin/register", {
                     layout: "layouts/login.main.ejs",
                     errors: errors.array()
                 });
@@ -48,13 +48,13 @@ export default {
             const usedEmail = false; // Placeholder
 
             if (usedUsername) {
-                return res.status(400).render("vwLogin/Register", {
+                return res.status(400).render("vwLogin/register", {
                     layout: "layouts/login.main.ejs",
                     errors: [{ msg: "Username is used" }]
                 });
             }
             if (usedEmail) {
-                return res.status(400).render("vwLogin/Register", {
+                return res.status(400).render("vwLogin/register", {
                     layout: "layouts/login.main.ejs",
                     errors: [{ msg: "Email is used" }]
                 });
@@ -78,7 +78,7 @@ export default {
             
         } catch (error) {
             console.error('Registration error:', error);
-            res.status(500).render("vwLogin/Register", {
+            res.status(500).render("vwLogin/register", {
                 layout: "layouts/login.main.ejs",
                 errors: [{ msg: "Registration failed. Please try again." }]
             });
@@ -95,7 +95,7 @@ export default {
 			const user = userByEmail || userByUsername;
 
 			if (!user) {
-				return res.status(400).render("vwLogin/Login", {
+				return res.status(400).render("vwLogin/login", {
 					layout: "layouts/login.main.ejs",
 					errors: [{ msg: "Email/Username không tồn tại" }],
 				});
@@ -104,7 +104,7 @@ export default {
 			// Verify password
 			const match = await bcrypt.compare(password, user.password);
 			if (!match) {
-				return res.status(400).render("vwLogin/Login", {
+				return res.status(400).render("vwLogin/login", {
 					layout: "layouts/login.main.ejs",
 					errors: [{ msg: "Mật khẩu không đúng" }],
 				});
