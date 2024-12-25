@@ -71,9 +71,9 @@
 							<div>
 								<% if (user.premium) { %>
 								<span class="badge badge-success">Premium until: <%= user.subscription_expired_date %></span>
-								<button type="button" class="btn btn-sm btn-warning ml-2">Extend Premium</button>
+								<a href="/profile/extend" role="button" class="btn btn-sm btn-warning ml-2">Extend Premium</a>
 								<% } else { %>
-								<button type="button" class="btn btn-sm btn-primary">Upgrade to Premium</button>
+								<a href="/profile/upgrade" role="button" class="btn btn-sm btn-primary">Upgrade to Premium</a>
 								<% } %>
 							</div>
 						</div>
