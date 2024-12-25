@@ -9,82 +9,70 @@
 <link rel="stylesheet" href="/css/vwWriter/writer.css" />
 <!-- Approval Notifications Dropdown -->
 
-<div class="dropdown nav-item">
-    <button
-        class="btn btn-secondary dropdown-toggle"
-        type="button"
-        id="approvalNotificationsDropdown"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-    >
-        Approval Notifications
-    </button>
-    <div class="dropdown-menu dropdown-menu-right slide-in" aria-labelledby="approvalNotificationsDropdown">
-        <% if (approvalHistory.length > 0) { %>
-            <% approvalHistory.forEach(notification => { %>
-                <a class="dropdown-item" href="/writer/edit?id=<%= notification.article_id %>&approved=true">
-                    <% if (notification.article_status === 'need changes') { %>
-                        <strong>You have an article review from <%= notification.editor_name %>:</strong> <br>
-						<small class="text-muted">
-							Review on: <%= new Date(notification.approval_date).toLocaleString() %>
-						</small>
-                    <% } else if (['published', 'waiting'].includes(notification.article_status)) { %>
-                        <strong>Congratulations! Your article has been approved by <%= notification.editor_name %>:</strong> <br>
-						<small class="text-muted">
-							Approved on: <%= new Date(notification.approval_date).toLocaleString() %>
-						</small>
-                    <% } else { %>
-                        <strong>Status update from <%= notification.editor_name %>:</strong> <br>
-						<small class="text-muted">
-							Review on: <%= new Date(notification.approval_date).toLocaleString() %>
-						</small>
-                    <% } %>
-                </a>
-            <% }); %>
-        <% } else { %>
-            <p class="dropdown-item text-center text-muted">No notifications</p>
-        <% } %>
-    </div>
-</div>	
-	<h1 class="text-capitalize text-center">Your articles</h1>
-	<table class="table table-hover article-table">
-		<thead>
-			<tr>
-				<th scope="col">ID</th>
-				<th scope="col">Cover Image</th>
-				<th scope="col">Title</th>
-				<th scope="col">Category</th>
-				<th scope="col" class="text-center">Is premium</th>
-				<th scope="col">Status</th>
-				<th scope="col">Editor</th>
-				<th scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<% articles.forEach(article => { %>
-			<tr>
-				<th scope="row"><%= article.article_id %></th>
-				<td><img src="/img/<%= article.thumbnail %>" alt="thumbnail" class="img-thumbnail fit" /></td>
-				<td><%= article.title %></td>
-				<td><%= article.category_name %></td>
-				<td class="text-center">
-					<!-- prettier-ignore -->
-					<% if (article.is_premium) { %>
-					<i class="bi bi-check-lg text-success"></i>
-					<% } else { %>
-					<i class="bi bi-x-lg text-danger"></i>
-					<% } %>
-				</td>
-				<td class="article-status">
-					<span class="badge badge-pill status-<%= article.status.replace(' ', '-').toLowerCase() %>"><%= article.status %></span>
-				</td>
-				<td><%= article.writer_name %></td>
-				<td>
-					<a href="/writer/edit?id=<%= article.article_id %>"><i class="bi bi-pen"></i> Edit</a>
-				</td>
-			</tr>
-			<% }); %>
-		</tbody>
-	</table>
+<div class="dropdown nav-item d-flex justify-content-between align-items-center position-relative w-100 mb-3">
+	<div class="flex-grow-1">
+		<h1 class="text-capitalize text-center m-0">Your articles</h1>
+	</div>
+	<div class="">
+		<button class="btn btn-secondary dropdown-toggle" type="button" id="approvalNotificationsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<i class="bi bi-bell-fill"></i>
+		</button>
+		<div class="dropdown-menu dropdown-menu-right slide-in" aria-labelledby="approvalNotificationsDropdown">
+			<% if (approvalHistory.length > 0) { %> <% approvalHistory.forEach(notification => { %>
+			<a class="dropdown-item" href="/writer/edit?id=<%= notification.article_id %>&approved=true">
+				<% if (notification.article_status === 'need changes') { %>
+				<strong>You have an article review from <%= notification.editor_name %>:</strong> <br />
+				<small class="text-muted"> Review on: <%= new Date(notification.approval_date).toLocaleString() %> </small>
+				<% } else if (['published', 'waiting'].includes(notification.article_status)) { %>
+				<strong>Congratulations! Your article has been approved by <%= notification.editor_name %>:</strong> <br />
+				<small class="text-muted"> Approved on: <%= new Date(notification.approval_date).toLocaleString() %> </small>
+				<% } else { %>
+				<strong>Status update from <%= notification.editor_name %>:</strong> <br />
+				<small class="text-muted"> Review on: <%= new Date(notification.approval_date).toLocaleString() %> </small>
+				<% } %>
+			</a>
+			<% }); %> <% } else { %>
+			<p class="dropdown-item text-center text-muted">No notifications</p>
+			<% } %>
+		</div>
+	</div>
 </div>
+<table class="table table-hover article-table">
+	<thead>
+		<tr>
+			<th scope="col">ID</th>
+			<th scope="col">Cover Image</th>
+			<th scope="col">Title</th>
+			<th scope="col">Category</th>
+			<th scope="col" class="text-center">Is premium</th>
+			<th scope="col">Status</th>
+			<th scope="col">Editor</th>
+			<th scope="col"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% articles.forEach(article => { %>
+		<tr>
+			<th scope="row"><%= article.article_id %></th>
+			<td><img src="/img/<%= article.thumbnail %>" alt="thumbnail" class="img-thumbnail fit" /></td>
+			<td><%= article.title %></td>
+			<td><%= article.category_name %></td>
+			<td class="text-center">
+				<!-- prettier-ignore -->
+				<% if (article.is_premium) { %>
+				<i class="bi bi-check-lg text-success"></i>
+				<% } else { %>
+				<i class="bi bi-x-lg text-danger"></i>
+				<% } %>
+			</td>
+			<td class="article-status">
+				<span class="badge badge-pill status-<%= article.status.replace(' ', '-').toLowerCase() %>"><%= article.status %></span>
+			</td>
+			<td><%= article.writer_name %></td>
+			<td>
+				<a href="/writer/edit?id=<%= article.article_id %>"><i class="bi bi-pen"></i> Edit</a>
+			</td>
+		</tr>
+		<% }); %>
+	</tbody>
+</table>
