@@ -49,6 +49,7 @@
 				</ul>
 				<% } %>
 				<form action="/register" method="POST" autocomplete="on">
+					<input type="hidden" name="_csrf" value="<%= csrfToken %>" />
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
 							<label class="input-group-text" for="username"><i class="bi bi-person-fill"></i></label>

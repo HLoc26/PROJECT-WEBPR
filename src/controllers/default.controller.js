@@ -7,11 +7,11 @@ import articleService from "../services/article.service.js";
 
 export default {
 	async getLogin(req, res) {
-		res.render("vwLogin/login", { layout: "layouts/login.main.ejs" });
+		res.render("vwLogin/login", { layout: "layouts/login.main.ejs", csrfToken: req.csrfToken() });
 	},
 
 	async getRegister(req, res) {
-		res.render("vwLogin/register", { layout: "layouts/login.main.ejs" });
+		res.render("vwLogin/register", { layout: "layouts/login.main.ejs", csrfToken: req.csrfToken() });
 	},
 
 	async postRegister(req, res) {
