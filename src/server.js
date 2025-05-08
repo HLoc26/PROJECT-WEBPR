@@ -25,7 +25,7 @@ import csurf from "csurf";
 // Initialize express app
 const app = express();
 app.use(cookieParser());
-app.use(csurf({ cookie: true }));
+
 configViewEngine(app);
 
 app.use(
@@ -33,6 +33,7 @@ app.use(
 		extended: true,
 	})
 );
+app.use(csurf({ cookie: true }));
 app.use("/api", apiRoutes);
 
 // Quang: Middleware to set category variable - using direct DB access for better performance
