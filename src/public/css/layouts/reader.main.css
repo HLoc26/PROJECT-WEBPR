@@ -103,7 +103,7 @@ footer {
 }
 
 .card-sr {
-	width: 400px;
+	width: 500px;
 	max-width: none;
 	margin: 0 auto;
 }
@@ -124,6 +124,13 @@ footer {
 .card-sr .title-text {
 	-webkit-line-clamp: 1;
 	line-clamp: 1;
+}
+
+.card-sr img,
+.card-sl img {
+	height: 150px;
+	object-fit: cover;
+	aspect-ratio: 4/3;
 }
 
 .card-xs-l .title-text {
@@ -159,4 +166,8 @@ footer {
 
 .w-270px {
 	width: 270px;
+}
+
+.side-content {
+	width: 600px;
 }
