@@ -1,32 +1,7 @@
 <!-- Size: small -->
 <!-- Image position: right -->
-<style>
-	.card-s {
-		width: <%= width %>;
-		max-width: none;
-		margin: 0 auto;
-	}
-	.card-s .category-text {
-		color: gray;
-		font-weight: bold;
-	}
-	.card-s .abstract-text,
-	.card-s .title-text {
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		max-height: 3rem;
-	}
-	.card-s .title-text {
-		-webkit-line-clamp: 1;
-		line-clamp: 1;
-	}
-</style>
 
-<div class="card-wrapper card-s d-flex align-items-center justify-content-between border-bottom">
+<div class="card-wrapper card-sr d-flex align-items-center justify-content-between border-bottom">
 	<div class="card-content w-70">
 		<% if (typeof show_cat !== 'undefined' && show_cat) { %>
 		<div class="category-text">
