@@ -1,3 +1,30 @@
 main.container {
 	min-height: 90vh;
 }
+
+#sidebar {
+	width: 250px;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: -250px;
+	transition: left 0.3s ease;
+	z-index: 1050;
+}
+
+#sidebar.active {
+	left: 0;
+}
+
+#sidebar .nav-link:hover {
+	background-color: #d1d1d1;
+}
+
+#content {
+	margin-left: 0;
+	transition: margin-left 0.3s ease;
+}
+
+#sidebar.active ~ #content {
+	margin-left: 250px;
+}
