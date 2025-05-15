@@ -4,7 +4,7 @@ import { registerValidation } from "../validators/register.validator.js";
 const router = express.Router();
 
 router.get("/", function (req, res) {
-	res.redirect("/homepage")
+	res.redirect("/homepage");
 });
 
 router.get("/register", defaultController.getRegister);
@@ -31,5 +31,9 @@ router.get("/404", function (req, res) {
 
 router.get("/500", function (req, res) {
 	res.render("vwError/500", { layout: "layouts/login.main.ejs" });
+});
+// Catch-all for undefined routes in this router
+router.use((req, res) => {
+	res.redirect("/404");
 });
 export default router;
