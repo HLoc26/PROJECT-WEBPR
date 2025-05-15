@@ -140,3 +140,23 @@ footer {
 	max-width: 300px;
 	margin: 0;
 }
+
+.w-20 {
+	width: calc(100% / 5 - 15px);
+}
+
+.w-800px {
+	width: 800px;
+}
+
+.w-350px {
+	width: 350px;
+}
+
+.w-300px {
+	width: 300px;
+}
+
+.w-270px {
+	width: 270px;
+}
