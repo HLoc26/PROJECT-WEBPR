@@ -25,55 +25,6 @@ import helmet from "helmet";
 // Initialize express app
 const app = express();
 
-// CSP configuration with reCAPTCHA and Google Fonts support
-app.use(
-	helmet.contentSecurityPolicy({
-		directives: {
-			defaultSrc: ["'self'"],
-			scriptSrc: [
-				"'self'",
-				"https://cdn.jsdelivr.net", // Bootstrap JS
-				"https://unpkg.com",
-				"https://www.google.com/recaptcha/", // reCAPTCHA
-				"https://www.gstatic.com/recaptcha/", // reCAPTCHA
-			],
-			styleSrc: [
-				"'self'",
-				"https://cdn.jsdelivr.net", // Bootstrap CSS
-				"https://unpkg.com",
-				"https://fonts.googleapis.com", // Google Fonts
-			],
-			imgSrc: [
-				"'self'",
-				"data:",
-				"https://cdn.jsdelivr.net",
-				"https://banner2.cleanpng.com", // Custom image source
-			],
-			fontSrc: [
-				"'self'",
-				"https://cdn.jsdelivr.net",
-				"https://fonts.googleapis.com",
-				"https://fonts.gstatic.com", // Actual font source for Google Fonts
-			],
-			connectSrc: [
-				"'self'",
-				"https://www.google.com/recaptcha/", // reCAPTCHA API
-				"https://www.gstatic.com/recaptcha/", // reCAPTCHA API
-			],
-			frameSrc: [
-				"'self'",
-				"https://www.google.com/recaptcha/", // reCAPTCHA iframe
-				"https://www.gstatic.com/recaptcha/",
-			],
-			frameAncestors: ["'self'"],
-			formAction: ["'self'"],
-			objectSrc: ["'none'"],
-			upgradeInsecureRequests: [],
-			reportTo: "/csp-report", // Report CSP violations
-		},
-	})
-);
-
 app.use((req, res, next) => {
 	const originalWriteHead = res.writeHead;
 
@@ -82,9 +33,9 @@ app.use((req, res, next) => {
 		res.setHeader(
 			"Content-Security-Policy",
 			"default-src 'self'; " +
-				"script-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://cdn.jsdelivr.net; " +
-				"style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net; " +
-				"font-src 'self' https://fonts.gstatic.com; " +
+				"script-src 'self'  https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://cdn.jsdelivr.net https://code.jquery.com/jquery-3.6.0.min.js; " +
+				"style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com/swiper/swiper-bundle.min.css; " +
+				"font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/bootstrap-icons.woff2 https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/bootstrap-icons.woff; " +
 				"img-src 'self' data:; " +
 				"frame-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; " +
 				"connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; " +
