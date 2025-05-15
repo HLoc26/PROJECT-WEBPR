@@ -171,3 +171,7 @@ footer {
 .side-content {
 	width: 600px;
 }
+
+.z-index-top {
+	z-index: 10000;
+}
