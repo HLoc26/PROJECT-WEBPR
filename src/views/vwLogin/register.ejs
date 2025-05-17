@@ -20,7 +20,7 @@
 		<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh">
 			<div class="col-md-6 col-lg-6 shadow p-4 rounded">
 				<div class="text-center mb-4">
-					<img src="/img/logo/logo.png" alt="News Logo" height="60" class="mb-3">
+					<img src="/img/logo/logo.png" alt="News Logo" height="60" class="mb-3" />
 					<h5 class="font-weight-bold">Đăng ký tài khoản</h5>
 				</div>
 
@@ -92,19 +92,10 @@
 					</div>
 
 					<div class="form-group mb-3">
-						<div class="g-recaptcha" 
-							data-sitekey="<%= process.env.GOOGLE_RECAPTCHA_SITE_KEY %>"
-							data-callback="enableSubmit"
-							data-expired-callback="disableSubmit">
-						</div>
+						<div class="g-recaptcha" data-sitekey="<%= process.env.GOOGLE_RECAPTCHA_SITE_KEY %>" data-callback="enableSubmit" data-expired-callback="disableSubmit"></div>
 					</div>
 
-					<button type="submit" 
-							id="registerBtn" 
-							class="btn btn-secondary btn-block font-weight-bold" 
-							disabled>
-						ĐĂNG KÝ
-					</button>
+					<button type="submit" id="registerBtn" class="btn btn-secondary btn-block font-weight-bold" disabled>ĐĂNG KÝ</button>
 				</form>
 
 				<!-- Đăng nhập link -->
@@ -117,14 +108,6 @@
 		<!-- Bootstrap & jQuery -->
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js"></script>
-		<script>
-		function enableSubmit() {
-			document.getElementById('registerBtn').disabled = false;
-		}
-
-		function disableSubmit() {
-			document.getElementById('registerBtn').disabled = true;
-		}
-		</script>
+		<script src="/js/register.js"></script>
 	</body>
 </html>

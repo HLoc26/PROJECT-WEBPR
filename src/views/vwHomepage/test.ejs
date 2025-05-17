@@ -3,11 +3,11 @@
 	<div class="card-body d-flex flex-row">
 		<div class="card mr-3">
 			<div class="card-header"><h3>Show category</h3></div>
-			<div class="card-body"><%- include("../partials/article_m", {article: articles[0], width: 270, show_cat: true}) %></div>
+			<div class="card-body"><%- include("../partials/article_m", {article: articles[0], w: "w-270px", show_cat: true}) %></div>
 		</div>
 		<div class="card mr-3">
 			<div class="card-header"><h3>No category</h3></div>
-			<div class="card-body"><%- include("../partials/article_m", {article: articles[0], width: 270, show_cat: false}) %></div>
+			<div class="card-body"><%- include("../partials/article_m", {article: articles[0], w: "w-270px", show_cat: false}) %></div>
 		</div>
 	</div>
 </div>
