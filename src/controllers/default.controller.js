@@ -7,11 +7,11 @@ import articleService from "../services/article.service.js";
 
 export default {
 	async getLogin(req, res) {
-		res.render("vwLogin/login", { layout: "layouts/login.main.ejs" });
+		res.render("vwLogin/login", { layout: "layouts/login.main.ejs", csrfToken: req.csrfToken() });
 	},
 
 	async getRegister(req, res) {
-		res.render("vwLogin/register", { layout: "layouts/login.main.ejs" });
+		res.render("vwLogin/register", { layout: "layouts/login.main.ejs", csrfToken: req.csrfToken() });
 	},
 
 	async postRegister(req, res) {
@@ -59,12 +59,14 @@ export default {
 				return res.status(400).render("vwLogin/register", {
 					layout: "layouts/login.main.ejs",
 					errors: [{ msg: "Username is used" }],
+					csrfToken: req.csrfToken(),
 				});
 			}
 			if (usedEmail) {
 				return res.status(400).render("vwLogin/register", {
 					layout: "layouts/login.main.ejs",
 					errors: [{ msg: "Email is used" }],
+					csrfToken: req.csrfToken(),
 				});
 			}
 
@@ -105,6 +107,7 @@ export default {
 				return res.status(400).render("vwLogin/login", {
 					layout: "layouts/login.main.ejs",
 					errors: [{ msg: "Email/Username không tồn tại" }],
+					csrfToken: req.csrfToken(),
 				});
 			}
 
@@ -114,6 +117,7 @@ export default {
 				return res.status(400).render("vwLogin/login", {
 					layout: "layouts/login.main.ejs",
 					errors: [{ msg: "Mật khẩu không đúng" }],
+					csrfToken: req.csrfToken(),
 				});
 			}
 

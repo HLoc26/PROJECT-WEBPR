@@ -3,7 +3,7 @@ import session from "express-session";
 import dotenv from "dotenv";
 dotenv.config();
 import configurePassport from "./config/passport.js";
-
+import cookieParser from "cookie-parser";
 import adminRoutes from "./routes/admin.routes.js";
 import apiRoutes from "./routes/api.routes.js";
 import articleRoutes from "./routes/article.routes.js";
@@ -19,11 +19,13 @@ import { setLocalCategories } from "./middlewares/category.mdw.js";
 import { setUser } from "./middlewares/user.mdw.js";
 import { isAuth, isEditor, isWriter, isAdmin } from "./middlewares/auth.mdw.js";
 import { publish } from "./middlewares/publish.js";
+import csurf from "csurf";
 
 import helmet from "helmet";
 
 // Initialize express app
 const app = express();
+app.use(cookieParser());
 
 app.use((req, res, next) => {
 	const originalWriteHead = res.writeHead;
@@ -78,6 +80,7 @@ app.use(
 		extended: true,
 	})
 );
+app.use(csurf({ cookie: true }));
 app.use("/api", apiRoutes);
 
 // Middleware to set category variable
