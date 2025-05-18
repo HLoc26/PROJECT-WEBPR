@@ -32,8 +32,5 @@ router.get("/404", function (req, res) {
 router.get("/500", function (req, res) {
 	res.render("vwError/500", { layout: "layouts/login.main.ejs" });
 });
-// Catch-all for undefined routes in this router
-router.use((req, res) => {
-	res.redirect("/404");
-});
+
 export default router;
