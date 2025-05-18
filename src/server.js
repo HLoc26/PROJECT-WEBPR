@@ -35,9 +35,9 @@ app.use((req, res, next) => {
 		res.setHeader(
 			"Content-Security-Policy",
 			"default-src 'self'; " +
-				"script-src 'self'  https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://cdn.jsdelivr.net https://code.jquery.com/jquery-3.6.0.min.js; " +
+				"script-src 'self'  https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://cdn.jsdelivr.net/ https://code.jquery.com/; " +
 				"style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com/swiper/swiper-bundle.min.css; " +
-				"font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/bootstrap-icons.woff2 https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/bootstrap-icons.woff; " +
+				"font-src 'self' data: https://fonts.gstatic.com/ https://cdn.jsdelivr.net/; " +
 				"img-src 'self' data:; " +
 				"frame-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; " +
 				"connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; " +
