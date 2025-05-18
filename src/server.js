@@ -80,7 +80,15 @@ app.use(
 		extended: true,
 	})
 );
-app.use(csurf({ cookie: true }));
+app.use(
+	csurf({
+		cookie: {
+			httpOnly: true, // Ngăn JS truy cập token
+			sameSite: "strict", // Ngăn CSRF từ site khác
+			secure: process.env.NODE_ENV === "production", // Secure cookie in production
+		},
+	})
+);
 app.use("/api", apiRoutes);
 
 // Middleware to set category variable
@@ -95,6 +103,8 @@ app.use(
 		cookie: {
 			maxAge: 1000 * 60 * 60, // 1 hour
 			secure: process.env.NODE_ENV === "production", // Secure cookie in production
+			httpOnly: true,
+			sameSite: "strict",
 		},
 	})
 );
