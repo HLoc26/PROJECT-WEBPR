@@ -1,0 +1,33 @@
+.sticky-top {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+}
+
+.table th {
+	background-color: #f8f9fa;
+	border-bottom: 2px solid #dee2e6;
+}
+
+.btn-group {
+	display: flex;
+	gap: 0.25rem;
+}
+
+.card-header {
+	background-color: #f8f9fa;
+}
+
+.badge {
+	font-size: 0.9rem;
+}
+
+.table td {
+	vertical-align: middle;
+}
+
+/* Set a consistent height for table rows */
+.table td {
+	height: 43px; /* This will make each row about 43px tall */
+	padding: 8px; /* Consistent padding */
+}

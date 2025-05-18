@@ -28,3 +28,101 @@ main.container {
 #sidebar.active ~ #content {
 	margin-left: 250px;
 }
+/* Width classes for table columns */
+.col-id {
+	width: 3%;
+}
+.col-thumbnail {
+	width: 10%;
+}
+.col-title {
+	width: 20%;
+}
+.col-category {
+	width: 7%;
+}
+.col-status {
+	width: 5%;
+}
+.col-publish-date {
+	width: 10%;
+}
+.col-premium {
+	width: 5%;
+}
+.col-writer {
+	width: 7%;
+}
+.col-editor {
+	width: 7%;
+}
+.col-option {
+	width: 10%;
+}
+
+/* Optional: make the table header sticky */
+.table-fixed-height thead th {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+}
+.table-fixed-height.approved {
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+.premium-badge {
+	font-size: 0.8rem;
+	padding: 0.3rem 0.6rem;
+}
+.table td {
+	vertical-align: middle;
+}
+.col-writer-id {
+	width: 10%;
+}
+.col-writer-name {
+	width: 30%;
+}
+.col-writer-dob {
+	width: 20%;
+}
+.col-writer-email {
+	width: 30%;
+}
+.col-writer-detail {
+	width: 10%;
+}
+
+.col-editor-thumb {
+	width: 15%;
+}
+.col-editor-title {
+	width: 30%;
+}
+.col-editor-category {
+	width: 15%;
+}
+.col-editor-tags {
+	width: 15%;
+}
+.col-editor-date {
+	width: 10%;
+}
+
+.thumbnail-img {
+	width: 100px;
+	height: auto;
+}
+
+.category-main {
+	font-weight: bold;
+}
+
+.category-sub {
+	padding-left: 1.5em;
+}
+
+.hidden {
+	display: none;
+}
